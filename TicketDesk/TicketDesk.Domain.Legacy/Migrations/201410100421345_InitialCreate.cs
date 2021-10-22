@@ -29,11 +29,11 @@ namespace TicketDesk.Domain.Legacy.Migrations
 			Sql(@"
 				ALTER TABLE [dbo].[Tickets] DROP CONSTRAINT [DF_Tickets_CreatedDate];
 
-				ALTER TABLE [dbo].[Tickets] ALTER COLUMN [CreatedDate] DATETIMEOFFSET (7) NOT NULL;
-				ALTER TABLE [dbo].[Tickets] ALTER COLUMN [CurrentStatusDate] DATETIMEOFFSET (7) NOT NULL;
-				ALTER TABLE [dbo].[Tickets] ALTER COLUMN [LastUpdateDate] DATETIMEOFFSET (7) NOT NULL;
+				ALTER TABLE [dbo].[Tickets] ALTER COLUMN [CreatedDate] DATETIME (7) NOT NULL;
+				ALTER TABLE [dbo].[Tickets] ALTER COLUMN [CurrentStatusDate] DATETIME (7) NOT NULL;
+				ALTER TABLE [dbo].[Tickets] ALTER COLUMN [LastUpdateDate] DATETIME (7) NOT NULL;
 
-				ALTER TABLE [dbo].[Tickets] ADD CONSTRAINT [DF_Tickets_CreatedDate] DEFAULT (sysdatetimeoffset()) FOR [CreatedDate];
+				ALTER TABLE [dbo].[Tickets] ADD CONSTRAINT [DF_Tickets_CreatedDate] DEFAULT (getdate()) FOR [CreatedDate];
 
 				ALTER TABLE [dbo].[TicketComments] DROP CONSTRAINT [DF_TicketComments_CommentDate];
 

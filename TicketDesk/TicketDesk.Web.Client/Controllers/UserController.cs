@@ -29,6 +29,7 @@ using TicketDesk.Web.Client.Models;
 using TicketDesk.Web.Identity;
 using TicketDesk.Web.Identity.Model;
 using TicketDesk.Localization.Controllers;
+using Newtonsoft.Json;
 
 namespace TicketDesk.Web.Client.Controllers
 {
@@ -81,7 +82,7 @@ namespace TicketDesk.Web.Client.Controllers
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                     HostingEnvironment.QueueBackgroundWorkItem(ct =>
                     {
-                        using(var notificationContext = new TdPushNotificationContext())
+                        using (var notificationContext = new TdPushNotificationContext())
                         {
                             notificationContext.SubscriberPushNotificationSettingsManager.AddSettingsForSubscriber(
                                 new SubscriberNotificationSetting
@@ -138,7 +139,7 @@ namespace TicketDesk.Web.Client.Controllers
             if (result != SignInStatus.Success && model.UserNameOrEmail.Contains("@"))
             {
                 var user = await UserManager.FindByEmailAsync(model.UserNameOrEmail);
-                if (user!=null)
+                if (user != null)
                 {
                     result = await SignInManager.PasswordSignInAsync(user.UserName, model.Password, model.RememberMe, true);
                 }
@@ -212,6 +213,7 @@ namespace TicketDesk.Web.Client.Controllers
                 ModelState.AddModelError("", error);
             }
         }
+
         private ActionResult RedirectToLocal(string returnUrl)
         {
             if (Url.IsLocalUrl(returnUrl))
@@ -220,5 +222,51 @@ namespace TicketDesk.Web.Client.Controllers
             }
             return RedirectToAction("Index", "Home");
         }
+
+
+        #region API region
+
+        [HttpPost]
+        [AllowAnonymous]
+        [Route("registerapi")]
+        public async Task<JsonResult> RegisterAPI(UserRegisterViewModel model)
+        {
+            //UserRegisterViewModel model = JsonConvert.DeserializeObject<UserRegisterViewModel>(parameters);
+            var user = new TicketDeskUser { UserName = model.UserName, Email = model.Email, DisplayName = model.DisplayName, TelegramUserId = model.TelegramUserId };
+            var result = await UserManager.CreateAsync(user, model.Password);
+            if (result.Succeeded)
+            {
+                await UserManager.AddToRolesAsync(user.Id, DomainContext.TicketDeskSettings.SecuritySettings.DefaultNewUserRoles.ToArray());
+                await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                HostingEnvironment.QueueBackgroundWorkItem(ct =>
+                {
+                    using (var notificationContext = new TdPushNotificationContext())
+                    {
+                        notificationContext.SubscriberPushNotificationSettingsManager.AddSettingsForSubscriber(
+                            new SubscriberNotificationSetting
+                            {
+                                SubscriberId = user.Id,
+                                IsEnabled = true,
+                                PushNotificationDestinations = new[]
+                                {
+                                        new PushNotificationDestination()
+                                        {
+                                            DestinationType = "email",
+                                            DestinationAddress = user.Email,
+                                            SubscriberName = user.DisplayName
+                                        }
+                                }
+                            });
+                        notificationContext.SaveChanges();
+                    }
+                });
+
+                return Json(new { IsSuccess = true, Message = "success" });
+            }
+            return Json(new { IsSuccess = false, Message = "failed" });
+
+        }
+
+        #endregion
     }
 }

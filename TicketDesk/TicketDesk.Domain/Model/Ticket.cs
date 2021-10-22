@@ -128,7 +128,7 @@ namespace TicketDesk.Domain.Model
             {
                 if (this.IsOpen && this.DueDate.HasValue)
                 {
-                    return this.DueDate.Value.DateTime.Date == DateTime.Today.Date;
+                    return this.DueDate.Value.Date == DateTime.Today.Date;
                 }
 
                 return false;
@@ -142,7 +142,7 @@ namespace TicketDesk.Domain.Model
             {
                 if (this.IsOpen && this.DueDate.HasValue)
                 {
-                    return this.DueDate.Value.DateTime.Date < DateTime.Today.Date;
+                    return this.DueDate.Value.Date < DateTime.Today.Date;
                 }
 
                 return false;

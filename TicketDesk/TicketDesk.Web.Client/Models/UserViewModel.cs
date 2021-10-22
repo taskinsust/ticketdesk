@@ -25,7 +25,7 @@ namespace TicketDesk.Web.Client.Models
         public string UserName { get; set; }
 
         [Required(ErrorMessageResourceName = "FieldRequired", ErrorMessageResourceType = typeof(Validation))]
-        [EmailAddress(ErrorMessage = null, ErrorMessageResourceName = "InvalidEmail", ErrorMessageResourceType = typeof(Validation))]
+        //[EmailAddress(ErrorMessage = null, ErrorMessageResourceName = "InvalidEmail", ErrorMessageResourceType = typeof(Validation))]
         [Display(Name = "Email", ResourceType = typeof(Strings))]
         public string Email { get; set; }
 
@@ -44,6 +44,8 @@ namespace TicketDesk.Web.Client.Models
         [Display(Name = "ConfirmPassword", ResourceType = typeof(Strings))]
         [Compare("Password", ErrorMessageResourceName = "ConfirmationDoNotMatch", ErrorMessageResourceType = typeof(Strings))]
         public string ConfirmPassword { get; set; }
+
+        public string TelegramUserId { get; set; }
     }
 
     public class UserSignInViewModel

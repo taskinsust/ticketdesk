@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TicketDesk.Domain</RootNamespace>
     <AssemblyName>TicketDesk.Domain</AssemblyName>
-    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <TargetFrameworkProfile />
@@ -70,6 +70,18 @@
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Infrastructure\AsyncHelper.cs" />
     <Compile Include="Infrastructure\CommentRequiredAttribute.cs" />
+    <Compile Include="Migrations\201410100421345_InitialCreate.cs" />
+    <Compile Include="Migrations\201410100421345_InitialCreate.Designer.cs">
+      <DependentUpon>201410100421345_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201410160155270_Td2.5.001.cs" />
+    <Compile Include="Migrations\201410160155270_Td2.5.001.Designer.cs">
+      <DependentUpon>201410160155270_Td2.5.001.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201412012200330_Td2.5.002.cs" />
+    <Compile Include="Migrations\201412012200330_Td2.5.002.Designer.cs">
+      <DependentUpon>201412012200330_Td2.5.002.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\201412302236209_Td2.5.003.cs" />
     <Compile Include="Migrations\201412302236209_Td2.5.003.Designer.cs">
       <DependentUpon>201412302236209_Td2.5.003.cs</DependentUpon>
@@ -150,22 +162,22 @@
     <Compile Include="Migrations\201801181017087_Td2.5.022.Designer.cs">
       <DependentUpon>201801181017087_Td2.5.022.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202110190502465_user profile added for telegram.cs" />
+    <Compile Include="Migrations\202110190502465_user profile added for telegram.Designer.cs">
+      <DependentUpon>202110190502465_user profile added for telegram.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202110210517509_add email to userprofile table.cs" />
+    <Compile Include="Migrations\202110210517509_add email to userprofile table.Designer.cs">
+      <DependentUpon>202110210517509_add email to userprofile table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202110221406272_first migration.cs" />
+    <Compile Include="Migrations\202110221406272_first migration.Designer.cs">
+      <DependentUpon>202110221406272_first migration.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\DemoDataManager.cs" />
     <Compile Include="Infrastructure\PropertyUtility.cs" />
     <Compile Include="Infrastructure\TdDomainSecurityProviderBase.cs" />
     <Compile Include="Localization\TicketTextUtility.cs" />
-    <Compile Include="Migrations\201410100421345_InitialCreate.cs" />
-    <Compile Include="Migrations\201410100421345_InitialCreate.Designer.cs">
-      <DependentUpon>201410100421345_InitialCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201410160155270_Td2.5.001.cs" />
-    <Compile Include="Migrations\201410160155270_Td2.5.001.Designer.cs">
-      <DependentUpon>201410160155270_Td2.5.001.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201412012200330_Td2.5.002.cs" />
-    <Compile Include="Migrations\201412012200330_Td2.5.002.Designer.cs">
-      <DependentUpon>201412012200330_Td2.5.002.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\ApplicaitonSettingsModel\ApplicationPermissionsSetting.cs" />
     <Compile Include="Model\ApplicaitonSettingsModel\ApplicationSecuritySetting.cs" />
@@ -175,6 +187,7 @@
     <Compile Include="Model\Extensions\ApplicationSettingExtensions.cs" />
     <Compile Include="Model\Extensions\SearchManagerExtensions.cs" />
     <Compile Include="Model\Extensions\TicketActivityExtensions.cs" />
+    <Compile Include="Model\Extensions\TicketEntity.cs" />
     <Compile Include="Model\Extensions\TicketEventExtensions.cs" />
     <Compile Include="Model\Extensions\TicketTagExtensions.cs" />
     <Compile Include="Model\Extensions\UserTicketListFilterColumnExtensions.cs" />
@@ -182,6 +195,7 @@
     <Compile Include="Model\Project.cs" />
     <Compile Include="Model\TicketEventNotification.cs" />
     <Compile Include="Model\TicketSubscriber.cs" />
+    <Compile Include="Model\UserProfile.cs" />
     <Compile Include="TicketActionManager.cs" />
     <Compile Include="Model\TicketActivity.cs" />
     <Compile Include="Model\UserSettingsModel\UserTicketListModel\ColumnSortDirection.cs" />
@@ -204,9 +218,18 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\TicketDesk.Localization\TicketDesk.Localization.csproj">
+      <Project>{be8715f9-e858-473e-a2b6-561c9edca416}</Project>
+      <Name>TicketDesk.Localization</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TicketDesk.Search.Common\TicketDesk.Search.Common.csproj">
+      <Project>{F8C97321-F0CC-4AF9-86E6-95E0E4840430}</Project>
+      <Name>TicketDesk.Search.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
     <EmbeddedResource Include="Migrations\201410100421345_InitialCreate.resx">
       <DependentUpon>201410100421345_InitialCreate.cs</DependentUpon>
-      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201410160155270_Td2.5.001.resx">
       <DependentUpon>201410160155270_Td2.5.001.cs</DependentUpon>
@@ -240,7 +263,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201504020337366_Td2.5.011.resx">
       <DependentUpon>201504020337366_Td2.5.011.cs</DependentUpon>
-      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201504042002335_Td2.5.012.resx">
       <DependentUpon>201504042002335_Td2.5.012.cs</DependentUpon>
@@ -275,16 +297,15 @@
     <EmbeddedResource Include="Migrations\201801181017087_Td2.5.022.resx">
       <DependentUpon>201801181017087_Td2.5.022.cs</DependentUpon>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\TicketDesk.Localization\TicketDesk.Localization.csproj">
-      <Project>{be8715f9-e858-473e-a2b6-561c9edca416}</Project>
-      <Name>TicketDesk.Localization</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TicketDesk.Search.Common\TicketDesk.Search.Common.csproj">
-      <Project>{F8C97321-F0CC-4AF9-86E6-95E0E4840430}</Project>
-      <Name>TicketDesk.Search.Common</Name>
-    </ProjectReference>
+    <EmbeddedResource Include="Migrations\202110190502465_user profile added for telegram.resx">
+      <DependentUpon>202110190502465_user profile added for telegram.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202110210517509_add email to userprofile table.resx">
+      <DependentUpon>202110210517509_add email to userprofile table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202110221406272_first migration.resx">
+      <DependentUpon>202110221406272_first migration.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

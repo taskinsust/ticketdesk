@@ -7,7 +7,7 @@ namespace TicketDesk.Domain.Migrations
     {
         public override void Up()
         {
-            AddColumn("dbo.Tickets", "DueDate", c => c.DateTimeOffset(precision: 7));
+            AddColumn("dbo.Tickets", "DueDate", c => c.DateTime());
         }
         
         public override void Down()

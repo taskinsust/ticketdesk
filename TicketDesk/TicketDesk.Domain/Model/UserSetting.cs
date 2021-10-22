@@ -17,8 +17,7 @@ using System.Linq;
 using TicketDesk.Localization;
 
 namespace TicketDesk.Domain.Model
-{
-    
+{    
     public class UserSetting
     {
         [Key]

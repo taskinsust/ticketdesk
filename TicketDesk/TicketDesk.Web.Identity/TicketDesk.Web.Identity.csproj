@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TicketDesk.Web.Identity</RootNamespace>
     <AssemblyName>TicketDesk.Web.Identity</AssemblyName>
-    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <TargetFrameworkProfile />
@@ -63,6 +63,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extensions\TdIdentityExtensions.cs" />
+    <Compile Include="Migrations\202110190840552_update identity table add new ref to telegram user id.cs" />
+    <Compile Include="Migrations\202110190840552_update identity table add new ref to telegram user id.Designer.cs">
+      <DependentUpon>202110190840552_update identity table add new ref to telegram user id.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\DemoIdentityDataManager.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\TicketDeskRole.cs" />
@@ -84,6 +88,11 @@
       <Project>{be8715f9-e858-473e-a2b6-561c9edca416}</Project>
       <Name>TicketDesk.Localization</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\202110190840552_update identity table add new ref to telegram user id.resx">
+      <DependentUpon>202110190840552_update identity table add new ref to telegram user id.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

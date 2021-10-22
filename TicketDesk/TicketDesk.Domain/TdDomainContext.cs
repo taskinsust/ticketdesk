@@ -135,7 +135,7 @@ namespace TicketDesk.Domain
         public DbSet<TicketTag> TicketTags { get; set; }
         public DbSet<TicketSubscriber> TicketSubscribers { get; set; }
         public DbSet<TicketEventNotification> TicketEventNotifications { get; set; }
-
+        public DbSet<UserProfile> UserProfiles { get; set; }
 
         //These DbSets contain json serialized content. Callers cannot use standard LINQ to Entities 
         //  expressions with these safely. Marking internal to prevent callers having direct access
@@ -222,15 +222,23 @@ namespace TicketDesk.Domain
             return result.ValidationErrors.Count > 0 ? result : base.ValidateEntity(entityEntry, items);
         }
 
-        public override async Task<int> SaveChangesAsync()
+           public override async Task<int> SaveChangesAsync()
         {
-            var pendingEntityChanges = OnSaving();
-            var result = await base.SaveChangesAsync();
-            if (result > 0)
+            try
             {
-                RaiseEntityChangeEvents(pendingEntityChanges);
+                var pendingEntityChanges = OnSaving();
+                var result = await base.SaveChangesAsync();
+                if (result > 0)
+                {
+                    RaiseEntityChangeEvents(pendingEntityChanges);
+                }
+                return result;
             }
-            return result;
+            catch (Exception e)
+            {
+                throw;
+            }
+
         }
 
 
@@ -272,7 +280,7 @@ namespace TicketDesk.Domain
             return pending;
         }
 
-       
+
 
         private void CreateEventNotifications()
         {
@@ -299,7 +307,7 @@ namespace TicketDesk.Domain
             foreach (var change in projectChanges)
             {
                 var usersToUpdate = UserSettings.Where(u => u.SelectedProjectId == change.ProjectId);
-                foreach(var user in usersToUpdate)
+                foreach (var user in usersToUpdate)
                 {
                     user.SelectedProjectId = 0;
                 }
@@ -345,7 +353,7 @@ namespace TicketDesk.Domain
                         {
                             TagName = nt,
                         });
-                        TicketTags.RemoveRange(tagsToKill);
+                    TicketTags.RemoveRange(tagsToKill);
                     modifiedTicket.TicketTags.AddRange(newTags);
                 }
             }
@@ -393,7 +401,7 @@ namespace TicketDesk.Domain
 
         private IEnumerable<Ticket> GetNewTickets()
         {
-            
+
             return ChangeTracker.Entries<Ticket>()
                 .Where(t => t.State == EntityState.Added)
                 .Select(t => t.Entity)

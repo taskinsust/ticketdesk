@@ -126,40 +126,40 @@
                             }
                         </div>
                         <div class="form-group">
-                            <div class="col-md-2 col-md-offset-2 col-sm-1 col-sm-offset-1">
+                            <div class="col-md-3 col-md-offset-2 col-sm-1 col-sm-offset-1">
                                 <label class="checkbox-inline" for="affectsCustomer">
                                     <input class="" type="checkbox" name="affectsCustomer" id="affectsCustomer" value="true" tabindex="5" />
                                     @New.AffectsCustomer
                                 </label>
                             </div>
                             @Html.LabelFor(model => model.DueDate, new { @class = "col-md-2 col-sm-2 control-label" })
-                            <div class="col-md-4 col-sm-6">
-                                @Html.TextBoxFor(model => model.DueDateAsString, new { @class = "form-control input-sm", tabindex = 6 })
+                            <div class="col-md-3 col-sm-3">
+                                @Html.TextBoxFor(model => model.DueDateAsString, new { @class = "form-control input-sm", tabindex = 6, @readonly = "readonly" })
                             </div>
                         </div>
                         <div class="form-group">
                             @Html.LabelFor(model => model.TargetDate, new { @class = "col-md-2 col-sm-2 control-label" })
                             <div class="col-md-3 col-sm-3">
-                                @Html.TextBoxFor(model => model.TargetDateAsString, new { @class = "form-control input-sm", tabindex = 7 })
+                                @Html.TextBoxFor(model => model.TargetDateAsString, new { @class = "form-control input-sm", tabindex = 7, @readonly = "readonly" })
                             </div>
                             @Html.LabelFor(model => model.ResolutionDate, new { @class = "col-md-2 col-sm-2 control-label" })
                             <div class="col-md-3 col-sm-3">
-                                @Html.TextBoxFor(model => model.ResolutionDateAsString, new { @class = "form-control input-sm", tabindex = 8 })
+                                @Html.TextBoxFor(model => model.ResolutionDateAsString, new { @class = "form-control input-sm", tabindex = 8, @readonly = "readonly" })
                             </div>
                         </div>
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.EstimatedDuration, new { @class = "col-md-2 col-sm-3 control-label" })
-                            <div class="col-md-3 col-sm-6">
-                                @Html.TextBoxFor(model => model.EstimatedDuration, new { @class = "form-control input-sm", tabindex = 9 })
-                                @Html.ValidationMessageFor(model => model.EstimatedDuration, "", new { @class = "text-danger" })
-                            </div>
+                        @*<div class="form-group">
+                                @Html.LabelFor(model => model.EstimatedDuration, new { @class = "col-md-2 col-sm-3 control-label" })
+                                <div class="col-md-3 col-sm-6">
+                                    @Html.TextBoxFor(model => model.EstimatedDuration, new { @class = "form-control input-sm", tabindex = 9 })
+                                    @Html.ValidationMessageFor(model => model.EstimatedDuration, "", new { @class = "text-danger" })
+                                </div>
 
-                            @Html.LabelFor(model => model.ActualDuration, new { @class = "col-md-2 col-sm-3 control-label" })
-                            <div class="col-md-3 col-sm-6">
-                                @Html.TextBoxFor(model => model.ActualDuration, new { @class = "form-control input-sm", tabindex = 10 })
-                                @Html.ValidationMessageFor(model => model.ActualDuration, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
+                                @Html.LabelFor(model => model.ActualDuration, new { @class = "col-md-2 col-sm-3 control-label" })
+                                <div class="col-md-3 col-sm-6">
+                                    @Html.TextBoxFor(model => model.ActualDuration, new { @class = "form-control input-sm", tabindex = 10 })
+                                    @Html.ValidationMessageFor(model => model.ActualDuration, "", new { @class = "text-danger" })
+                                </div>
+                            </div>*@
                         @if (Model.AllowEditTags())
                         {
                             <div class="form-group">
@@ -255,7 +255,7 @@
                         </div>
                     </div>
                 </div>
-                                    }
+            }
         </div>
     </div>
 </main>

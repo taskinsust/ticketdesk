@@ -21,12 +21,14 @@ using TicketDesk.Localization;
 
 namespace TicketDesk.Web.Identity.Model
 {
-    public class TicketDeskUser:IdentityUser
+    public class TicketDeskUser : IdentityUser
     {
         [Required(ErrorMessageResourceName = "FieldRequired", ErrorMessageResourceType = typeof(Validation))]
         [StringLength(100, ErrorMessageResourceName = "FieldMaximumLength", ErrorMessageResourceType = typeof(Validation))]
         [Display(Name = "DisplayName", ResourceType = typeof(Strings))]
         public string DisplayName { get; set; }
+
+        public string TelegramUserId { get; set; }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<TicketDeskUser> manager)
         {
@@ -35,6 +37,6 @@ namespace TicketDesk.Web.Identity.Model
             userIdentity.AddClaim(new Claim(ClaimTypes.GivenName, DisplayName));
             return userIdentity;
         }
-    
+
     }
 }
