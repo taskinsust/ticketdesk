@@ -23,16 +23,16 @@ namespace TicketDesk.Domain.Migrations
     {
         public static void RemoveAllData(TdDomainContext context)
         {
-            context.UserSettings.RemoveRange(context.UserSettings);
-            context.TicketTags.RemoveRange(context.TicketTags);
-            context.TicketEventNotifications.RemoveRange(context.TicketEventNotifications);
-            context.TicketSubscribers.RemoveRange(context.TicketSubscribers);
-            context.TicketEvents.RemoveRange(context.TicketEvents);
-            context.Tickets.RemoveRange(context.Tickets);
-            context.Projects.RemoveRange(context.Projects.Where(p => p.ProjectName != "Default"));
-            context.TicketDeskSettings = new ApplicationSetting() {};
+            //context.UserSettings.RemoveRange(context.UserSettings);
+            //context.TicketTags.RemoveRange(context.TicketTags);
+            //context.TicketEventNotifications.RemoveRange(context.TicketEventNotifications);
+            //context.TicketSubscribers.RemoveRange(context.TicketSubscribers);
+            //context.TicketEvents.RemoveRange(context.TicketEvents);
+            //context.Tickets.RemoveRange(context.Tickets);
+            //context.Projects.RemoveRange(context.Projects.Where(p => p.ProjectName != "Default"));
+            //context.TicketDeskSettings = new ApplicationSetting() {};
 
-            context.SaveChanges();
+            //context.SaveChanges();
         }
 
         public static void SetupDemoData(TdDomainContext context)

@@ -7,8 +7,8 @@ namespace TicketDesk.Domain.Migrations
     {
         public override void Up()
         {
-            AddColumn("dbo.Tickets", "TargetDate", c => c.DateTime());
-            AddColumn("dbo.Tickets", "ResolutionDate", c => c.DateTime());
+            AddColumn("dbo.Tickets", "TargetDate", c => c.DateTimeOffset());
+            AddColumn("dbo.Tickets", "ResolutionDate", c => c.DateTimeOffset());
         }
         
         public override void Down()

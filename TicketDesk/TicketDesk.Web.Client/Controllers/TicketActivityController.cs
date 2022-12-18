@@ -31,6 +31,7 @@ namespace TicketDesk.Web.Client.Controllers
     [Route("{action}")]
     [TdAuthorize(Roles = "TdInternalUsers,TdHelpDeskUsers,TdAdministrators")]
     [ValidateInput(false)]
+    //[OutputCacheAttribute(NoStore = true, Duration = 0, VaryByParam = "None")]
     public class TicketActivityController : Controller
     {
         private TdDomainContext Context { get; set; }

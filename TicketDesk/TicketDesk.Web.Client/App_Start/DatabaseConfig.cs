@@ -42,8 +42,6 @@ namespace TicketDesk.Web.Client
             }
             else
             {
-
-
                 //run any pending migrations automatically to bring the DB up to date
                 Database.SetInitializer(
                     new MigrateDatabaseToLatestVersion<TdDomainContext, Configuration>(true));
@@ -75,10 +73,6 @@ namespace TicketDesk.Web.Client
                 }
             }
         }
-
-
-
-
         public static bool IsDatabaseReady
         {
             get
@@ -92,7 +86,6 @@ namespace TicketDesk.Web.Client
                 return result;
             }
         }
-
 
         public static bool IsEmptyDatabase()
         {
@@ -177,7 +170,7 @@ namespace TicketDesk.Web.Client
                     }
                 }
             }
-                // ReSharper disable once EmptyGeneralCatchClause
+            // ReSharper disable once EmptyGeneralCatchClause
             catch
             {
                 //eat any exception, we'll assume that if the db exists, but we can't read the settings, then it is an just empty new db

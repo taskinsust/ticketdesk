@@ -27,6 +27,7 @@
     </style>
     @Styles.Render("~/content/styles")
     @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/common")
     @RenderSection("customHeader", required: false)
     @{
         var insightsKey = System.Configuration.ConfigurationManager.AppSettings["ticketdesk:InsightsInstrumentationKey"];
@@ -46,7 +47,7 @@
 
 </head>
 <body>
-    <nav id="mainNav" class="navbar navbar-default " role="navigation">
+    <nav id="mainNav" class="navbar navbar-static-top " role="navigation">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-menu-collapse">
 
@@ -88,6 +89,7 @@
                     </li>
                     <li role="separator" class="nav-divider"></li>
                 </ul>
+
                 <ul class="nav navbar-nav navbar-right" style="margin-right: 5px;">
                     <li class="dropdown hidden-sm hidden-md hidden-lg" style="padding: 10px 15px;">
                         @Html.Partial("_QuickSearch")
@@ -135,20 +137,24 @@
         }
     </nav>
     <div class="body-content">
+        @if (User.Identity.IsAuthenticated)
+        {
+            @*<marquee> IT dev Version</marquee>*@
+            Html.RenderAction("LoadDashboard", "TicketCenter");
+        }
         @RenderBody()
-        <footer>
-            <p class="text-muted">
-                <a href="https://summitcommunications.net">IT Ticketing System </a> | &copy; @DateTime.Now.Year | Scomm IT Team
-            </p>
-        </footer>
-
     </div>
+    <footer>
+        <p class="text-muted">
+            <a href="https://summitcommunications.net"> IT Ticketing System </a> | &copy; @DateTime.Now.Year | Scomm IT Team
+        </p>
+    </footer>
 
     <script type="text/javascript">
         window.currentCulture = '@CultureHelper.GetCurrentCulture()';
     </script>
-    @Scripts.Render("~/bundles/common")
-    @Scripts.Render("~/bundles/common_locale_" + CultureHelper.GetCurrentCulture())
+    
+    @* @Scripts.Render("~/bundles/common_locale_" + CultureHelper.GetCurrentCulture())*@
     <script type="text/javascript">
         Globalize.culture(window.currentCulture);
 

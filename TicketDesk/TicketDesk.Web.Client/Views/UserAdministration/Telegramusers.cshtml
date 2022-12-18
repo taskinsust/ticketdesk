@@ -1,0 +1,31 @@
+﻿@using TicketDesk.Localization.Views.UserAdministration
+@model PagedList.IPagedList<TicketDesk.Domain.Model.UserProfile>
+@section title{
+    @Index.Title
+}
+@section scripts
+{
+    @Scripts.Render("~/bundles/admin-users")
+    <script type="text/javascript">
+        $(document).ready(function () {
+            window.adminUsers.activate();
+        });
+    </script>
+}
+<main>
+    <div class="container">
+        <fieldset>
+            <legend class="col-sm-12">@Index.Legend</legend>
+            <div class="col-sm-12">
+                @Html.Partial("_TelegramUserList", Model)
+            </div>
+            <div class="panel-footer">
+                <div class="">
+                    <a href="@Url.Action("New", "UserAdministration")" class="btn btn-primary">
+                        <i class="fa fa-plus"></i>&nbsp;&nbsp;@Index.NewUser
+                    </a>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+</main>

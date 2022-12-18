@@ -25,7 +25,8 @@ using TicketDesk.Web.Client.Models;
 using TicketDesk.Web.Identity;
 using TicketDesk.Web.Identity.Model;
 using TicketDesk.Localization.Models;
-
+using Chart.Mvc.ComplexChart;
+using Chart.Mvc.SimpleChart;
 
 namespace TicketDesk.Domain.Model
 {
@@ -80,7 +81,6 @@ namespace TicketDesk.Domain.Model
 
         public static HtmlString HtmlDetails(this Ticket ticket)
         {
-           
             var content = (ticket.IsHtml) ? ticket.Details : ticket.Details.HtmlFromMarkdown();
             var san = new HtmlSanitizer();
             return new HtmlString(san.Sanitize(content));
@@ -172,7 +172,7 @@ namespace TicketDesk.Domain.Model
         {
             //TODO: is this the best place to put this check?
             var context = DependencyResolver.Current.GetService<TdDomainContext>();
-            return (context.SecurityProvider.IsTdAdministrator || context.SecurityProvider.IsTdHelpDeskUser) || (context.SecurityProvider.IsTdInternalUser &&  context.TicketDeskSettings.Permissions.AllowInternalUsersToEditPriority);
+            return (context.SecurityProvider.IsTdAdministrator || context.SecurityProvider.IsTdHelpDeskUser) || (context.SecurityProvider.IsTdInternalUser && context.TicketDeskSettings.Permissions.AllowInternalUsersToEditPriority);
         }
 
         /// <summary>
@@ -195,6 +195,175 @@ namespace TicketDesk.Domain.Model
             }
             return attachments.Select(a => a.Name);
         }
+
+
+        #region Chart Js Implementation from https://github.com/martinobordin/Chart.Mvc
+
+        public static LineChart DrawLineChart(this Ticket ticket, ref string options)
+        {
+            var context = DependencyResolver.Current.GetService<TdDomainContext>();
+            var totalticket = context.Tickets.ToList().Where(x => x.CreatedDate > DateTime.Now.AddDays(-30) && x.TagList != "test,moretest").ToList();
+
+            // get the data from 
+            var linechart = new LineChart();
+
+            var data = from e in totalticket
+                       group e by e.CreatedDate.Date.ToShortDateString() into g
+                       select new { g.Key, Ticket = g.Count() };
+            var labels = data.Select(x => x.Key).ToList<string>();
+            var count = data.Select(x => (double)x.Ticket).ToList<double>();
+
+            linechart.ComplexData.Labels.AddRange(labels);
+
+            options = @"          {
+                                    layout: {
+                                      padding: {                
+                                        top: 20                
+                                      }
+                                    },
+                                    scales: {
+                                        xAxes: [
+                                            {
+                                            beginAtZero: true,
+                                                ticks: {
+                                                autoSkip: false
+                                                }
+                                        }
+                                        ]
+                                    }
+                                }";
+
+            var closeData = totalticket.Where(x => x.TicketStatus == TicketStatus.Closed).OrderBy(x => x.LastUpdateDate).ToList();
+            var data1 = from e in closeData
+                        group e by e.LastUpdateDate.Date.ToShortDateString() into g
+                        select new { g.Key, Ticket = g.Count() };
+
+            linechart.ComplexData.Datasets.AddRange(new List<ComplexDataset>() {
+            new ComplexDataset()
+            {
+                    Label = "TTT",
+                    Data = data.Select(x => (double)x.Ticket).ToList<double>(),
+                    FillColor = "rgb(229,173,20)",
+                    StrokeColor = "rgb(229,173,20,1)",
+                    PointColor = "rgb(229,173,20, 1)",
+                    PointStrokeColor = "#fff",
+                    PointHighlightFill = "#fff",
+                    PointHighlightStroke = "rgb(229,173,20,1)"
+            }
+            ,
+            new ComplexDataset
+            {
+                    Label = "YYY",
+                    Data = data1.Select(x => (double)x.Ticket).ToList<double>(),
+                    FillColor = "rgb(94,192,190)",
+                    StrokeColor = "rgb(94,192,190,.5)",
+                    PointColor = "rgb(94,192,190, 1)",
+                    PointStrokeColor = "#fff",
+                    PointHighlightFill = "#fff",
+                    PointHighlightStroke = "rgb(94,192,190,1)",
+             }
+            });
+            return linechart;
+        }
+
+        public static BarChart DrawBarChart(this Ticket ticket)
+        {
+            var barchart = new BarChart();
+            var utility = new Utility();
+            var result = utility.LoadAvgClosingTime();
+            result = result.OrderBy(x => x.ClosingDate).ToList();
+            var labels = result.Select(x => x.ClosingDate.Date.ToShortDateString()).ToList<string>();
+            barchart.ComplexData.Labels.AddRange(labels);
+            barchart.ComplexData.Datasets.AddRange(new List<ComplexDataset>() {
+
+            new ComplexDataset()
+            {
+                    Data = result.Select(x => (double)x.AVGHour).ToList<double>(),
+                    Label = "AVG ticket closing time",
+                    FillColor = "rgb(21,145,165, 0.2)" ,
+                    StrokeColor = "rgba(220,220,220,1)",
+                    PointColor = "rgb(21,145,165, 1)",
+                    PointStrokeColor = "#fff",
+                    PointHighlightFill = "#fff",
+                    PointHighlightStroke = "rgba(220,220,220,1)"
+            }});
+
+            return barchart;
+        }
+
+        public static PieChart DrawPieChart(this Ticket ticket)
+        {
+            var context = DependencyResolver.Current.GetService<TdDomainContext>();
+            var totalticket = context.Tickets.ToList().Where(x => x.CreatedDate > DateTime.Now.AddDays(-30) && x.TagList != "test,moretest").ToList();
+
+            // get the data from 
+            var piechart = new PieChart();
+            var data = from e in totalticket
+                       group e by e.TicketStatus into g
+                       select new { g.Key, Ticket = g.Count() };
+            List<SimpleData> simpleList = new List<SimpleData>();
+            string[] color = new string[] { "#46BFBD", "#FDB45C" };
+            string[] highlight = new string[] { "#5AD3D1", "#FFC870" };
+            int i = 0;
+            foreach (var item in data)
+            {
+                simpleList.Add(new SimpleData() { Label = item.Key.ToString(), Value = item.Ticket, Color = color[i], Highlight = highlight[i] });
+                i++;
+                if (i > 1)
+                {
+                    i = 0;
+                }
+            }
+            piechart.Data = simpleList;
+            return piechart;
+        }
+        public static DoughnutChart DrawDoughnutChart(this Ticket ticket, ref string options1)
+        {
+            var context = DependencyResolver.Current.GetService<TdDomainContext>();
+            var totalticket = context.Tickets.ToList().Where(x => x.CreatedDate > DateTime.Now.AddDays(-30) && x.TagList != "test,moretest").ToList();
+
+            options1 = @" {
+           tooltips: {
+         enabled: false
+    },
+             plugins: {
+            datalabels: {
+                formatter: (value, ctx) => {
+                  let sum = 0;
+                  let dataArr = ctx.chart.data.datasets[0].data;
+                  dataArr.map(data => {
+                      sum += data;
+                  });
+                  let percentage = (value*100 / sum).toFixed(2)+' % ';
+                  return percentage;
+        },
+                color: '#fff',
+            }
+    }
+    }; ";
+
+            // get the data from 
+            var doughnutChart = new DoughnutChart();
+            var data = from e in totalticket
+                       group e by e.TicketStatus into g
+                       select new { g.Key, Ticket = g.Count() };
+            List<SimpleData> simpleList = new List<SimpleData>();
+            string[] color = new string[] { "#46BFBD", "#FDB45C" };
+            string[] highlight = new string[] { "#5AD3D1", "#FFC870" };
+            int i = 0;
+            foreach (var item in data)
+            {
+                simpleList.Add(new SimpleData() { Label = item.Key.ToString(), Value = item.Ticket, Color = color[i], Highlight = highlight[i] });
+                i++;
+                if (i > 1)
+                {
+                    i = 0;
+                }
+            }
+            doughnutChart.Data = simpleList;
+            return doughnutChart;
+        }
+        #endregion
     }
 
 }

@@ -11,6 +11,7 @@
 // attribution must remain intact, and a copy of the license must be 
 // provided to the recipient.
 
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -23,6 +24,7 @@ namespace TicketDesk.Web.Client.Controllers
     [RoutePrefix("tickets")]
     [Route("{action=index}")]
     [TdAuthorize(Roles = "TdInternalUsers,TdHelpDeskUsers,TdAdministrators")]
+    //[OutputCacheAttribute(NoStore = true, Duration = 0, VaryByParam = "None")]
     public class TicketCenterController : Controller
     {
         private TdDomainContext Context { get; set; }
@@ -49,7 +51,7 @@ namespace TicketDesk.Web.Client.Controllers
             var pageNumber = page ?? 1;
 
             var viewModel = await TicketCenterListViewModel.GetViewModelAsync(pageNumber, listName, Context, Context.SecurityProvider.CurrentUserId);//new TicketCenterListViewModel(listName, model, Context, User.Identity.GetUserId());
-
+            Response.AddHeader("Refresh", "300");
             return View(viewModel);
         }
 
@@ -58,7 +60,6 @@ namespace TicketDesk.Web.Client.Controllers
         {
             return await GetTicketListPartial(page, listName);
         }
-
 
         [Route("filterList/{listName=opentickets}/{page:int?}")]
         public async Task<PartialViewResult> FilterList(
@@ -74,7 +75,7 @@ namespace TicketDesk.Web.Client.Controllers
             var currentListSetting = userSetting.GetUserListSettingByName(listName);
 
             currentListSetting.ModifyFilterSettings(pageSize, ticketStatus, owner, assignedTo);
-            
+
             await Context.SaveChangesAsync();
 
             return await GetTicketListPartial(null, listName);
@@ -127,7 +128,6 @@ namespace TicketDesk.Web.Client.Controllers
         }
 
 
-
         private async Task<PartialViewResult> GetTicketListPartial(int? page, string listName)
         {
             var pageNumber = page ?? 1;
@@ -137,6 +137,29 @@ namespace TicketDesk.Web.Client.Controllers
 
         }
 
-       
+        public PartialViewResult LoadDashboard()
+        {
+            
+            var totalticket = Context.Tickets.ToList().Where(x => x.CreatedDate > DateTime.Now.AddDays(-30) && x.TagList != "test,moretest").ToList();
+            var pendingticket = totalticket.Where(x => x.TicketStatus == (int)0).ToList().Count();
+            var moreInfoticket = totalticket.Where(x => (int)x.TicketStatus == (int)1).ToList().Count();
+            var closedticket = totalticket.Where(x => (int)x.TicketStatus == (int)3).ToList().Count();
+
+            ViewBag.totalticket = totalticket.Count();
+            ViewBag.pendingticket = pendingticket;
+            ViewBag.moreInfoticket = moreInfoticket;
+            ViewBag.closedticket = closedticket;
+
+            var totalticketToday = Context.Tickets.ToList().Where(x => DateTime.Compare(x.CreatedDate.Date, DateTime.Now.Date) == 0 && x.TagList != "test,moretest").ToList();
+            var pendingticketToday = totalticketToday.Where(x => (int)x.TicketStatus == 0).ToList().Count();
+            var moreInfoticketToday = totalticketToday.Where(x => (int)x.TicketStatus == 1).ToList().Count();
+            var closedticketToday = Context.Tickets.ToList().Where(x => (int)x.TicketStatus == 3 && DateTime.Compare(x.CurrentStatusDate.Date, DateTime.Now.Date) == 0).ToList().Count();
+
+            ViewBag.totalticketToday = totalticketToday.Count();
+            ViewBag.pendingticketToday = pendingticketToday;
+            ViewBag.moreInfoticketToday = moreInfoticketToday;
+            ViewBag.closedticketToday = closedticketToday;
+            return PartialView("_dashboard");
+        }
     }
 }

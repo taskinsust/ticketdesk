@@ -47,8 +47,8 @@ namespace TicketDesk.Web.Client
             var container = new Container();
             container.Options.DefaultScopedLifestyle = new WebRequestLifestyle();
 
-            container.RegisterSingleton(app);
-
+            //container.RegisterSingleton<IAppBuilder>(app);
+            container.RegisterInstance<IAppBuilder>(app);
             
             //allows objects to be reused when inside web request, or created fresh when used on background threads or outside a request context
             var hybridLifestyle = Lifestyle.CreateHybrid(
@@ -83,7 +83,7 @@ namespace TicketDesk.Web.Client
                 catch (InvalidOperationException)
                 {
                     //avoid exception when this is called before the owin environment is fully initialized
-                    if (container.IsVerifying())
+                    if (container.IsVerifying)
                     {
                         return new FakeAuthenticationManager();
                     }
@@ -94,12 +94,15 @@ namespace TicketDesk.Web.Client
             },
             Lifestyle.Scoped);
 
-            container.Register<SignInManager<TicketDeskUser, string>, TicketDeskSignInManager>(Lifestyle.Scoped);
+           // container.Register<SignInManager<TicketDeskUser, string>, TicketDeskSignInManager>(Lifestyle.Scoped);
 
             container.Register<TicketDeskRoleManager>(hybridLifestyle);
+            container.Register<TicketDeskUserManager>(hybridLifestyle);
+            container.Register<TicketDeskSignInManager>(hybridLifestyle);
+            container.Register<TdPushNotificationContext>(hybridLifestyle);
 
-            container.RegisterInitializer<TicketDeskUserManager>(manager =>
-                manager.ConfigureDataProtection(app));
+            //container.RegisterInitializer<TicketDeskUserManager>(manager =>
+            //    manager.ConfigureDataProtection(app));
 
 
             container.RegisterMvcControllers(Assembly.GetExecutingAssembly());

@@ -11,9 +11,11 @@
 // attribution must remain intact, and a copy of the license must be 
 // provided to the recipient.
 
+using Chart.Mvc.ComplexChart;
 using System;
 using System.Web;
 using System.Web.Mvc;
+using TicketDesk.Domain.Model;
 using TicketDesk.Localization;
 
 namespace TicketDesk.Web.Client.Controllers
@@ -43,6 +45,18 @@ namespace TicketDesk.Web.Client.Controllers
         {
             if (ApplicationConfig.HomeEnabled)
             {
+                string options = "", options1 = "";
+                var lineChart = new Ticket().DrawLineChart(ref options);
+                var barChart = new Ticket().DrawBarChart();
+                var pieChart = new Ticket().DrawPieChart();
+                var doughnutChart = new Ticket().DrawDoughnutChart(ref options1);
+
+                ViewBag.lineChart = lineChart;
+                ViewBag.lineOptions = options;
+                ViewBag.doughtOptions = options1;
+                ViewBag.barChart = barChart;
+                ViewBag.pieChart = pieChart;
+                ViewBag.doughnutChart = doughnutChart;
                 return View();
             }
             else
@@ -50,7 +64,7 @@ namespace TicketDesk.Web.Client.Controllers
                 return RedirectToActionPermanent("Index", "TicketCenter");
             }
         }
- 
+
         [Route("about")]
         public ActionResult About()
         {

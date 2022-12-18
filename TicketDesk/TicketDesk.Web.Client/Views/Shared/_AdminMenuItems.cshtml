@@ -1,20 +1,23 @@
 ﻿@using TicketDesk.Localization.Views.Shared
-    <li>
-        @Html.ActionLink(@_Layout.ManageUsers, "Index", "UserAdministration")
-    </li>
-    <li>
-        @Html.ActionLink(@_Layout.ManageProjects, "Index", "ProjectSettings")
-    </li>
-    <li>
-        @Html.ActionLink(@_Layout.ApplicationSettings, "Index", "ApplicationSettings")
-    </li>
-    <li>
-        @Html.ActionLink(@_Layout.PushNotificationSettings, "Index", "PushNotificationSettings")
-    </li>
-    <li>
-        @Html.ActionLink(@_Layout.DemoDataManagement, "Demo", "DataManagement")
-    </li>
-    <li>
-        @Html.ActionLink(@_Layout.SearchManagement, "Index", "SearchManager")
-    </li>
+<li>
+    @Html.ActionLink(@_Layout.ManageUsers, "Index", "UserAdministration")
+</li>
+<li>
+    @Html.ActionLink("Telegram User", "Telegramusers", "UserAdministration")
+</li>
+<li>
+    @Html.ActionLink(@_Layout.ManageProjects, "Index", "ProjectSettings")
+</li>
+<li>
+    @Html.ActionLink(@_Layout.ApplicationSettings, "Index", "ApplicationSettings")
+</li>
+<li>
+    @Html.ActionLink(@_Layout.PushNotificationSettings, "Index", "PushNotificationSettings")
+</li>
+@*<li>
+    @Html.ActionLink(@_Layout.DemoDataManagement, "Demo", "DataManagement")
+</li>*@
+@*<li>
+    @Html.ActionLink(@_Layout.SearchManagement, "Index", "SearchManager")
+</li>*@
 

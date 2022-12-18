@@ -13,7 +13,9 @@
  provided to the recipient.
 
 */
-@-ms-viewport{width:auto!important}
+@-ms-viewport {
+    width: auto !important
+}
 
 html {
     height: 100%;
@@ -39,14 +41,14 @@ body {
     background-color: #fff;
 }
 
-#mainNav.navbar-fixed-top .container-fluid.navbar-default {
+    #mainNav.navbar-fixed-top .container-fluid.navbar-default {
         background-color: #f5f5f5;
-}
+    }
 
 
 #mainNav .navbar-brand {
-    width: 100px;
-    height: 50px;
+    width: 225px;
+    height: 80px;
     background-repeat: no-repeat;
     background-image: url('Images/TicketDesk-2.5-mobile.png');
 }
@@ -60,7 +62,6 @@ body {
 .body-content > footer {
     height: 30px;
     border-top: 1px solid #B3CBDF;
-   
     font-size: 9pt;
 }
 
@@ -70,9 +71,24 @@ body {
 }
 
     .panel-info > .panel-heading {
-        background-color: #b3cbdf;
-        color: #000;
+        background-color: #17A2B8;
+        color: white;
     }
+
+.panel-warning > .panel-heading {
+    background-color: #E5AD06;
+    color: #FFFFFF;
+}
+
+.panel-danger > .panel-heading {
+    background-color: #DC3545;
+    color: #FFFFFF;
+}
+
+.panel-success > .panel-heading {
+    background-color: #28A745;
+    color: #FFFFFF;
+}
 
 .form-group-xs .control-label {
     height: 22px;
@@ -82,11 +98,11 @@ body {
 }
 
 .form-group-xs .form-control {
-    height: 22px;
-    padding: 1px 3px;
+    /*height: 22px;
+    padding: 1px 3px;*/
     font-size: 11px;
     line-height: 1.2;
-    border-radius: 2px;
+    /*border-radius: 2px;*/
 }
 
 select.form-group-xs .form-control {
@@ -195,32 +211,33 @@ p {
     }
 
 
-#ticketList footer {
-    border: 1px dotted #B3CBDF;
-    -ms-border-bottom-left-radius: 10px;
-    border-bottom-left-radius: 10px;
-    -ms-border-bottom-right-radius: 10px;
-    border-bottom-right-radius: 10px;
-    background-color: #E1EBF2;
-    padding: 0 20px;
-}
-
-    #ticketList footer .pagination,
-    #userListBody .panel-footer .pagination {
-        margin: 5px 0;
+    #ticketList footer {
+        border: 1px dotted #B3CBDF;
+        -ms-border-bottom-left-radius: 10px;
+        border-bottom-left-radius: 10px;
+        -ms-border-bottom-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+        background-color: #E1EBF2;
+        padding: 0 20px;
     }
 
-#ticketList .number-select {
-    width: 55px;
-    display: inline-block;
-}
+        #ticketList footer .pagination,
+        #userListBody .panel-footer .pagination {
+            margin: 5px 0;
+        }
+
+    #ticketList .number-select {
+        /*width: 55px;*/
+        display: inline-block;
+    }
 
 .clickable {
     cursor: pointer;
 }
-.clickable:hover .panel-heading{
-    background-color: rgba(223, 240, 216,0.4);
-}
+
+    .clickable:hover .panel-heading {
+        background-color: rgba(223, 240, 216,0.4);
+    }
 
 .due, .due a, .due span {
     color: darkorange;
@@ -409,6 +426,7 @@ p {
         float: left;
     }
 }
+
 @media (min-width: 768px) {
     .col-sm-height {
         display: table-cell;
@@ -418,7 +436,6 @@ p {
     .pull-right-sm {
         float: right;
     }
-    
 }
 
 @media (min-width: 992px) {
@@ -426,7 +443,6 @@ p {
         display: table-cell;
         float: none !important;
     }
-    
 }
 
 @media (min-width: 1200px) {
@@ -434,6 +450,7 @@ p {
         display: table-cell;
         float: none !important;
     }
+
     .pull-right-md {
         float: right;
     }
@@ -449,4 +466,16 @@ p {
 
 .col-bottom {
     vertical-align: bottom;
+}
+
+small, .small {
+    font-size: large !important;
+}
+
+.announcement-heading {
+    font-size: 60px;
+}
+
+.announcement-text {
+    font-size: 30px;
 }

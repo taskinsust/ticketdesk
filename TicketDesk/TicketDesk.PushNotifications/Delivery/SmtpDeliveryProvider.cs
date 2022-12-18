@@ -54,17 +54,34 @@ namespace TicketDesk.PushNotifications.Delivery
                         client.Credentials = new NetworkCredential(cfg.SmtpUserName, cfg.SmtpPassword);
 
                     }
-                    smsg.To.Add(new MailAddress(notificationItem.Destination.DestinationAddress, notificationItem.Destination.SubscriberName));
-                    smsg.From = new MailAddress(cfg.SmtpFromAddress, cfg.SmtpFromDisplayName);
+                    if (notificationItem.Destination.DestinationAddress.Contains("@scomm.com")
+                        || notificationItem.Destination.DestinationAddress.Contains("@example.com")
+                        || notificationItem.Destination.DestinationAddress.Contains("systemgenerate")
+                        || notificationItem.Destination.DestinationAddress.Contains("@rsl-service.com"))
+                    {
+                        sent = true;
+                    }
+                    else
+                    {
+                        try
+                        {
+                            smsg.To.Add(new MailAddress(notificationItem.Destination.DestinationAddress, notificationItem.Destination.SubscriberName));
+                            smsg.From = new MailAddress(cfg.SmtpFromAddress, cfg.SmtpFromDisplayName);
+                            client.Send(smsg);
+                            sent = true;
+                        }
+                        catch (Exception e)
+                        {
 
-                    client.Send(smsg);
-                    sent = true;
+                        }
+
+                    }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     sent = false;
                     //TODO: log this somewhere
-                    throw new Exception("", ex);
+                    //throw new Exception("", ex);
                 }
 
             }

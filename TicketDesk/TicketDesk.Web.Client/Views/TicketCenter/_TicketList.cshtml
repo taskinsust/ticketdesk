@@ -22,13 +22,13 @@
     var ajaxSortOptions = new AjaxOptions { UpdateTargetId = "ticketList", OnBegin = "ticketCenter.sorts.beginChangeSort", OnSuccess = "ticketCenter.completeChangeList", OnFailure = "ticketCenter.completeChangeList" };
     var ajaxPagerOptions = new AjaxOptions() { HttpMethod = "GET", UpdateTargetId = "ticketList", OnBegin = "ticketCenter.paging.beginChangePage", OnSuccess = "ticketCenter.completeChangeList", OnFailure = "ticketCenter.completeChangeList" };
 }
-<div id="ticketList" class="panel panel-default">
+<div id="ticketList" class="panel panel-default" onload="JavaScript:timedRefresh(60000);">
     <div class="panel-heading row-no-padding">
         @Html.Partial("_FilterBar")
     </div>
     <div class="panel-body" style="padding: 0;">
-        <div class="table-responsive">
-            <table class="table table-hover table-condensed">
+        <div class="table-responsive ">
+            <table class="table table-hover table-condensed  table-striped">
                 <thead>
                     <tr>
                         <th>
@@ -94,9 +94,11 @@
                             </td>
                             <td class="hidden-xs">
                                 @Html.DisplayFor(modelItem => item.GetOwnerInfo().DisplayName)
+                                [@Html.DisplayFor(modelItem => item.GetOwnerInfo().ContactNumber)]
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.GetAssignedToInfo().DisplayName)
+                               
                             </td>
                             <td class="hidden-sm hidden-xs">
                                 @Html.DisplayFor(modelItem => item.TicketType)

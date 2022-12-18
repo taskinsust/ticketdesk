@@ -116,6 +116,7 @@
                                 @Html.DropDownListFor(model => model.Category, Model.GetCategoryList(), new { @class = "form-control input-sm", tabindex = 3 })
                                 @Html.ValidationMessageFor(model => model.Category, "", new { @class = "text-danger" })
                             </div>
+                            
                             @if (Model.AllowEditPriorityList())
                             {
                                 @Html.LabelFor(model => model.Priority, new { @class = "col-md-1 col-sm-1 control-label" })

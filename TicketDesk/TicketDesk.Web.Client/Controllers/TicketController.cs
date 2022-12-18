@@ -20,13 +20,18 @@ using System.Data.SqlClient;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web.Hosting;
 using System.Web.Mvc;
 using TicketDesk.Domain;
 using TicketDesk.Domain.Model;
 using TicketDesk.Domain.Model.Extensions;
 using TicketDesk.IO;
 using TicketDesk.Localization.Controllers;
+using TicketDesk.PushNotifications;
+using TicketDesk.PushNotifications.Model;
+using TicketDesk.Web.Client.Infrastructure.Filters;
 using TicketDesk.Web.Identity;
+using TicketDesk.Web.Identity.Model;
 
 namespace TicketDesk.Web.Client.Controllers
 {
@@ -36,15 +41,18 @@ namespace TicketDesk.Web.Client.Controllers
     [TdAuthorize]
     [RoutePrefix("ticket")]
     [Route("{action=index}")]
-    //[TdAuthorize(Roles = "TdInternalUsers,TdHelpDeskUsers,TdAdministrators")]
+    //[OutputCacheAttribute(NoStore = true, Duration = 0, VaryByParam = "None")]
+    [TdAuthorize(Roles = "TdInternalUsers,TdHelpDeskUsers,TdAdministrators")]
     public class TicketController : Controller
     {
         private TdDomainContext Context { get; set; }
         private TicketDeskUserManager UserManager { get; set; }
-        public TicketController(TdDomainContext context, TicketDeskUserManager userManager)
+        private TicketDeskSignInManager SignInManager { get; set; }
+        public TicketController(TdDomainContext context, TicketDeskUserManager userManager, TicketDeskSignInManager signInManager)
         {
             Context = context;
             UserManager = userManager;
+            SignInManager = signInManager;
         }
 
         public RedirectToRouteResult Index()
@@ -57,6 +65,7 @@ namespace TicketDesk.Web.Client.Controllers
         {
 
             var model = await Context.Tickets.Include(t => t.TicketSubscribers).FirstOrDefaultAsync(t => t.TicketId == id);
+
             if (model == null)
             {
                 return RedirectToAction("Index", "TicketCenter");
@@ -127,6 +136,8 @@ namespace TicketDesk.Web.Client.Controllers
         {
             try
             {
+                DateTimeOffset localTime = new DateTimeOffset(DateTime.Now, TimeZoneInfo.Local.GetUtcOffset(DateTime.Now));
+
                 Ticket ticket = new Ticket
                 {
                     TicketType = "Problem",
@@ -134,24 +145,20 @@ namespace TicketDesk.Web.Client.Controllers
                     Title = ticketEntity.Title,
                     CreatedBy = UserManager.Users.Where(x => x.TelegramUserId == ticketEntity.TelegramUserId).SingleOrDefault().Id,
                     Owner = UserManager.Users.Where(x => x.TelegramUserId == ticketEntity.TelegramUserId).SingleOrDefault().Id,
-                    CreatedDate = DateTime.Now,
+                    CreatedDate = localTime,
                     TicketStatus = TicketStatus.Active,
                     ProjectId = 1,// Default project
                     Details = ticketEntity.Title,
-                    LastUpdateDate = DateTime.Now,
-                    CurrentStatusDate = DateTime.Now,
-
+                    LastUpdateDate = localTime,
+                    CurrentStatusDate = localTime
                 };
 
                 try
                 {
-
-                    var duplicateTicket = Context.Tickets.Where(x => x.Title == ticket.Title && x.Owner == ticket.Owner 
-                    && x.CreatedDate.DateTime == DateTime.Today).ToList().Count;
-
-                    if (duplicateTicket > 1)
+                    var duplicateTicket = Context.Tickets.Where(x => x.Title == ticket.Title && x.Owner == ticket.Owner)
+                        .ToList().Where(x => x.CreatedDate.DateTime.Date == DateTimeOffset.Now.Date).ToList();
+                    if (duplicateTicket.Count > 0)
                         return Json(new { IsSuccess = true, Message = "success" });
-
                 }
                 catch (Exception e)
                 {
@@ -165,18 +172,15 @@ namespace TicketDesk.Web.Client.Controllers
                                    ([TicketType]
                                    ,[Category]
                                    ,[Title]
-                                   ,[Details]
-                                  
+                                   ,[Details]          
                                    ,[CreatedBy]
                                    ,[CreatedDate]
                                    ,[Owner]
-                                   ,[TicketStatus]
-                                   
+                                   ,[TicketStatus] 
                                    ,[CurrentStatusDate]
                                    ,[CurrentStatusSetBy]
                                    ,[LastUpdateBy]
                                    ,[LastUpdateDate]
-                                   
                                    ,[ProjectId]
                                    ,IsHtml, AffectsCustomer
                                   )
@@ -185,20 +189,18 @@ namespace TicketDesk.Web.Client.Controllers
                                             ticket.Category,
                                             ticket.Title,
                                             ticket.Title,
-
                                             ticket.Owner,
-                                            DateTime.Now,
+                                            localTime,
                                             ticket.Owner,
                                             0,
-
-                                            DateTime.Now,
+                                            localTime,
                                             ticket.Owner,
                                             ticket.Owner,
-                                            DateTime.Now,
-
+                                            localTime,
                                             ticket.ProjectId,
                                             1, 1
                                            );
+
                 using (con = new SqlConnection(ConfigurationManager.ConnectionStrings["TicketDesk"].ToString()))
                 {
                     try
@@ -302,7 +304,6 @@ namespace TicketDesk.Web.Client.Controllers
             }
         }
 
-
         private async Task<bool> CreateTicketAsync(Ticket ticket, Guid tempId)
         {
 
@@ -313,5 +314,198 @@ namespace TicketDesk.Web.Client.Controllers
             return ticket.TicketId != default(int);
         }
 
+        [HttpPost]
+        [AllowAnonymous]
+        [AllowCrossSiteJsonAttribute]
+        [Route("TicketCreateOverOutlook")]
+        public async Task<JsonResult> TicketCreateOverOutlook(string mailbody, string from, string to, string sub,
+            string project, string tickettype, string ticketcategory, string ticketpriority, string assignedto)
+        {
+            try
+            {
+                Ticket ticket = new Ticket
+                {
+                    TicketType = tickettype,
+                    Category = ticketcategory,
+                    Title = sub,
+                    Priority = ticketpriority,
+                    //CreatedBy = UserManager.Users.Where(x => x.TelegramUserId == ticketEntity.TelegramUserId).SingleOrDefault().Id,
+                    //Owner = UserManager.Users.Where(x => x.TelegramUserId == ticketEntity.TelegramUserId).SingleOrDefault().Id,
+                    CreatedDate = DateTime.Now,
+                    TicketStatus = TicketStatus.Active,
+                    ProjectId = 1,// Default project
+                    Details = mailbody,
+                    LastUpdateDate = DateTime.Now,
+                    CurrentStatusDate = DateTime.Now,
+                    AssignedTo = assignedto
+                };
+
+                var owner = UserManager.Users.Where(x => x.Email == from).SingleOrDefault();
+                if (owner == null)
+                {
+                    //create this user to database.
+                    var user = new TicketDeskUser { UserName = from, Email = from, DisplayName = from };
+                    var result = await UserManager.CreateAsync(user, from);
+                    if (result.Succeeded)
+                    {
+                        await UserManager.AddToRolesAsync(user.Id, Context.TicketDeskSettings.SecuritySettings.DefaultNewUserRoles.ToArray());
+                        await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                        HostingEnvironment.QueueBackgroundWorkItem(ct =>
+                        {
+                            using (var notificationContext = new TdPushNotificationContext())
+                            {
+                                notificationContext.SubscriberPushNotificationSettingsManager.AddSettingsForSubscriber(
+                                    new SubscriberNotificationSetting
+                                    {
+                                        SubscriberId = user.Id,
+                                        IsEnabled = true,
+                                        PushNotificationDestinations = new[]
+                                        {
+                                        new PushNotificationDestination()
+                                        {
+                                            DestinationType = "email",
+                                            DestinationAddress = user.Email,
+                                            SubscriberName = user.DisplayName
+                                        }
+                                        }
+                                    });
+                                notificationContext.SaveChanges();
+                            }
+                        });
+                        owner = UserManager.Users.Where(x => x.Email == from).SingleOrDefault();
+                        ticket.Owner = owner.Id;
+                    }
+                }
+                else
+                {
+                    ticket.Owner = owner.Id;
+                }
+                try
+                {
+                    var duplicateTicket = Context.Tickets.Where(x => x.Title == ticket.Title && x.Owner == ticket.Owner)
+                        .ToList();
+                    if (duplicateTicket.Count > 0)
+                        return Json(new { IsSuccess = false, Message = "duplicate entry" });
+                }
+                catch (Exception e)
+                {
+                    throw e;
+                }
+
+                SqlConnection con;
+                SqlCommand cmd;
+                SqlDataAdapter da;
+                string sql = string.Format(@"INSERT INTO  [Tickets]
+                                   ([TicketType]
+                                   ,[Category]
+                                   ,[Title]
+                                   ,[Details]          
+                                   ,[CreatedBy]
+                                   ,[CreatedDate]
+                                   ,[Owner]
+                                   ,[TicketStatus] 
+                                   ,[CurrentStatusDate]
+                                   ,[CurrentStatusSetBy]
+                                   ,[LastUpdateBy]
+                                   ,[LastUpdateDate]
+                                   ,[ProjectId]
+                                   ,IsHtml, AffectsCustomer, Priority, AssignedTo
+                                  )
+                                  VALUES('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', {7}, '{8}', '{9}', '{10}', '{11}', {12}, {13}, {14}, '{15}', '{16}')",
+                                            ticket.TicketType,
+                                            ticket.Category,
+                                            ticket.Title,
+                                            ticket.Details,
+                                            ticket.Owner,
+                                            DateTime.Now,
+                                            ticket.Owner,
+                                            0,
+                                            DateTime.Now,
+                                            ticket.Owner,
+                                            ticket.Owner,
+                                            DateTime.Now,
+                                            ticket.ProjectId,
+                                            1, 1, ticket.Priority, ticket.AssignedTo
+                                           );
+
+                using (con = new SqlConnection(ConfigurationManager.ConnectionStrings["TicketDesk"].ToString()))
+                {
+                    try
+                    {
+                        con.Open();
+                        cmd = new SqlCommand(sql, con);
+                        //cmd.CommandTimeout = 250; //seconds
+                        cmd.CommandType = CommandType.Text;
+                        cmd.ExecuteNonQuery();
+                    }
+                    catch (Exception e)
+                    {
+
+                    }
+                }
+
+                return Json(new { IsSuccess = true, Message = "success" });
+            }
+            // ReSharper disable once EmptyGeneralCatchClause
+            catch (DbEntityValidationException)
+            {
+                return Json(new { IsSuccess = false, Message = "failed" });
+                //TODO: catch rule exceptions? or can annotations handle this fully now?
+            }
+        }
+
+
+        #region API
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("ticketcategory")]
+        [AllowCrossSiteJsonAttribute]
+        public JsonResult GetCategory()
+        {
+            var result = new Ticket().GetCategoryList();
+            //var jsonresult = new JavaScriptSerializer().Serialize(result);
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("tickettype")]
+        [AllowCrossSiteJsonAttribute]
+        public JsonResult TicketType()
+        {
+            var result = new Ticket().GetTicketTypeList();
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("ticketpriority")]
+        [AllowCrossSiteJsonAttribute]
+        public JsonResult GetPriority()
+        {
+            var result = new Ticket().GetPriorityList();
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("ticketproject")]
+        [AllowCrossSiteJsonAttribute]
+        public JsonResult GetProject()
+        {
+            var result = new Ticket().GetProjectList(0);
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("ticketassignedto")]
+        [AllowCrossSiteJsonAttribute]
+        public JsonResult GetAssigned()
+        {
+            var result = new Ticket().GetAssignedToList();
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+        #endregion
     }
 }

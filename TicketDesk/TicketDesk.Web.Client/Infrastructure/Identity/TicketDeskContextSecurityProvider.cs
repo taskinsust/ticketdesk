@@ -28,7 +28,8 @@ namespace TicketDesk.Web.Client
         public TicketDeskContextSecurityProvider()
         {
             UserManager = DependencyResolver.Current.GetService<TicketDeskUserManager>();
-            CurrentUserId = HttpContext.Current.User.Identity.GetUserId();
+            if (HttpContext.Current.User != null)
+                CurrentUserId = HttpContext.Current.User.Identity.GetUserId();
         }
 
         public override string CurrentUserId { get; set; }

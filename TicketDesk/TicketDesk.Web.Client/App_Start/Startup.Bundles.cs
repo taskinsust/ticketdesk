@@ -89,7 +89,7 @@ namespace TicketDesk.Web.Client
                     "~/Scripts/pagedown/Markdown.Sanitizer.js",
                     "~/Scripts/pagedown/Markdown.Editor.js"));
 
-            bundles.Add(new ScriptBundle("~/bundles/common").Include(
+            bundles.Add(new Bundle("~/bundles/common").Include(
                     "~/Scripts/jquery-{version}.js",
                     "~/Scripts/jquery.unobtrusive-ajax.js",
 #if (DEBUG)
@@ -103,7 +103,8 @@ namespace TicketDesk.Web.Client
                     "~/Scripts/cldr/event.js",
                     "~/Scripts/cldr/supplemental.js",
                     "~/Scripts/jquery.globalize/globalize.js",
-                    "~/Scripts/bootstrap.js"));
+                    "~/Scripts/bootstrap.js",
+                    "~/Scripts/Chart.js"));
 
 
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
@@ -133,7 +134,7 @@ namespace TicketDesk.Web.Client
 #if (DEBUG)
             BundleTable.EnableOptimizations = false;
 #else
-            BundleTable.EnableOptimizations = true;
+            BundleTable.EnableOptimizations = false;
 #endif
 
         }

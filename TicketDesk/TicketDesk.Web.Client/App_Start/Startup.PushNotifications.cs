@@ -60,12 +60,12 @@ namespace TicketDesk.Web.Client
 
                 //TODO: poor man's detection of appropriate scheduler
                 var siteName = Environment.GetEnvironmentVariable("WEBSITE_SITE_NAME");
-                var isAzureWebSite = !string.IsNullOrEmpty(siteName);
-                if (!isAzureWebSite)
-                {
-                    InProcessPushNotificationScheduler.Start(context.TicketDeskPushNotificationSettings
-                        .DeliveryIntervalMinutes);
-                }
+                //var isAzureWebSite = !string.IsNullOrEmpty(siteName);
+                //if (!isAzureWebSite)
+                //{
+                //    InProcessPushNotificationScheduler.Start(context.TicketDeskPushNotificationSettings
+                //        .DeliveryIntervalMinutes);
+                //}
 
                 if (context.TicketDeskPushNotificationSettings.IsBackgroundQueueEnabled)
                 {
@@ -129,8 +129,6 @@ namespace TicketDesk.Web.Client
             }
             else
             {
-
-
                 var userManager = DependencyResolver.Current.GetService<TicketDeskUserManager>();
                 var roleManager = DependencyResolver.Current.GetService<TicketDeskRoleManager>();
                 var usersForNotification = roleManager.GetTdHelpDeskUsers(userManager)
