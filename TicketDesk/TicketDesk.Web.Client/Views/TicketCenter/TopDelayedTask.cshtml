@@ -1,0 +1,118 @@
+﻿@model IEnumerable<TicketDesk.Domain.Model.VM.TopDelayedTaskVM>
+
+@{
+    ViewBag.Title = "TopDelayedTask";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/Content/AdminLTE/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+<link href="~/Content/AdminLTE/plugins/datatables-responsive/css/responsive.bootstrap4.min.css" rel="stylesheet" />
+<link href="~/Content/AdminLTE/plugins/datatables-buttons/css/buttons.bootstrap4.min.css" rel="stylesheet" />
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">Top Delayed Task </h3>
+    </div>
+
+    <div class="card-body">
+        <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
+            <div class="row">
+                @*<div class="col-sm-12 col-md-6">
+                        <div class="dt-buttons btn-group flex-wrap">
+                            <button class="btn btn-secondary buttons-copy buttons-html5" tabindex="0" aria-controls="example" type="button"><span>Copy</span></button>
+                            <button class="btn btn-secondary buttons-csv buttons-html5" tabindex="0" aria-controls="example" type="button"><span>CSV</span></button> 
+                            <button class="btn btn-secondary buttons-excel buttons-html5" tabindex="0" aria-controls="example" type="button"><span>Excel</span></button>
+                            <button class="btn btn-secondary buttons-pdf buttons-html5" tabindex="0" aria-controls="example" type="button"><span>PDF</span></button> 
+                            <button class="btn btn-secondary buttons-print" tabindex="0" aria-controls="example" type="button"><span>Print</span></button>
+                            <div class="btn-group"><button class="btn btn-secondary buttons-collection dropdown-toggle buttons-colvis" tabindex="0" aria-controls="example" type="button" aria-haspopup="true" aria-expanded="false"><span>Column visibility</span><span class="dt-down-arrow"></span></button></div>
+                        </div>
+                    </div>*@
+                    @*<div class="col-sm-12 col-md-6"><div id="example1_filter" class="dataTables_filter"><label>Search:<input type="search" class="form-control form-control-sm" placeholder="" aria-controls="example1"></label></div></div>*@
+
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <table id="example" class="table table-bordered table-striped dataTable dtr-inline" aria-describedby="example1_info">
+                        <thead>
+                            <tr>
+                                @*<th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="CSS grade: activate to sort column ascending" style="">SL.</th>*@
+                                <th class="sorting sorting_asc" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="">Ticket ID</th>
+                                <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" style="">Ticket Title</th>
+                                <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending" style="">Completion Time(Hour)</th>
+                                <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending" style="">Ticket Owner</th>
+                                <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="CSS grade: activate to sort column ascending" style="">Created At</th>
+
+                                <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="CSS grade: activate to sort column ascending" style="">CLosed By</th>
+                                <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="CSS grade: activate to sort column ascending" style="">CLosing Date</th>
+                                <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="CSS grade: activate to sort column ascending" style="">Status </th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@section scripts {
+
+    <script src="~/Content/AdminLTE/plugins/datatables/jquery.dataTables.js"></script>
+    <script src="~/Content/AdminLTE/plugins/datatables-bs4/js/dataTables.bootstrap4.js"></script>
+    <script src="~/Content/AdminLTE/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/Content/AdminLTE/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script src="~/Content/AdminLTE/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="~/Content/AdminLTE/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+    <script src="~/Content/AdminLTE/plugins/jszip/jszip.min.js"></script>
+    <script src="~/Content/AdminLTE/plugins/pdfmake/pdfmake.min.js"></script>
+    <script src="~/Content/AdminLTE/plugins/pdfmake/vfs_fonts.js"></script>
+    <script src="~/Content/AdminLTE/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+    <script src="~/Content/AdminLTE/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+    <script src="~/Content/AdminLTE/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            //$('.heading-title').html('Ticket');
+            $('.controller-name').html('Ticket');
+            $('.controller-action').html('Top Delayed task');
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            var pageSize = 20;
+            $('#example').DataTable({
+                "responsive": true,
+                //"lengthChange": false,
+                "autoWidth": false,
+                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],
+                //paging: true,
+                processing: true,
+                serverSide: true,
+
+                searching: true,
+                //"scrollX": true,
+                "bLengthChange": false,
+                "iDisplayLength": pageSize,
+
+                ajax: {
+                    url: "/tickets/TopDelayedTaskDatasets",
+                    type: 'POST',
+                    data: function (d) {
+                        d.searchvalue = $('#').val();
+                    }
+                },
+            });
+        });
+
+                                            //$(function () {
+                                            //    $("#example1").DataTable({
+                                            //        "responsive": true, "lengthChange": false, "autoWidth": false,
+                                            //        "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+                                            //    }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+
+                                            //});
+    </script>
+}

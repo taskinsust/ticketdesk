@@ -13,15 +13,18 @@
     provided to the recipient.
 *@
 @using TicketDesk.Localization.Views.SearchManager
+@{
+    Layout = "~/Views/Shared/_LayoutPrev.cshtml";
+}
 
 @section title
 {
-     @Index.Title
+    @Index.Title
 }
 <div class="contentContainer">
     <h2>@Index.Header</h2>
     <p>
-        
+
 
     </p>
     <div>@Html.ActionLink(Index.RemoveSearchIndex, "RemoveIndex")</div>
@@ -31,7 +34,7 @@
             <span>@Index.Removed</span>
         }
     </p>
-   
+
     <div>@Html.ActionLink(Index.PopulateSearchIndex, "PopulateIndex")</div>
     <p>
         @if (ViewBag.IndexPopulated ?? false)

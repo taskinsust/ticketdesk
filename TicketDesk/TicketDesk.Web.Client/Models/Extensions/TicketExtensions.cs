@@ -364,6 +364,111 @@ namespace TicketDesk.Domain.Model
             return doughnutChart;
         }
         #endregion
+
+        #region Chart update version Implementation
+
+        public static ChartModel GetLineChartModel(this Ticket ticket)
+        {
+            ChartModel chartModel = new ChartModel();
+            var context = DependencyResolver.Current.GetService<TdDomainContext>();
+            var totalticket = context.Tickets.ToList().Where(x => x.CreatedDate > DateTime.Now.AddDays(-30) && x.TagList != "test,moretest").ToList();
+
+            var openData = from e in totalticket
+                           group e by e.CreatedDate.Date.ToShortDateString() into g
+                           select new { g.Key, Ticket = g.Count() };
+
+            var closeTicket = totalticket.Where(x => x.TicketStatus == TicketStatus.Closed).OrderBy(x => x.LastUpdateDate).ToList();
+            var closeData = from e in closeTicket
+                            group e by e.LastUpdateDate.Date.ToShortDateString() into g
+                            select new { g.Key, Ticket = g.Count() };
+
+            var labels = openData.Select(x => x.Key).ToList<string>();
+            chartModel.labels = labels;
+
+            chartModel.datasets.AddRange(new List<Dataset>() {
+                new Dataset{
+                    type = "line",
+                    pointBorderColor= "#007bff",
+                    pointBackgroundColor ="#007bff",
+                    backgroundColor= "#007bff",
+                    borderColor = "#007bff",
+                    data =openData.Select(x => (int)x.Ticket).ToList<int>(),
+                },
+                new Dataset{
+                    type = "line",
+                    pointBorderColor= "#ced4da",
+                    pointBackgroundColor ="#ced4da",
+                    backgroundColor= "#ced4da",
+                    borderColor = "#ced4da",
+                    data =closeData.Select(x => (int)x.Ticket).ToList<int>(),}
+            });
+
+            return chartModel;
+        }
+        public static ChartModel GetBarChartModel(this Ticket ticket)
+        {
+            ChartModel chartModel = new ChartModel();
+            var context = DependencyResolver.Current.GetService<TdDomainContext>();
+            var totalticket = context.Tickets.ToList().Where(x => x.CreatedDate > DateTime.Now.AddDays(-30) && x.TagList != "test,moretest").ToList();
+
+            var openData = from e in totalticket
+                           group e by e.CreatedDate.Date.ToShortDateString() into g
+                           select new { g.Key, Ticket = g.Count() };
+
+            var closeTicket = totalticket.Where(x => x.TicketStatus == TicketStatus.Closed).OrderBy(x => x.LastUpdateDate).ToList();
+            var closeData = from e in closeTicket
+                            group e by e.LastUpdateDate.Date.ToShortDateString() into g
+                            select new { g.Key, Ticket = g.Count() };
+
+            var labels = openData.Select(x => x.Key).ToList<string>();
+            chartModel.labels = labels;
+
+            chartModel.datasets.AddRange(new List<Dataset>() {
+                new Dataset{
+                    //type = "line",
+                    pointBorderColor= "#007bff",
+                    pointBackgroundColor ="#007bff",
+                    backgroundColor= "#007bff",
+                    borderColor = "#007bff",
+                    data =openData.Select(x => (int)x.Ticket).ToList<int>(),
+                },
+                new Dataset{
+                    //type = "line",
+                    pointBorderColor= "#ced4da",
+                    pointBackgroundColor ="#ced4da",
+                    backgroundColor= "#ced4da",
+                    borderColor = "#ced4da",
+                    data =closeData.Select(x => (int)x.Ticket).ToList<int>(),}
+            });
+
+            return chartModel;
+        }
+
+        public static ChartModel GetAvgTimeBarChartModel(this Ticket ticket)
+        {
+            ChartModel chartModel = new ChartModel();
+            var context = DependencyResolver.Current.GetService<TdDomainContext>();
+
+            var utility = new Utility();
+            var result = utility.LoadAvgClosingTime();
+            result = result.OrderBy(x => x.ClosingDate).ToList();
+            var labels = result.Select(x => x.ClosingDate.Date.ToShortDateString()).ToList<string>();
+            chartModel.labels = labels;
+            chartModel.datasets.AddRange(new List<Dataset>() {
+                new Dataset{
+
+                    pointBorderColor= "#007bff",
+                    pointBackgroundColor ="#007bff",
+                    backgroundColor= "#007bff",
+                    borderColor = "#007bff",
+                    data =result.Select(x => (int)x.AVGHour).ToList<int>()
+                }
+            });
+
+            return chartModel;
+        }
+
+        #endregion
     }
 
 }

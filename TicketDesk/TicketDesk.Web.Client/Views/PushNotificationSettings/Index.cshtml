@@ -16,6 +16,9 @@
 
 @using System.Configuration
 @model TicketDesk.PushNotifications.Model.ApplicationPushNotificationSetting
+@{
+    Layout = "~/Views/Shared/_LayoutPrev.cshtml";
+}
 
 @section title
 {
@@ -55,7 +58,7 @@
                             @Html.Raw(Index.DemoMode_Alert)
                         </div>
                     }
-                     
+
                     else
                     {
                         if (ViewBag.Saved)

@@ -1,0 +1,41 @@
+﻿@model TicketDesk.Web.Client.Models.TicketCenterListViewModel
+
+@{
+    ViewBag.Title = "TicketCenterDatasets";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>TicketCenterDatasets</h2>
+
+<main style="display: none;">
+
+    @Html.Partial("_ListMenu", Model.UserListSettings, new ViewDataDictionary
+        {
+            { "CurrentListSettings", Model.CurrentListSetting }
+        })
+
+    @*@Html.Partial("_dashboard", Model);*@
+    @Html.Partial("_TicketList", Model)
+
+</main>
+
+@section scripts{
+
+    @Scripts.Render("~/bundles/ticketcenter")
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $('main').show();
+            $.ajaxSetup({ cache: false });
+            ticketCenter.filters.setupFilterForm();
+            ticketCenter.makeClicky();
+        });
+
+        function timedRefresh(timeoutPeriod) {
+            setTimeout(function () {
+                location.reload(true);
+            }, timeoutPeriod);
+        }
+
+    </script>
+}

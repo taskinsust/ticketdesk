@@ -361,12 +361,12 @@ namespace TicketDesk.Web.Client.Controllers
                                         IsEnabled = true,
                                         PushNotificationDestinations = new[]
                                         {
-                                        new PushNotificationDestination()
-                                        {
-                                            DestinationType = "email",
-                                            DestinationAddress = user.Email,
-                                            SubscriberName = user.DisplayName
-                                        }
+                                            new PushNotificationDestination()
+                                            {
+                                                DestinationType = "email",
+                                                DestinationAddress = user.Email,
+                                                SubscriberName = user.DisplayName
+                                            }
                                         }
                                     });
                                 notificationContext.SaveChanges();

@@ -1,0 +1,100 @@
+﻿@*
+    TicketDesk - Attribution notice
+    Contributor(s):
+
+         Stephen Redd (https://github.com/stephenredd)
+
+    This file is distributed under the terms of the Microsoft Public
+    License (Ms-PL). See http://opensource.org/licenses/MS-PL
+    for the complete terms of use.
+
+    For any distribution that contains code from this file, this notice of
+    attribution must remain intact, and a copy of the license must be
+    provided to the recipient.
+*@
+@{
+    const string LineChart = "LineChart";
+    const string BarChart = "BarChart";
+    const string PieChart = "PieChart";
+    const string DoughnutChart = "DoughnutChart";
+
+}
+
+@using TicketDesk.Localization.Views.Home
+@using Chart.Mvc.ComplexChart
+@using Chart.Mvc.Extensions
+@using Chart.Mvc.SimpleChart
+
+@section title{ IT Ticket }
+@section customHeader{}
+@section scripts{
+
+
+}
+
+<main role="main" class="row">
+
+    <article class="col-md-8 left-side-box">
+        @*<a class="hidden-md hidden-lg" href="https://github.com/nulldesk/ticketdesk">@Html.Raw(Index.ForkMe)</a>*@
+
+        <div class="container-responsive">
+
+            <!--<fieldset style="min-height: 350px; padding-right: 25px;">
+                <legend>
+                    @Html.Raw(Index.Welcome)
+                </legend>
+                @if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("WEBSITE_SITE_NAME")))
+                {
+                    <div class="alert alert-info">
+                        <h5>@Index.Congrat_Azure</h5>
+                    </div>
+                }-->
+            @*@Html.Raw(Index.Instructions)*@
+            <!--</fieldset>-->
+
+
+        </div>
+    </article>
+    <aside class="col-md-4 right-side-box">
+        @*<a class="hidden-xs hidden-sm" href="https://github.com/nulldesk/ticketdesk">@Html.Raw(Index.ForkMe)</a>*@
+        @*@Html.Raw(Index.ChangeList)*@
+    </aside>
+
+    <div class="panel panel-default">
+        <div class="panel-heading"> <h2> @*Graphical represenattion*@</h2></div>
+        <div class="panel-body">
+            <div class="row">
+
+                <div class="col-md-4">
+                    <b>Ticket Open and Close/Per Day</b>
+                    <br />
+                    <canvas id="@LineChart" width="400" height="200"></canvas>
+                    @Html.CreateChart(LineChart, (LineChart)ViewBag.lineChart, (string)ViewBag.lineOptions)
+                </div>
+                @*<div class="col-md-4">
+                    <b >Open vs Close Ticket</b> <br />
+                    <canvas id="@DoughnutChart" width="300" height="400"></canvas>
+                    @Html.CreateChart(DoughnutChart, (DoughnutChart)ViewBag.doughnutChart, (string)ViewBag.doughtOptions)
+                </div>*@
+                <div class="col-md-4">
+                    <b >Avg Time(Hour) To CLose a Ticket</b><br />
+                    <canvas id="@BarChart" width="400" height="200"></canvas>
+                    @Html.CreateChart(BarChart, (BarChart)ViewBag.barChart, (string)ViewBag.lineOptions)
+                </div>
+            </div>
+            <div class="row">
+                @*<div class="col-md-6">
+                        <p>Pie Chart</p>
+                        <canvas id="@PieChart" width="400" height="400"></canvas>
+                        @Html.CreateChart(PieChart, (PieChart)ViewBag.pieChart,  (string)ViewBag.doughtOptions)
+                    </div>*@
+
+                @*<div class="col-md-12">
+                    <h2>Avg Time(Hour) To CLose a Ticket</h2><br />
+                    <canvas id="@BarChart" width="1200" height="400"></canvas>
+                    @Html.CreateChart(BarChart, (BarChart)ViewBag.barChart, (string)ViewBag.lineOptions)
+                </div>*@
+            </div>
+        </div>
+    </div>
+</main>

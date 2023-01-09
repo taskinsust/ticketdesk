@@ -198,6 +198,7 @@
     <Compile Include="Model\TicketSubscriber.cs" />
     <Compile Include="Model\UserProfile.cs" />
     <Compile Include="Model\VM\AvgClosingTimeVM.cs" />
+    <Compile Include="Model\VM\TopDelayedTaskVM.cs" />
     <Compile Include="TicketActionManager.cs" />
     <Compile Include="Model\TicketActivity.cs" />
     <Compile Include="Model\UserSettingsModel\UserTicketListModel\ColumnSortDirection.cs" />

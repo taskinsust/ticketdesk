@@ -1,100 +1,338 @@
-﻿@*
-    TicketDesk - Attribution notice
-    Contributor(s):
-
-         Stephen Redd (https://github.com/stephenredd)
-
-    This file is distributed under the terms of the Microsoft Public
-    License (Ms-PL). See http://opensource.org/licenses/MS-PL
-    for the complete terms of use.
-
-    For any distribution that contains code from this file, this notice of
-    attribution must remain intact, and a copy of the license must be
-    provided to the recipient.
-*@
-@{
-    const string LineChart = "LineChart";
-    const string BarChart = "BarChart";
-    const string PieChart = "PieChart";
-    const string DoughnutChart = "DoughnutChart";
-
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-@using TicketDesk.Localization.Views.Home
+@using TicketDesk.Domain.Model
 @using Chart.Mvc.ComplexChart
 @using Chart.Mvc.Extensions
 @using Chart.Mvc.SimpleChart
+@{
+    var pending = Convert.ToDecimal(ViewBag.pendingticket);
+    var total = Convert.ToDecimal(ViewBag.totalticket);
+    var complete = Convert.ToDecimal(ViewBag.closedticket);
 
-@section title{ IT Ticket }
-@section customHeader{}
-@section scripts{
+    decimal parcent = ((pending / total) * 100);
+    decimal par = ((complete / total) * 100);
+    var pendingPercent = String.Format("{0:0.00}", parcent);
+    var closePercent = String.Format("{0:0.00}", par);
 
-
+    List<Ticket> ticketlist = (List<Ticket>)ViewBag.ticketlist;
 }
 
-<main role="main" class="row">
+<div class="content">
+    <div class="container-fluid">
 
-    <article class="col-md-8 left-side-box">
-        @*<a class="hidden-md hidden-lg" href="https://github.com/nulldesk/ticketdesk">@Html.Raw(Index.ForkMe)</a>*@
+        <div class="row">
 
-        <div class="container-responsive">
-
-            <!--<fieldset style="min-height: 350px; padding-right: 25px;">
-                <legend>
-                    @Html.Raw(Index.Welcome)
-                </legend>
-                @if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("WEBSITE_SITE_NAME")))
-                {
-                    <div class="alert alert-info">
-                        <h5>@Index.Congrat_Azure</h5>
+            <!--<div class="col-12 col-sm-6 col-md-3">
+                <div class="info-box">
+                    <span class="info-box-icon bg-info elevation-1"><i class="fas fa-cog"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Total Ticket</span>
+                        <h2 class="info-box-number">
+                            @ViewBag.totalticket-->
+            @*<small>%</small>*@
+            <!--</h2>
                     </div>
-                }-->
-            @*@Html.Raw(Index.Instructions)*@
-            <!--</fieldset>-->
+                </div>
+            </div>-->
+            @*<div class="col-12 col-sm-6 col-md-3">
+                    <div class="info-box mb-3">
+                        <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-thumbs-up"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">Likes</span>
+                            <span class="info-box-number">41,410</span>
+                        </div>
+                    </div>
+                </div>*@
 
+            <div class="clearfix hidden-md-up"></div>
+            <div class="col-12 col-sm-6 col-md-6">
+                <div class="info-box mb-3">
+                    <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-list"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Pending Ticket</span>
+                        <h3 class="info-box-number">@ViewBag.pendingticket  <span class="info-box-number">@pendingPercent% </span></h3>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-12 col-sm-6 col-md-6">
+                <div class="info-box mb-3">
+                    <span class="info-box-icon bg-success elevation-1"><i class="fas fa-th-list"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Close Ticket</span>
+                        <h3 class="info-box-number">
+                            @ViewBag.closedticket
+                            <span class="info-box-number">@closePercent% </span>
+                        </h3>
+
+                    </div>
+
+                </div>
+
+            </div>
 
         </div>
-    </article>
-    <aside class="col-md-4 right-side-box">
-        @*<a class="hidden-xs hidden-sm" href="https://github.com/nulldesk/ticketdesk">@Html.Raw(Index.ForkMe)</a>*@
-        @*@Html.Raw(Index.ChangeList)*@
-    </aside>
 
-    <div class="panel panel-default">
-        <div class="panel-heading"> <h2> @*Graphical represenattion*@</h2></div>
-        <div class="panel-body">
-            <div class="row">
-
-                <div class="col-md-4">
-                    <b>Ticket Open and Close/Per Day</b>
-                    <br />
-                    <canvas id="@LineChart" width="400" height="200"></canvas>
-                    @Html.CreateChart(LineChart, (LineChart)ViewBag.lineChart, (string)ViewBag.lineOptions)
-                </div>
-                @*<div class="col-md-4">
-                    <b >Open vs Close Ticket</b> <br />
-                    <canvas id="@DoughnutChart" width="300" height="400"></canvas>
-                    @Html.CreateChart(DoughnutChart, (DoughnutChart)ViewBag.doughnutChart, (string)ViewBag.doughtOptions)
-                </div>*@
-                <div class="col-md-4">
-                    <b >Avg Time(Hour) To CLose a Ticket</b><br />
-                    <canvas id="@BarChart" width="400" height="200"></canvas>
-                    @Html.CreateChart(BarChart, (BarChart)ViewBag.barChart, (string)ViewBag.lineOptions)
-                </div>
-            </div>
-            <div class="row">
-                @*<div class="col-md-6">
-                        <p>Pie Chart</p>
-                        <canvas id="@PieChart" width="400" height="400"></canvas>
-                        @Html.CreateChart(PieChart, (PieChart)ViewBag.pieChart,  (string)ViewBag.doughtOptions)
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="card">
+                    @*<div class="card-header border-0">
+                        <div class="d-flex justify-content-between">
+                            <h3 class="card-title">Ticket Generate</h3>
+                            <a href="javascript:void(0);">Last 30 Days</a>
+                        </div>
                     </div>*@
+                    <div class="card-body">
+                        <div class="d-flex">
+                            <p class="d-flex flex-column">
+                                <span class="text-bold text-lg">Total Ticket</span>
+                                <span>@ViewBag.totalticket</span>
+                            </p>
+                            <p class="ml-auto d-flex flex-column text-right">
+                                @if (ViewBag.incpercentage != null)
+                                {
+                                    <span class="text-success">
+                                        <i class="fas fa-arrow-up"></i> @ViewBag.incpercentage %
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="text-warning">
+                                        <i class="fas fa-arrow-down"></i>@ViewBag.decpercentage %
+                                    </span>
+                                }
+                                <span class="text-muted">Since last Month</span>
+                            </p>
+                        </div>
 
-                @*<div class="col-md-12">
-                    <h2>Avg Time(Hour) To CLose a Ticket</h2><br />
-                    <canvas id="@BarChart" width="1200" height="400"></canvas>
-                    @Html.CreateChart(BarChart, (BarChart)ViewBag.barChart, (string)ViewBag.lineOptions)
-                </div>*@
+                        <div class="position-relative mb-4">
+                            <div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+                            <canvas id="visitors-chart" height="200" width="487" style="display: block; width: 487px; height: 200px;" class="chartjs-render-monitor"></canvas>
+                        </div>
+                        <div class="d-flex flex-row justify-content-end">
+                            <span class="mr-2">
+                                <i class="fas fa-square text-primary"></i> Open Ticket
+                            </span>
+                            <span>
+                                <i class="fas fa-square text-gray"></i> Close Ticket
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header border-0">
+                        <div class="d-flex justify-content-between">
+                            <h3 class="card-title">Total Ticket</h3>
+                            <a href="javascript:void(0);">View Report</a>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex">
+                            <p class="d-flex flex-column">
+                                <span class="text-bold text-lg">Total Ticket</span>
+                                <span>@ViewBag.totalticket</span>
+                            </p>
+                            <p class="ml-auto d-flex flex-column text-right">
+                                @if (ViewBag.incpercentage != null)
+                                {
+                                    <span class="text-success">
+                                        <i class="fas fa-arrow-up"></i> @ViewBag.incpercentage %
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="text-warning">
+                                        <i class="fas fa-arrow-down"></i>@ViewBag.decpercentage %
+                                    </span>
+                                }
+                                <span class="text-muted">Since last Month</span>
+                            </p>
+                        </div>
+
+                        <div class="position-relative mb-4">
+                            <div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+                            <canvas id="sales-chart" height="200" style="display: block; width: 487px; height: 200px;" width="487" class="chartjs-render-monitor"></canvas>
+                        </div>
+                        <div class="d-flex flex-row justify-content-end">
+                            <span class="mr-2">
+                                <i class="fas fa-square text-primary"></i> Open Ticket
+                            </span>
+                            <span>
+                                <i class="fas fa-square text-gray"></i> Close Ticket
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+               
+
             </div>
+
+            <div class="col-lg-6">
+                <div class="card">
+                    @*<div class="card-header border-0">
+                <div class="d-flex justify-content-between">
+                    <h3 class="card-title">Total Ticket</h3>
+                    <a href="javascript:void(0);">View Report</a>
+                </div>
+            </div>*@
+                    <div class="card-body">
+                        <div class="d-flex">
+                            <p class="d-flex flex-column">
+                                <span class="text-bold text-lg">AVG Time Completion in HOUR</span>
+                                <span>@ViewBag.totalticket</span>
+                            </p>
+                            @*<p class="ml-auto d-flex flex-column text-right">
+                        @if (ViewBag.incpercentage != null)
+                        {
+                            <span class="text-success">
+                                <i class="fas fa-arrow-up"></i> @ViewBag.incpercentage %
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="text-warning">
+                                <i class="fas fa-arrow-down"></i>@ViewBag.decpercentage %
+                            </span>
+                        }
+                        <span class="text-muted">Since last Month</span>
+                    </p>*@
+                        </div>
+
+                        <div class="position-relative mb-4">
+                            <div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+                            <canvas id="avgtime-chart" height="200" style="display: block; width: 487px; height: 200px;" width="487" class="chartjs-render-monitor"></canvas>
+                        </div>
+                        <div class="d-flex flex-row justify-content-end">
+                            <span class="mr-2">
+                                <i class="fas fa-square text-primary"></i> AVG Ticket Completion Time
+                            </span>
+                            @*<span>
+                        <i class="fas fa-square text-gray"></i> Close Ticket
+                    </span>*@
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header border-0">
+                        <h3 class="card-title">Last 10 Ticket Status</h3>
+                        @*<div class="card-tools">
+                    <a href="#" class="btn btn-sm btn-tool">
+                        <i class="fas fa-download"></i>
+                    </a>
+                    <a href="#" class="btn btn-sm btn-tool">
+                        <i class="fas fa-bars"></i>
+                    </a>
+                </div>*@
+                    </div>
+                    <div class="card-body">
+
+                        <table class="table table-bordered table-hover table-responsive">
+                            <thead>
+                                <tr>
+                                    <th>Ticket ID</th>
+                                    <th>Ticket Title</th>
+                                    <th>Created At</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in ticketlist)
+                                {
+                                    <tr>
+                                        <td>@item.TicketId</td>
+                                        <td>@item.Title</td>
+                                        <td>@item.CreatedDate</td>
+                                        <td>
+                                            @if (item.TicketStatus == TicketStatus.Active)
+                                            {
+                                                <span style="color: green">@TicketStatus.Active.ToString()</span>
+                                            }
+                                            else
+                                            {
+                                                <span style="color: orangered">@TicketStatus.Closed.ToString()</span>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+
+                        @*<div class="d-flex justify-content-between align-items-center border-bottom mb-3">
+                    <p class="text-success text-xl">
+                        <i class="ion ion-ios-refresh-empty"></i>
+                    </p>
+                    <p class="d-flex flex-column text-right">
+                        <span class="font-weight-bold">
+                            <i class="ion ion-android-arrow-up text-success"></i> 12%
+                        </span>
+                        <span class="text-muted">CONVERSION RATE</span>
+                    </p>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center border-bottom mb-3">
+                    <p class="text-warning text-xl">
+                        <i class="ion ion-ios-cart-outline"></i>
+                    </p>
+                    <p class="d-flex flex-column text-right">
+                        <span class="font-weight-bold">
+                            <i class="ion ion-android-arrow-up text-warning"></i> 0.8%
+                        </span>
+                        <span class="text-muted">SALES RATE</span>
+                    </p>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center mb-0">
+                    <p class="text-danger text-xl">
+                        <i class="ion ion-ios-people-outline"></i>
+                    </p>
+                    <p class="d-flex flex-column text-right">
+                        <span class="font-weight-bold">
+                            <i class="ion ion-android-arrow-down text-danger"></i> 1%
+                        </span>
+                        <span class="text-muted">REGISTRATION RATE</span>
+                    </p>
+                </div>*@
+
+                    </div>
+                </div>
+            </div>
+
         </div>
+
     </div>
-</main>
+
+</div>
+
+<div id="linediv" style="display:none"> @Html.Raw(ViewBag.lineChart)</div>
+<div id="bardiv" style="display:none"> @Html.Raw(ViewBag.barChart)</div>
+<div id="avgtimebardiv" style="display:none"> @Html.Raw(ViewBag.avgtimebarChart)</div>
+
+@section scripts{
+
+    @*<script src="plugins/jquery/jquery.min.js"></script>*@
+    <!-- Bootstrap -->
+    @*<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>*@
+    <!-- AdminLTE -->
+    @*<script src="dist/js/adminlte.js"></script>*@
+
+    <!-- OPTIONAL SCRIPTS -->
+    @*<script src="~/Scripts/Chart.js"></script>*@
+    <script src="~/Content/AdminLTE/plugins/chart.js/Chart.js"></script>
+    <!-- AdminLTE for demo purposes -->
+    <script src="~/Content/AdminLTE/demo.js"></script>
+    <script src="~/Content/AdminLTE/dashboard3.js"></script>
+    <script>
+        $(document).ready(function () {
+            //$('.heading-title').html('Dashboard');
+            $('.controller-name').html('Home');
+            $('.controller-action').html('Dashboard');
+        });
+    </script>
+}

@@ -52,6 +52,47 @@ namespace TicketDesk.Domain
             }
         }
 
+        public List<TopDelayedTaskVM> LoadTopDelayedTask(int start, int length)
+        {
+            string sql = @"DECLARE @rowsperpage INT DECLARE @start INT SET @start = " + (start) +
+                         " SET @rowsperpage = 20";
+            sql += @" 
+                    SELECT 
+                    t.TicketId, --t.Details, --, te.Comment,
+                    t.Title [TicketTitle], 
+                    DATEDIFF(HOUR, CreatedDate,LastUpdateDate) 'CompletionTime', 
+                    cby.DisplayName [TicketOwner] ,
+                    t.CreatedDate [CreatedAt], 
+                    uby.DisplayName [TicketCLosedBy], 
+                    t.LastUpdateDate [TicketCLosingDate],
+                    t.TicketStatus 'Status'
+
+                    from  Tickets t 
+                    --inner join [dbo].[TicketEvents] te on te.TicketId = t.TicketId
+                    inner join [dbo].[IdentityUsers] cby on cby.Id = t.CreatedBy
+                    inner join [dbo].[IdentityUsers] uby on uby.Id = t.LastUpdateBy
+                    where t.TicketStatus = 3
+                    and DATEDIFF(HOUR, CreatedDate,LastUpdateDate)>11
+                    and CONVERT(date, t.CreatedDate) >  CONVERT(date,'2022-11-10')
+                    --and CONVERT(date, t.LastUpdateDate) =  CONVERT(date,'2022-12-18')
+                    --order by DATEDIFF(HOUR, CreatedDate,LastUpdateDate) desc
+                    --Order by t.TicketStatus asc
+                    ";
+            sql += " Order by DATEDIFF(HOUR, CreatedDate,LastUpdateDate) desc OFFSET " + start + " ROWS" + " FETCH NEXT " + length + " ROWS ONLY";
+            using (con = new SqlConnection(ConfigurationManager.ConnectionStrings["TicketDesk"].ToString()))
+            {
+                con.Open();
+                da = new SqlDataAdapter(sql, con);
+                da.SelectCommand.CommandTimeout = 250; //seconds
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+
+                List<TopDelayedTaskVM> result = ConvertToList<TopDelayedTaskVM>(dt);
+                con.Close();
+                return result;
+            }
+        }
+
         public List<T> ConvertToList<T>(DataTable dt)
         {
             var columnNames = dt.Columns.Cast<DataColumn>()
@@ -93,6 +134,30 @@ namespace TicketDesk.Domain
                 }
                 return objT;
             }).ToList();
+        }
+
+        public int CountTopDelayedTask()
+        {
+            string sql = @" 
+                    SELECT Count(*)
+                    from  Tickets t 
+                    --inner join [dbo].[TicketEvents] te on te.TicketId = t.TicketId
+                    inner join [dbo].[IdentityUsers] cby on cby.Id = t.CreatedBy
+                    inner join [dbo].[IdentityUsers] uby on uby.Id = t.LastUpdateBy
+                    where t.TicketStatus = 3
+                    and DATEDIFF(HOUR, CreatedDate,LastUpdateDate)>11
+                    and CONVERT(date, t.CreatedDate) >  CONVERT(date,'2022-11-10')
+                    ";
+
+            using (con = new SqlConnection(ConfigurationManager.ConnectionStrings["TicketDesk"].ToString()))
+            {
+                con.Open();
+                cmd = new SqlCommand(sql, con);
+                cmd.CommandTimeout = 250; //seconds
+                int resultCount = Convert.ToInt32(cmd.ExecuteScalar());
+                con.Close();
+                return resultCount;
+            }
         }
     }
 }
