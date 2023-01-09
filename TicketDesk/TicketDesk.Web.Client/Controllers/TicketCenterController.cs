@@ -211,7 +211,7 @@ namespace TicketDesk.Web.Client.Controllers
                         else str.Add("");
 
                         str.Add(d.TicketOwner);
-                        str.Add(d.CreatedAt.ToString("f"));
+                        str.Add(d.CreatedAt.ToString("d"));
 
                         if (Convert.ToInt32(d.Status) == (int)TicketStatus.Active)
                         {
@@ -221,7 +221,7 @@ namespace TicketDesk.Web.Client.Controllers
                         else
                         {
                             str.Add(d.TicketCLosedBy);
-                            str.Add(d.TicketCLosingDate.ToString("f"));
+                            str.Add(d.TicketCLosingDate.ToString("d"));
                         }
 
                         if (Convert.ToInt32(d.Status) == (int)TicketStatus.Active)

@@ -60,7 +60,9 @@ namespace TicketDesk.Domain
                     SELECT 
                     t.TicketId, --t.Details, --, te.Comment,
                     t.Title [TicketTitle], 
-                    DATEDIFF(HOUR, CreatedDate,LastUpdateDate) 'CompletionTime', 
+                    Case when DATEDIFF(HOUR, CreatedDate,LastUpdateDate)> 24 then CONVERT(varchar(50), (DATEDIFF(HOUR, CreatedDate,LastUpdateDate)/24)) +' Days'
+					when DATEDIFF(HOUR, CreatedDate,LastUpdateDate)< 24 then CONVERT(varchar(50), DATEDIFF(HOUR, CreatedDate,LastUpdateDate)) + ' Hour'
+					End as 'CompletionTime',
                     cby.DisplayName [TicketOwner] ,
                     t.CreatedDate [CreatedAt], 
                     uby.DisplayName [TicketCLosedBy], 
