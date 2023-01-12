@@ -3,9 +3,11 @@
 @model PagedList.IPagedList<TicketDesk.Web.Client.Models.UserAccountInfoViewModel>
 @{
     var ajaxPagerOptions = new AjaxOptions() { HttpMethod = "GET", UpdateTargetId = "userListBody", OnBegin = "adminUsers.paging.beginChangePage", OnSuccess = "adminUsers.completeChangeList", OnFailure = "adminUsers.completeChangeList" };
-}@{
-    Layout = "~/Views/Shared/_LayoutPrev.cshtml";
 }
+
+@*@{
+    Layout = "~/Views/Shared/_LayoutPrev.cshtml";
+}*@
 
 <div id="userListBody">
     <div class="panel panel-default">
