@@ -22,7 +22,7 @@ namespace TicketDesk.Web.Client
         {
             filters.Add(new LocalizationFilter());
             filters.Add(new HandleErrorAttribute());
-            //filters.Add(new AllowCrossSiteJsonAttribute());
+            filters.Add(new AllowCrossSiteJsonAttribute());
         }
     }
 }
