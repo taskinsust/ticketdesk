@@ -10,8 +10,8 @@ namespace TicketDesk.Web.Client.Infrastructure.Filters
     {
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            //filterContext.RequestContext.HttpContext.Response.AddHeader("Access-Control-Allow-Origin", "*");
-            filterContext.RequestContext.HttpContext.Response.AddHeader("Access-Control-Allow-Origin", "https://kudos.summitcommunications.net/");
+            filterContext.RequestContext.HttpContext.Response.AddHeader("Access-Control-Allow-Origin", "*");
+            //filterContext.RequestContext.HttpContext.Response.AddHeader("Access-Control-Allow-Origin", "https://kudos.summitcommunications.net/");
             filterContext.RequestContext.HttpContext.Response.Headers.Add("Access-Control-Allow-Credentials", "true");
             //filterContext.RequestContext.HttpContext.Response.Flush();
 
