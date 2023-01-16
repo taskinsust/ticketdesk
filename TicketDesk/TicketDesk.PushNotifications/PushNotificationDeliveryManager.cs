@@ -32,7 +32,7 @@ namespace TicketDesk.PushNotifications
         {
             get
             {
-                if (_deliveryProviders == null)
+                if (_deliveryProviders == null || _deliveryProviders.Count==0)
                 {
                     _deliveryProviders = new List<IPushNotificationDeliveryProvider>();
                     using (var context = new TdPushNotificationContext())

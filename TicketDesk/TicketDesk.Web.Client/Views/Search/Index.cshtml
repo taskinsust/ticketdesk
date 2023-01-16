@@ -17,6 +17,10 @@
 @using TicketDesk.Domain
 @using TicketDesk.Domain.Model
 @model IEnumerable<Ticket>
+@{
+    Layout = "~/Views/Shared/_LayoutPrev.cshtml";
+}
+
 @section title{
     @Index.Title
 }

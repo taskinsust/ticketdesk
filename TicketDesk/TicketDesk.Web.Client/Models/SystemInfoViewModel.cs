@@ -50,7 +50,7 @@ namespace TicketDesk.Web.Client.Models
                 var connectionString = ConfigurationManager.ConnectionStrings["TicketDesk"].ConnectionString;
                 DbEdition = GetSqlEdition(connectionString);
                 IsLocalDb = GetIsLocalDb(connectionString);
-               
+
                 var builder = new SqlConnectionStringBuilder(connectionString);
                 var dsource = builder.DataSource.Split('\\');
                 ServerName = dsource.Length > 0 ? dsource[0] : null;
@@ -102,7 +102,7 @@ namespace TicketDesk.Web.Client.Models
                     conn.Close();
                 }
                 // ReSharper disable once EmptyGeneralCatchClause
-                catch {  }
+                catch { }
                 return isLocalDb;
             }
             private SqlConnection GetMasterCatalogConnection(string connectionString)
@@ -128,8 +128,8 @@ namespace TicketDesk.Web.Client.Models
             }
 
             public bool DatabaseExists { get; private set; }
-            public bool IsDatabaseReady { get { return DatabaseConfig.IsDatabaseReady; }}
-            public bool IsLegacyDatabase { get { return DatabaseConfig.IsLegacyDatabase(); }}
+            public bool IsDatabaseReady { get { return DatabaseConfig.IsDatabaseReady; } }
+            public bool IsLegacyDatabase { get { return DatabaseConfig.IsLegacyDatabase(); } }
             public bool IsEmptyDatabase { get { return DatabaseConfig.IsEmptyDatabase(); } }
             public bool IsCompatibleWithEfModel { get; private set; }
             public bool HasLegacySecurityObjects { get { return DatabaseConfig.HasLegacySecurity(); } }

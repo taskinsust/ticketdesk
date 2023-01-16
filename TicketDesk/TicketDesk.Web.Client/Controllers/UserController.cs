@@ -30,12 +30,14 @@ using TicketDesk.Web.Identity;
 using TicketDesk.Web.Identity.Model;
 using TicketDesk.Localization.Controllers;
 using Newtonsoft.Json;
+using System.IO;
 
 namespace TicketDesk.Web.Client.Controllers
 {
     [TdAuthorize]
     [RoutePrefix("user")]
     [Route("{action}")]
+    //[OutputCacheAttribute(NoStore = true, Duration = 0, VaryByParam = "None")]
     public class UserController : Controller
     {
         private TicketDeskUserManager UserManager { get; set; }
@@ -231,13 +233,14 @@ namespace TicketDesk.Web.Client.Controllers
         [Route("registerapi")]
         public async Task<JsonResult> RegisterAPI(UserRegisterViewModel model)
         {
-            //UserRegisterViewModel model = JsonConvert.DeserializeObject<UserRegisterViewModel>(parameters);
+            //FileWrite.Example("Called successfully");
             var user = new TicketDeskUser { UserName = model.UserName, Email = model.Email, DisplayName = model.DisplayName, TelegramUserId = model.TelegramUserId };
             var result = await UserManager.CreateAsync(user, model.Password);
+            //FileWrite.Example(result.Errors.ToString());
             if (result.Succeeded)
             {
                 await UserManager.AddToRolesAsync(user.Id, DomainContext.TicketDeskSettings.SecuritySettings.DefaultNewUserRoles.ToArray());
-                await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+               // await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                 HostingEnvironment.QueueBackgroundWorkItem(ct =>
                 {
                     using (var notificationContext = new TdPushNotificationContext())
@@ -268,5 +271,17 @@ namespace TicketDesk.Web.Client.Controllers
         }
 
         #endregion
+    }
+
+
+    public static class FileWrite
+    {
+        public static void Example(string data)
+        {
+            using (StreamWriter writer = new StreamWriter("logg.txt", append: true))
+            {
+                writer.WriteLine(data);
+            }
+        }
     }
 }

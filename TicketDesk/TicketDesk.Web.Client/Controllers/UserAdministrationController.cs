@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.Entity;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Hosting;
@@ -9,6 +10,7 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using PagedList;
 using TicketDesk.Domain;
+using TicketDesk.Domain.Model;
 using TicketDesk.Localization.Controllers;
 using TicketDesk.PushNotifications;
 using TicketDesk.PushNotifications.Model;
@@ -21,6 +23,7 @@ namespace TicketDesk.Web.Client.Controllers
     [RoutePrefix("admin")]
     [Route("{action=index}")]
     [TdAuthorize(Roles = "TdAdministrators")]
+    //[OutputCacheAttribute(NoStore = true, Duration = 0, VaryByParam = "None")]
     public class UserAdministrationController : Controller
     {
         private TicketDeskUserManager UserManager { get; set; }
@@ -28,7 +31,7 @@ namespace TicketDesk.Web.Client.Controllers
         private TdDomainContext DomainContext { get; set; }
 
         public UserAdministrationController(
-            TicketDeskUserManager userManager, 
+            TicketDeskUserManager userManager,
             TicketDeskRoleManager roleManager,
             TdDomainContext domainContext)
         {
@@ -45,12 +48,19 @@ namespace TicketDesk.Web.Client.Controllers
             return View(users);
         }
 
+        [Route("telegramusers/{page:int?}")]
+        public async Task<ActionResult> Telegramusers(int? page)
+        {
+            var users = await GetTelegramUser(page ?? 1);
+            return View(users);
+        }
+
         [Route("users/page/{page:int?}")]
         public async Task<ActionResult> PageList(int? page = 1)
         {
             ViewBag.AllRolesList = await RoleManager.Roles.ToListAsync();
             var users = await GetUsersForListAsync(page ?? 1);
-            return PartialView("_UserList",users);
+            return PartialView("_UserList", users);
 
         }
 
@@ -96,8 +106,8 @@ namespace TicketDesk.Web.Client.Controllers
             }
             var model = new UserAccountInfoViewModel(user, user.Roles.Select(r => r.RoleId));
             var tdPendingRole = RoleManager.Roles.FirstOrDefault(r => r.Name == "TdPendingUsers");
-            
-            ViewBag.TdPendingUsersRoleId = tdPendingRole == null ? "" : tdPendingRole.Id; 
+
+            ViewBag.TdPendingUsersRoleId = tdPendingRole == null ? "" : tdPendingRole.Id;
             return View(model);
         }
 
@@ -160,7 +170,7 @@ namespace TicketDesk.Web.Client.Controllers
                             }
                         }
                     }
-                }               
+                }
             }
             //Since the above operations could be partially committed before a failure, 
             //  we will re-get the user so we are sure the screen will accurately show 
@@ -169,6 +179,34 @@ namespace TicketDesk.Web.Client.Controllers
             user = await UserManager.FindByIdAsync(model.User.Id);
             model = new UserAccountInfoViewModel(user, user.Roles.Select(r => r.RoleId));
             return View(model);
+        }
+
+        [Route("telegramuser/{id?}")]
+        public async Task<ActionResult> TelegramEdit(int id)
+        {
+            //update user users
+            SqlConnection con;
+            SqlCommand cmd;
+            SqlDataAdapter da;
+            string sql = @"update UserProfiles set userstatus = 1 where id =" + id;
+            using (con = new SqlConnection(ConfigurationManager.ConnectionStrings["TicketDesk"].ToString()))
+            {
+                con.Open();
+                cmd = new SqlCommand(sql, con);
+                cmd.CommandTimeout = 250; //seconds
+                int resultCount = Convert.ToInt32(cmd.ExecuteScalar());
+                con.Close();
+            }
+            //using (con = new SqlConnection(ConfigurationManager.ConnectionStrings["TicketDesk"].ToString()))
+            //{
+            //    sql = @"update IdentityUsers set Email = '', UserName= '' where id =" + id;
+            //    con.Open();
+            //    cmd = new SqlCommand(sql, con);
+            //    cmd.CommandTimeout = 250; //seconds
+            //    int resultCount = Convert.ToInt32(cmd.ExecuteScalar());
+            //    con.Close();
+            //}
+            return RedirectToAction("Telegramusers");
         }
 
         [Route("new")]
@@ -237,6 +275,12 @@ namespace TicketDesk.Web.Client.Controllers
             return users;
         }
 
+        private async Task<IPagedList<UserProfile>> GetTelegramUser(int page)
+        {
+            var tusers = await DomainContext.UserProfiles.OrderBy(u => u.FirstName).Where(x => x.UserStatus != 1).ToPagedListAsync(page, 25);
+            return tusers;
+        }
+
         private async Task<bool> UpdateUserInfo(TicketDeskUser user, UserAccountInfoViewModel model)
         {
             user.UserName = model.User.UserName;
@@ -267,7 +311,7 @@ namespace TicketDesk.Web.Client.Controllers
 
         private async Task<bool> RemoveRoles(IEnumerable<string> roleIdsToRemove, TicketDeskUser user)
         {
-           
+
             var roleNamesToRemove = RoleManager.Roles.Where(r => roleIdsToRemove.Any(ri => ri == r.Id)).Select(r => r.Name);
             if (roleNamesToRemove.Any())
             {
@@ -317,5 +361,5 @@ namespace TicketDesk.Web.Client.Controllers
         }
     }
 
-    
+
 }

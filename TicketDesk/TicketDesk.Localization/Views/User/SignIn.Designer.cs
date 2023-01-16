@@ -79,7 +79,7 @@ namespace TicketDesk.Localization.Views.User {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sign In.
+        ///   Looks up a localized string similar to Ticketing System.
         /// </summary>
         public static string Legend {
             get {
@@ -97,7 +97,7 @@ namespace TicketDesk.Localization.Views.User {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sign In.
+        ///   Looks up a localized string similar to Ticketing System.
         /// </summary>
         public static string Title {
             get {

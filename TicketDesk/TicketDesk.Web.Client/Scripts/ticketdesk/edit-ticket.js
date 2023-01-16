@@ -244,8 +244,8 @@
             var icon = $('#watch > i');
             var iconClass = isSubscribed ? 'fa-eye-slash' : 'fa-eye';
             icon.removeClass('fa-eye fa-eye-slash').addClass(iconClass);
-            $('#watch>span').text(window.i18n.formatWatch(isSubscribed));
-            $('#watch').attr('title', window.i18n.formatWatchTitle(isSubscribed));
+            //$('#watch>span').text(window.i18n.formatWatch(isSubscribed));
+            //$('#watch').attr('title', window.i18n.formatWatchTitle(isSubscribed));
             $('#watch[data-toggle="tooltip"]').tooltip();
             config.isSubscribed = isSubscribed;
         }

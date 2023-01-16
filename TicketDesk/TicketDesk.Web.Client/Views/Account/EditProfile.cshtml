@@ -1,5 +1,8 @@
 ﻿@using TicketDesk.Localization.Views.Account
 @model TicketDesk.Web.Client.Models.AccountProfileViewModel
+@{
+    Layout = "~/Views/Shared/_LayoutPrev.cshtml";
+}
 @section title
 {
     @EditProfile.Title
@@ -23,10 +26,10 @@
                             @Html.ValidationSummary("", new { @class = "text-danger" })
 
                             <div class="form-group">
-                                @Html.LabelFor(m => m.Email, new {@class = "col-sm-3 control-label"})
+                                @Html.LabelFor(m => m.Email, new { @class = "col-sm-3 control-label" })
                                 <div class="col-sm-9">
-                                    @Html.TextBoxFor(m => m.Email, new {@class = "form-control"})
-                                    @Html.ValidationMessageFor(m => m.Email, "", new {@class = "text-danger"})
+                                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
                                 </div>
                             </div>
 

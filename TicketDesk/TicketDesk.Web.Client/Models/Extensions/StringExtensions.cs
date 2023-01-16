@@ -22,9 +22,10 @@ namespace TicketDesk.Web.Client
             var options = new MarkdownOptions
             {
                 AutoHyperlink = true,
-                AutoNewLines = true,
-                EncodeProblemUrlCharacters = true,
-                LinkEmails = true
+                //AutoNewLines = true,
+                //EncodeProblemUrlCharacters = true,
+                LinkEmails = true,
+                AutoNewlines = true
             };
 
 

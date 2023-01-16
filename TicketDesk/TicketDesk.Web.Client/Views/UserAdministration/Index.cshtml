@@ -1,5 +1,9 @@
 ﻿@using TicketDesk.Localization.Views.UserAdministration
 @model PagedList.IPagedList<TicketDesk.Web.Client.Models.UserAccountInfoViewModel>
+@{
+    Layout = "~/Views/Shared/_LayoutPrev.cshtml";
+}
+
 @section title{
     @Index.Title
 }
@@ -19,13 +23,13 @@
             <div class="col-sm-12">
                 @Html.Partial("_UserList", Model)
             </div>
-            <div class="panel-footer">
-                <div class="">
-                    <a href="@Url.Action("New", "UserAdministration")" class="btn btn-primary">
-                        <i class="fa fa-plus"></i>&nbsp;&nbsp;@Index.NewUser
-                    </a>
-                </div>
-            </div>
+            @*<div class="panel-footer">
+                    <div class="">
+                        <a href="@Url.Action("New", "UserAdministration")" class="btn btn-primary">
+                            <i class="fa fa-plus"></i>&nbsp;&nbsp;@Index.NewUser
+                        </a>
+                    </div>
+                </div>*@
         </fieldset>
     </div>
 </main>

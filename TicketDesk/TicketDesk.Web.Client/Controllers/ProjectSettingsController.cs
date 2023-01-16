@@ -14,7 +14,6 @@ namespace TicketDesk.Web.Client.Controllers
     [TdAuthorize(Roles = "TdAdministrators")]
     public class ProjectSettingsController : Controller
     {
-
           private TdDomainContext Context { get; set; }
 
         public ProjectSettingsController(TdDomainContext context)

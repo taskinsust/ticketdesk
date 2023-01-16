@@ -1,0 +1,207 @@
+﻿@using TicketDesk.Localization.Views.Shared
+@{ var pending = Convert.ToDecimal(ViewBag.pendingticket);
+    var total = Convert.ToDecimal(ViewBag.totalticket);
+    var complete = Convert.ToDecimal(ViewBag.closedticket);
+
+    decimal parcent = ((pending / total) * 100);
+    decimal par = ((complete / total) * 100);
+    var pendingPercent = String.Format("{0:0.00}", parcent);
+    var closePercent = String.Format("{0:0.00}", par); }
+<div class="row">
+    <div class="panel panel-default">
+        <div class="panel-heading"><b> Last 30 days Report </b></div>
+        <div class="panel-body">
+            @*<div class="col-lg-3">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <p class="announcement-heading">@ViewBag.totalticket</p>
+
+                            </div>
+                        </div>
+                    </div>
+                    <a href="#" style="background-color: #1591A5">
+                        <div class="panel-footer announcement-bottom" style="background-color: #1591A5">
+                            <div class="row">
+                                <div class="col-xs-6" style="color:white">
+                                    Total Ticket
+                                </div>
+
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="panel panel-warning">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <p class="announcement-heading">@ViewBag.moreInfoticket</p>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="#">
+                        <div class="panel-footer announcement-bottom" style="background-color: #E5AD06">
+                            <div class="row">
+                                <div class="col-xs-6" style="color:white">
+                                    Need More Info
+                                </div>
+
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>*@
+            <div class="col-lg-3">
+                <div class="panel panel-danger">
+                    <div class="panel-heading">
+                        <div class="row">
+
+                            <div class="col-xs-7">
+                                <p class="announcement-heading">@ViewBag.pendingticket</p>
+                            </div>
+                            <div class="col-xs-4">
+                                <p class="announcement-text">@pendingPercent%</p>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="#">
+                        <div class="panel-footer announcement-bottom" style="background-color: #C6303E">
+                            <div class="row">
+                                <div class="col-xs-6" style="color:white">
+                                    Pending Ticket
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <div class="row">
+
+                            <div class="col-xs-7">
+                                <p class="announcement-heading">@ViewBag.closedticket</p>
+                            </div>
+                            <div class="col-xs-4">
+                                <p class="announcement-text">@closePercent%</p>
+                            </div>
+
+                        </div>
+                    </div>
+                    <a href="#">
+                        <div class="panel-footer announcement-bottom" style="background-color: #24963E">
+                            <div class="row">
+                                <div class="col-xs-6" style="color:white">
+                                    Closed
+                                </div>
+
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*<div class="panel panel-default">
+            <div class="panel-heading"><b> Today's Ticket</b></div>
+            <div class="panel-body">
+                <div class="col-lg-3">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <div class="row">
+
+                                <div class="col-xs-12">
+                                    <p class="announcement-heading">@ViewBag.totalticketToday</p>
+
+                                </div>
+                            </div>
+                        </div>
+                        <a href="#" style="background-color: #1591A5">
+                            <div class="panel-footer announcement-bottom" style="background-color: #1591A5">
+                                <div class="row">
+                                    <div class="col-xs-6" style="color:white">
+                                        Today's Ticket
+                                    </div>
+
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="panel panel-warning">
+                        <div class="panel-heading">
+                            <div class="row">
+
+                                <div class="col-xs-12">
+                                    <p class="announcement-heading">@ViewBag.moreInfoticketToday</p>
+
+                                </div>
+                            </div>
+                        </div>
+                        <a href="#">
+                            <div class="panel-footer announcement-bottom" style="background-color: #E5AD06">
+                                <div class="row">
+                                    <div class="col-xs-6" style="color:white">
+                                        Need More Info
+                                    </div>
+
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="panel panel-danger">
+                        <div class="panel-heading">
+                            <div class="row">
+
+                                <div class="col-xs-12">
+                                    <p class="announcement-heading">@ViewBag.pendingticketToday</p>
+
+                                </div>
+                            </div>
+                        </div>
+                        <a href="#">
+                            <div class="panel-footer announcement-bottom" style="background-color: #C6303E">
+                                <div class="row">
+                                    <div class="col-xs-6" style="color:white">
+                                        Pending Ticket
+                                    </div>
+
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                            <div class="row">
+
+                                <div class="col-xs-12">
+                                    <p class="announcement-heading">@ViewBag.closedticketToday</p>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="#">
+                            <div class="panel-footer announcement-bottom" style="background-color: #24963E">
+                                <div class="row">
+                                    <div class="col-xs-6" style="color:white">
+                                        Closed
+                                    </div>
+
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>*@
+
+</div><!-- /.row -->

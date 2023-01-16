@@ -1,0 +1,59 @@
+﻿@using TicketDesk.Localization.Views.UserAdministration
+@using PagedList.Mvc
+@model PagedList.IPagedList<TicketDesk.Domain.Model.UserProfile>
+@{
+    var ajaxPagerOptions = new AjaxOptions()
+    {
+        HttpMethod = "GET",
+        UpdateTargetId = "userListBody",
+        OnBegin = "adminUsers.paging.beginChangePage",
+        OnSuccess = "adminUsers.completeChangeList",
+        OnFailure = "adminUsers.completeChangeList"
+    };
+}
+@{
+    Layout = "~/Views/Shared/_LayoutPrev.cshtml";
+}
+
+<div id="userListBody">
+    <div class="panel panel-default">
+        <div class="panel-body" style="padding: 0;">
+            <div class="table-responsive">
+                <table class="table table-striped table-condensed table-hover ">
+                    <tr>
+                        <th>Name</th>
+                        <th>
+                            @Index.User
+                        </th>
+
+                        <th>
+                            @Index.Status
+                        </th>
+                    </tr>
+                    @foreach (var account in Model)
+                    {
+                        <tr class="clickable">
+                            <td>@account.FirstName &nbsp; @account.LastName </td>
+                            <td>
+                                <a href="@Url.Action("TelegramEdit", "UserAdministration", new {id = account.Id})">
+                                    @account.Email (@account.ContactNo)
+                                </a>
+                            </td>
+                            <td>
+                                <a href="@Url.Action("TelegramEdit", "UserAdministration", new {id = account.Id})">
+                                    <i class="fa fa-2x @(account.UserStatus!=1 ? "fa-lock text-danger" : "fa-unlock")"></i>
+                                </a>
+                            </td>
+                            @*<td>
+                                    <i class="fa fa-2x @(account.IsLocked ? "fa-lock text-danger" : "fa-unlock")"></i>
+                                </td>*@
+                        </tr>
+                    }
+                </table>
+            </div>
+        </div>
+        <div class="panel-footer">
+            @Html.PagedListPager(Model, page => Url.Action("PageList", new { page }), PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(ajaxPagerOptions))
+        </div>
+    </div>
+</div>

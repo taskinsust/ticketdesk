@@ -1,5 +1,8 @@
 ﻿@using TicketDesk.Localization.Views.ProjectSettings
 @model TicketDesk.Domain.Model.Project
+@{
+    Layout = "~/Views/Shared/_LayoutPrev.cshtml";
+}
 
 @section title
 {
@@ -13,7 +16,7 @@
                 @using (Html.BeginForm("New", "ProjectSettings", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
                 {
                     @Html.AntiForgeryToken()
-                   
+
                     <div class="panel panel-info">
                         <div class="panel-heading">
                             <h2 class="panel-title">@New.Header</h2>

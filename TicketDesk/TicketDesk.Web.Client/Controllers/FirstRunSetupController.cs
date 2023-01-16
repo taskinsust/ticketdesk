@@ -32,7 +32,6 @@ using TicketDesk.Web.Identity.Model;
 namespace TicketDesk.Web.Client.Controllers
 {
 
-
     [RoutePrefix("first-run-setup")]
     [Route("{action=index}")]
     [WhenSetupEnabled]
