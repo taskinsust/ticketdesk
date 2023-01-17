@@ -12,12 +12,18 @@
     #ticketList table th a{
         color: rgba(0, 0, 0, 1);
     }
+    .ticketItems tr {
+        cursor: pointer
+    }
+    .pagination li {
+        width: 25px;
+    }
 </style>
-<div id="ticketList" class="panel panel-default" onload="JavaScript:timedRefresh(60000);">
-    <div class="panel-heading row-no-padding">
+<div id="ticketList" class="card card-default" onload="JavaScript:timedRefresh(60000);">
+    <div class="card-header">
         @Html.Partial("_FilterBar")
     </div>
-    <div class="panel-body" style="padding: 0;">
+    <div class="card-body" style="padding: 0;">
         <div class="table-responsive ">
             <table class="table table-hover table-condensed  table-striped">
                 <thead>
@@ -123,7 +129,7 @@
             </table>
         </div>
     </div>
-    <div class="panel-footer">
+    <div class="card-footer">
         @Html.PagedListPager(Model.Tickets, page => Url.Action("PageList", new { listName = Model.CurrentListSetting.ListName, page }), PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(ajaxPagerOptions))
     </div>
 </div>

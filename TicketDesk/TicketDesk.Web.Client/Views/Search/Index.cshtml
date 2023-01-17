@@ -46,17 +46,17 @@
                 }
                 @foreach (var item in Model)
                 {
-                    <div id="ticketDetailPanel" class="panel panel-info clickable">
-                        <div class="panel-heading" style="padding: 3px 5px;">
+                    <div id="ticketDetailPanel" class="card card-info clickable">
+                        <div class="card-header" style="padding: 3px 5px;">
                             <div class="row ">
                                 <div class="row-same-height row-full-height">
-                                    <div class="col-xs-2 col-sm-2 col-xs-height col-full-height text-center panel-title" style="border-right: 1px solid #dcdcdc;">
+                                    <div class="col-xs-2 col-sm-2 col-xs-height col-full-height text-center card-title" style="border-right: 1px solid #dcdcdc;">
                                         @item.TicketStatus.GetDisplayName()
                                     </div>
-                                    <div class="col-xs-2 col-sm-1 col-xs-height col-full-height text-center panel-title" style="border-right: 1px solid #dcdcdc;">
+                                    <div class="col-xs-2 col-sm-1 col-xs-height col-full-height text-center card-title" style="border-right: 1px solid #dcdcdc;">
                                         #@item.TicketId
                                     </div>
-                                    <div class="col-xs-8 col-sm-9 col-xs-height col-full-height panel-title">
+                                    <div class="col-xs-8 col-sm-9 col-xs-height col-full-height card-title">
                                         <a href="@Url.Action("Index", "Ticket", new {id = item.TicketId})">
                                             @item.Title
                                         </a>
@@ -64,7 +64,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="panel-body" style="padding-top: 0; padding-bottom: 0;">
+                        <div class="card-body" style="padding-top: 0; padding-bottom: 0;">
                             <div class="row row-no-padding row-same-height row-full-height">
                                 <div class="col-sm-12 col-xs-height col-full-height ">
                                     <div class="" style="border-bottom: 1px solid #B3CBDF; padding: 3px; background-color: #F7F7F7;">

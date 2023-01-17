@@ -20,11 +20,11 @@
 
     if (Model != null && Model.Any())
     {
-        <div class="panel panel-info" style="padding-top: 0; padding-bottom: 0;">
-            <div class="panel-heading panel-title" style="padding: 3px 5px;">
+        <div class="card callout-info" style="padding-top: 0; padding-bottom: 0;">
+            <div class="card-header card-title" style="padding: 3px 5px;">
                 @Index.Files
             </div>
-            <div class="panel-body" style="">
+            <div class="card-body" style="">
                 <ul class="list-unstyled list-inline">
                     @foreach (var file in Model)
                     {
@@ -36,4 +36,16 @@
             </div>
         </div>
     }
+}
+
+@section scripts{
+
+    @Scripts.Render("~/bundles/ticketcenter")
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $('.controller-name').html('Ticket');
+            $('.controller-action').html('Ticket Details');
+        });
+    </script>
 }

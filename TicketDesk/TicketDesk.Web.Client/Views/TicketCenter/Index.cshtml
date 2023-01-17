@@ -1,5 +1,5 @@
 ﻿@{
-    Layout = "~/Views/Shared/_LayoutPrev.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 @using TicketDesk.Localization.Views.TicketCenter
@@ -8,7 +8,7 @@
 
 @using TicketDesk.Web.Client.Models
 
-@section title{ @Index.Title }
+@*@section title{ @Index.Title }s*@
 
 <main style="display: none;">
     <br /><br />
@@ -27,6 +27,8 @@
     <script type="text/javascript">
 
         $(document).ready(function () {
+            $('.controller-name').html('Ticket');
+            $('.controller-action').html('Ticket Center');
             $('main').show();
             $.ajaxSetup({ cache: false });
             ticketCenter.filters.setupFilterForm();

@@ -22,12 +22,12 @@
             <legend class="col-lg-8 col-lg-offset-2 col-md-9 col-md-offset-1 col-sm-12">@AccessDenied.Legend</legend>
             <div class="col-lg-7 col-lg-offset-2 col-md-8 col-md-offset-1 col-sm-12">
 
-                <div class="panel panel-danger">
-                    <div class="panel-body">
+                <div class="card card-danger">
+                    <div class="card-body">
                         @Html.Raw(User.Identity.IsAuthenticated && User.IsInRole("TdPendingUsers") ?
                             AccessDenied.PendingUser :
                             AccessDenied.PermissionDenied)
-                    </div><div class="panel-footer">
+                    </div><div class="card-footer">
 
                         @Html.ActionLink(@AccessDenied.HomeLink, "Index",null, new {@class = "btn btn-default" })
                     </div>

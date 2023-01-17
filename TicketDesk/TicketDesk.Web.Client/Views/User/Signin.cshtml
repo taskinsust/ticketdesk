@@ -15,11 +15,11 @@
                 {
                     @Html.AntiForgeryToken()
 
-                    <div class="panel panel-info">
-                        <div class="panel-heading">
-                            <h2 class="panel-title">@SignIn.Header</h2>
+                    <div class="card card-info">
+                        <div class="card-header">
+                            <h2 class="card-title">@SignIn.Header</h2>
                         </div>
-                        <div class="panel-body">
+                        <div class="card-body">
                             @if (ViewBag.IsDemoMode ?? false)
                             {
                                
@@ -56,7 +56,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="panel-footer">
+                        <div class="card-footer">
                             <button type="submit" class="btn btn-success" tabindex="10">@SignIn.SaveOption</button>
                             @if (ApplicationConfig.RegisterEnabled)
                             {

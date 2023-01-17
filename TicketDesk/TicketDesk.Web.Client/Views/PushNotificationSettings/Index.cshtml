@@ -17,18 +17,22 @@
 @using System.Configuration
 @model TicketDesk.PushNotifications.Model.ApplicationPushNotificationSetting
 @{
-    Layout = "~/Views/Shared/_LayoutPrev.cshtml";
+    ViewBag.Title = "Push Notification Settings";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@section title
+@*@section title
 {
     @Index.Title
-}
+}*@
 
 @section scripts
 {
     <script type="text/javascript">
         $(document).ready(function () {
+            $('.controller-name').html('Settings');
+            $('.controller-action').html('Push Notification Settings');
+
             $('#useCurrentUrlButton').on('click', function () {
                 $('#siteRootUrl').val('@ViewBag.CurrentRootUrl');
             });
@@ -72,24 +76,24 @@
                         {
 
                             @Html.AntiForgeryToken()
-                            <div class="panel panel-info">
+                            <div class="card card-info">
 
-                                <div class="panel-heading">
-                                    <h2 class="panel-title">@Index.Delivery_Header</h2>
+                                <div class="card-header">
+                                    <h2 class="card-title">@Index.Delivery_Header</h2>
                                 </div>
-                                <div class="panel-body">
+                                <div class="card-body">
                                     @Html.Action("ListDeliveryProviderSettings")
                                 </div>
 
 
-                                <div class="panel-heading">
-                                    <h2 class="panel-title">@Index.General_Header</h2>
+                                <div class="card-header">
+                                    <h2 class="card-title">@Index.General_Header</h2>
                                 </div>
-                                <div class="panel-body">
+                                <div class="card-body">
                                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
                                     @Html.HiddenFor(model => model.ApplicationName)
-                                    <div class="form-group">
+                                    <div class="row form-group">
                                         @Html.LabelFor(model => model.IsEnabled, new { @class = "col-md-4 col-sm-4 control-label" })
                                         <div class="col-md-8 col-sm-8">
                                             <label class="checkbox-inline">
@@ -105,7 +109,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="form-group">
+                                    <div class="row form-group">
                                         @Html.LabelFor(model => model.IsBackgroundQueueEnabled, new { @class = "col-md-4 col-sm-4 control-label" })
                                         <div class="col-md-8 col-sm-8">
                                             <label class="checkbox-inline">
@@ -117,7 +121,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="form-group">
+                                    <div class="row form-group">
                                         <label for="siteRootUrl" class="col-md-4 col-sm-4 control-label">@Index.SiteRootUrl</label>
                                         <div class="col-md-8 col-sm-8">
                                             <div class="input-group input-group-sm">
@@ -145,7 +149,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="form-group">
+                                    <div class="row form-group">
                                         @Html.LabelFor(model => model.DeliveryIntervalMinutes, new { @class = "col-md-4 col-sm-4  control-label" })
                                         <div class="col-md-8 col-sm-8">
                                             @Html.EditorFor(model => model.DeliveryIntervalMinutes, new { htmlAttributes = new { @class = "form-control input-sm" } })
@@ -153,7 +157,7 @@
                                             @Html.DescriptionFor(model => model.DeliveryIntervalMinutes, "help-block", "span")
                                         </div>
                                     </div>
-                                    <div class="form-group">
+                                    <div class="row form-group">
                                         @Html.LabelFor(model => model.RetryAttempts, new { @class = "col-md-4 col-sm-4  control-label" })
                                         <div class="col-md-8 col-sm-8">
                                             @Html.EditorFor(model => model.RetryAttempts, new { htmlAttributes = new { @class = "form-control input-sm" } })
@@ -161,7 +165,7 @@
                                             @Html.DescriptionFor(model => model.RetryAttempts, "help-block", "span")
                                         </div>
                                     </div>
-                                    <div class="form-group">
+                                    <div class="row form-group">
                                         @Html.LabelFor(model => model.RetryIntervalMinutes, new { @class = "col-md-4 col-sm-4 control-label" })
                                         <div class="col-md-8 col-sm-8">
                                             @Html.EditorFor(model => model.RetryIntervalMinutes, new { htmlAttributes = new { @class = "form-control input-sm" } })
@@ -171,14 +175,11 @@
                                     </div>
                                 </div>
 
-
-
-
-                                <div class="panel-heading">
-                                    <h2 class="panel-title">@Index.BroadcastNotification_Header</h2>
+                                <div class="card-header">
+                                    <h2 class="card-title">@Index.BroadcastNotification_Header</h2>
                                 </div>
-                                <div class="panel-body ">
-                                    <div class="form-group">
+                                <div class="card-body ">
+                                    <div class="row form-group">
                                         @Html.LabelFor(model => model.BroadcastSettings.IsBroadcastEnabled, new { @class = "col-md-4 col-sm-4 control-label" })
                                         <div class="col-md-8 col-sm-8">
                                             <label class="checkbox-inline">
@@ -189,7 +190,7 @@
 
                                         </div>
                                     </div>
-                                    <div class="form-group">
+                                    <div class="row form-group">
                                         @Html.LabelFor(model => model.BroadcastSettings.BroadcastMode, new { @class = "col-md-4 col-sm-4 control-label" })
                                         <div class="col-md-8 col-sm-8">
 
@@ -198,7 +199,7 @@
                                             @Html.DescriptionFor(model => model.BroadcastSettings.BroadcastMode, "help-block", "span")
                                         </div>
                                     </div>
-                                    <div class="form-group">
+                                    <div class="row form-group">
                                         @Html.LabelFor(model => model.BroadcastSettings.SendToCustomEmailDisplayName, new { @class = "col-md-4 col-sm-4 control-label" })
                                         <div class="col-md-8 col-sm-8">
                                             @Html.EditorFor(model => model.BroadcastSettings.SendToCustomEmailDisplayName, new { htmlAttributes = new { @class = "form-control input-sm" } })
@@ -206,7 +207,7 @@
                                             @Html.DescriptionFor(model => model.BroadcastSettings.SendToCustomEmailDisplayName, "help-block", "span")
                                         </div>
                                     </div>
-                                    <div class="form-group">
+                                    <div class="row form-group">
                                         @Html.LabelFor(model => model.BroadcastSettings.SendToCustomEmailAddress, new { @class = "col-md-4 col-sm-4 control-label" })
                                         <div class="col-md-8 col-sm-8">
                                             @Html.EditorFor(model => model.BroadcastSettings.SendToCustomEmailAddress, new { htmlAttributes = new { @class = "form-control input-sm" } })
@@ -218,15 +219,11 @@
 
                                 </div>
 
-
-
-
-
-                                <div class="panel-heading">
-                                    <h2 class="panel-title">@Index.AntiNoise_Header</h2>
+                                <div class="card-header">
+                                    <h2 class="card-title">@Index.AntiNoise_Header</h2>
                                 </div>
-                                <div class="panel-body ">
-                                    <div class="form-group">
+                                <div class="card-body ">
+                                    <div class="row form-group">
                                         @Html.LabelFor(model => model.AntiNoiseSettings.ExcludeSubscriberEvents, new { @class = "col-md-4 col-sm-4 control-label" })
                                         <div class="col-md-8 col-sm-8">
                                             <label class="checkbox-inline">
@@ -237,7 +234,7 @@
                                             @Html.DescriptionFor(model => model.AntiNoiseSettings.ExcludeSubscriberEvents, "help-block", "span")
                                         </div>
                                     </div>
-                                    <div class="form-group">
+                                    <div class="row form-group">
                                         @Html.LabelFor(model => model.AntiNoiseSettings.IsConsolidationEnabled, new { @class = "col-md-4 col-sm-4 control-label" })
                                         <div class="col-md-8 col-sm-8">
                                             <label class="checkbox-inline">
@@ -248,7 +245,7 @@
                                             @Html.DescriptionFor(model => model.AntiNoiseSettings.IsConsolidationEnabled, "help-block", "span")
                                         </div>
                                     </div>
-                                    <div class="form-group">
+                                    <div class="row form-group">
                                         @Html.LabelFor(model => model.AntiNoiseSettings.InitialConsolidationDelayMinutes, new { @class = "col-md-4 col-sm-4 control-label" })
                                         <div class="col-md-8 col-sm-8">
                                             @Html.EditorFor(model => model.AntiNoiseSettings.InitialConsolidationDelayMinutes, new { htmlAttributes = new { @class = "form-control input-sm" } })
@@ -256,7 +253,7 @@
                                             @Html.DescriptionFor(model => model.AntiNoiseSettings.InitialConsolidationDelayMinutes, "help-block", "span")
                                         </div>
                                     </div>
-                                    <div class="form-group">
+                                    <div class="row form-group">
                                         @Html.LabelFor(model => model.AntiNoiseSettings.MaxConsolidationDelayMinutes, new { @class = "col-md-4 col-sm-4 control-label" })
                                         <div class="col-md-8 col-sm-8">
                                             @Html.EditorFor(model => model.AntiNoiseSettings.MaxConsolidationDelayMinutes, new { htmlAttributes = new { @class = "form-control input-sm" } })
@@ -266,7 +263,7 @@
                                     </div>
                                 </div>
 
-                                <div class="panel-footer">
+                                <div class="card-footer">
                                     <div class="">
                                         <button type="submit" class="btn btn-success" tabindex="10"><i class="fa fa-save"></i>&nbsp;&nbsp;@Index.SaveOption</button>&nbsp;&nbsp;
                                     </div>

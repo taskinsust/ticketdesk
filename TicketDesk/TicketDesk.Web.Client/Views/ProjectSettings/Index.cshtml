@@ -1,18 +1,23 @@
 ﻿@using TicketDesk.Localization.Views.ProjectSettings
 @model IEnumerable<TicketDesk.Web.Client.Models.ProjectListViewModelItem>
 @{
-    Layout = "~/Views/Shared/_LayoutPrev.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@section title
-{
-    @Index.Title
-}
+
+<style>
+    .clickable{
+        cursor: pointer
+    }
+</style>
+
 @section scripts
 {
     @Scripts.Render("~/bundles/project-settings")
     <script type="text/javascript">
         $(document).ready(function () {
+            $('.controller-name').html('Settings');
+            $('.controller-action').html('Project Settings');
             $(".clickable").clickable();
         });
     </script>

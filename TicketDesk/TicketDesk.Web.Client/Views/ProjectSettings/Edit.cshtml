@@ -1,12 +1,18 @@
 ﻿@using TicketDesk.Localization.Views.ProjectSettings
 @model TicketDesk.Domain.Model.Project
 @{
-    Layout = "~/Views/Shared/_LayoutPrev.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@section title
+@section scripts
 {
-    @Edit.Title
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.controller-name').html('Project Settings');
+            $('.controller-action').html('Edit');
+            window.adminEditUser.activate({ pendingOptionId: '@ViewBag.TdPendingUsersRoleId' });
+        });
+    </script>
 }
 
 <main>
@@ -19,11 +25,11 @@
                     @Html.AntiForgeryToken()
                     @Html.HiddenFor(m => m.ProjectId)
                     ;
-                    <div class="panel panel-info">
-                        <div class="panel-heading">
-                            <h2 class="panel-title">@Edit.Header</h2>
+                    <div class="card card-info">
+                        <div class="card-header card-blue">
+                            <h2 class="card-title">@Edit.Header</h2>
                         </div>
-                        <div class="panel-body">
+                        <div class="card-body">
                             @Html.ValidationSummary("", new { @class = "text-danger" })
                             <div class="form-group">
                                 @Html.LabelFor(m => m.ProjectName, new { @class = "col-sm-3 control-label" })
@@ -40,24 +46,28 @@
                             </div>
 
                         </div>
-                        <div class="panel-footer">
-                            <div class="pull-right">
-                                @if (ViewBag.EnableDelete ?? false)
-                                {
-                                    <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#delete-confirm">
-                                        <i class="fa fa-remove"></i>&nbsp;&nbsp;@Edit.DeleteOption
-                                    </a>
-                                }
+                        <div class="card-footer">
+                            <div style="display: flex; justify-content:space-between;">
+                                <div class="pull-left">
+                                    <button type="submit" class="btn btn-success" tabindex="10">
+                                        <i class="fa fa-save"></i>&nbsp;&nbsp;@Edit.SaveOption
+                                    </button>&nbsp;&nbsp;
+                                    @Html.ActionLink(Edit.BackOption, "Index", routeValues: null, htmlAttributes: new { @class = "btn btn-dark", @role = "button" })
 
+                                </div>
+                                <div class="pull-right">
+                                    @if (ViewBag.EnableDelete ?? false)
+                                    {
+                                        <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#delete-confirm">
+                                            <i class="fa fa-remove"></i>&nbsp;&nbsp;@Edit.DeleteOption
+                                        </a>
+                                    }
+
+
+                                </div>
 
                             </div>
-                            <div class="">
-                                <button type="submit" class="btn btn-success" tabindex="10">
-                                    <i class="fa fa-save"></i>&nbsp;&nbsp;@Edit.SaveOption
-                                </button>&nbsp;&nbsp;
-                                @Html.ActionLink(Edit.BackOption, "Index")
 
-                            </div>
                         </div>
                     </div>
                 }

@@ -17,34 +17,34 @@
 @using TicketDesk.Domain.Model
 @model Ticket
 
-<div class="panel-heading" style="padding: 3px 5px;">
+<div class="card-header" style="padding: 3px 5px;">
     <div class="row">
-        <div class="row-same-height row-full-height">
-            <div class="col-xs-2 col-sm-2 col-xs-height col-full-height text-center panel-title" style="border-right: 1px solid #dcdcdc;">
-                @Model.TicketStatus.GetDisplayName()
-            </div>
-            <div class="col-xs-2 col-sm-1 col-xs-height col-full-height text-center panel-title" style="border-right: 1px solid #dcdcdc;">
-                #@Model.TicketId
-            </div>
-            <div class="col-xs-7 col-sm-9 col-xs-height col-full-height panel-title">
-                @Model.Title
-            </div>
-            <div class="col-xs-1 col-xs-height col-full-height">
-                <div class="pull-right">
-                    <button id="watch" type="button" class="btn btn-default"
-                            data-toggle="tooltip"
-                            data-placement="bottom"
-                            title="">
-                        <i class="fa fa-eye"></i> <span class="hidden-sm hidden-xs"></span>
-                    </button>
-                </div>
-            </div>
-
+        @*<div class="row-same-height row-full-height">*@
+        <div class="col-xs-2 col-sm-2 text-center card-title" style="border-right: 1px solid #dcdcdc;">
+            @Model.TicketStatus.GetDisplayName()
         </div>
+        <div class="col-xs-2 col-sm-1 col-xs-height col-full-height text-center card-title" style="border-right: 1px solid #dcdcdc;">
+            #@Model.TicketId
+        </div>
+        <div class="col-xs-7 col-sm-9 col-xs-height col-full-height card-title">
+            @Model.Title
+        </div>
+        <div class="col-xs-1 col-xs-height col-full-height" style="float:right">
+            <div class="pull-right">
+                <button id="watch" type="button" class="btn btn-default"
+                        data-toggle="tooltip"
+                        data-placement="bottom"
+                        title="">
+                    <i class="fa fa-eye"></i> <span class="hidden-sm hidden-xs"></span>
+                </button>
+            </div>
+        </div>
+
+        @*</div>*@
     </div>
 
 </div>
-<div class="panel-body" style="padding: 0">
+<div class="card-body" style="padding: 0">
     <div class="row row-no-padding row-same-height row-full-height" style="width: 100%;margin:0; font-size: 15px;">
         <div class="col-md-8 col-sm-8 col-xs-12 col-xs-height col-full-height">
             <div class="container-fluid" style="padding: 0;">
@@ -197,3 +197,15 @@
         </div>
     </div>
 </div>
+
+@section scripts{
+
+    @Scripts.Render("~/bundles/ticketcenter")
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $('.controller-name').html('Ticket');
+            $('.controller-action').html('Ticket Details');
+        });
+    </script>
+}

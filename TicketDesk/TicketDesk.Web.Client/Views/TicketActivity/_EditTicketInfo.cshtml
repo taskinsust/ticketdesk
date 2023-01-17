@@ -17,147 +17,160 @@
 @using TicketDesk.Domain.Model
 @model  Ticket
 
-@if (ViewBag.IsMultiProject ?? false)
-{
-<div class="form-group">
-    @Html.LabelFor(model => model.ProjectId, new {@class = "col-sm-2 control-label"})
-    <div class="col-sm-8">
-        @Html.DropDownListFor(model => model.ProjectId, Model.GetProjectList((int)Model.ProjectId), new { @class = "form-control input-sm", tabindex = 0 })
-        @Html.ValidationMessageFor(model => model.ProjectId, "", new {@class = "text-danger"})
-    </div>
-</div>
-}
-else
-{
-    @Html.HiddenFor(model => model.ProjectId)
-}
+<div class="row">
+    <div class="col-12" style="margin:auto">
 
-<div class="form-group">
-    @Html.LabelFor(model => model.Title, new { @class = "col-sm-2 control-label" })
-    <div class="col-sm-8">
-        @Html.TextBoxFor(model => model.Title, new { @class = "form-control input-sm", placeholder = Strings.Form_TicketTitle_Placeholder, tabindex = 1 })
-        @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
-    </div>
-</div>
 
-<div class="form-group">
-    @Html.LabelFor(model => model.TicketType, new { @class = "col-sm-2 control-label" })
-    <div class="col-sm-2">
-        @Html.DropDownListFor(model => model.TicketType, Model.GetTicketTypeList(), new { @class = "form-control input-sm", tabindex = 2 })
-        @Html.ValidationMessageFor(model => model.TicketType, "", new { @class = "text-danger" })
-    </div>
-
-    @Html.LabelFor(model => model.Category, new { @class = "col-sm-1 control-label" })
-    <div class="col-sm-2">
-        @Html.DropDownListFor(model => model.Category, Model.GetCategoryList(), new { @class = "form-control input-sm", tabindex = 3 })
-        @Html.ValidationMessageFor(model => model.Category, "", new { @class = "text-danger" })
-    </div>
-    @if (Model.AllowEditPriorityList())
-    {
-        @Html.LabelFor(model => model.Priority, new { @class = "col-sm-1 control-label" })
-        <div class="col-sm-2">
-            @Html.DropDownListFor(model => model.Priority, Model.GetPriorityList(), new { @class = "form-control input-sm", tabindex = 4 })
-            @Html.ValidationMessageFor(model => model.Priority, "", new { @class = "text-danger" })
-        </div>
-    }
-</div>
-
-<div class="form-group">
-    <div class="col-sm-2 col-sm-offset-2">
-        <label class="checkbox-inline" for="affectsCustomer">
-            <input class="" type="checkbox" name="affectsCustomer" id="affectsCustomer" value="true" tabindex="5" />
-            @Strings.AffectsCustomer_Label
-        </label>
-    </div>
-    @if (Model.AllowEditTags())
-    {
-        @Html.LabelFor(model => model.TagList, new { @class = "col-sm-1 control-label" })
-        <div class="col-sm-5">
-            @Html.TextBoxFor(m => m.TagList, new { id = "ticketTags", @class = "form-control input-sm", tabindex = 6 })
-        </div>
-    }
-</div>
-
-<div class="form-group">
-    @Html.LabelFor(model => model.DueDate, new { @class = "col-sm-2 control-label" })
-    <div class="col-sm-2">
-        @Html.TextBoxFor(model => model.DueDateAsString, new { @class = "form-control input-sm", tabindex = 7 })
-    </div>
-    @Html.LabelFor(model => model.TargetDate, new { @class = "col-sm-1 control-label" })
-    <div class="col-sm-2">
-        @Html.TextBoxFor(model => model.TargetDateAsString, new { @class = "form-control input-sm", tabindex = 8 })
-    </div>
-    @Html.LabelFor(model => model.ResolutionDate, new { @class = "col-sm-2 col-sm-pull-1 control-label" })
-    <div class="col-sm-2 col-sm-pull-1">
-        @Html.TextBoxFor(m => m.ResolutionDateAsString, new { @class = "form-control input-sm", tabindex = 9 })
-    </div>
-</div>
-
-<div class="form-group">
-    <div class="col-sm-4">&nbsp;</div>
-    <div class="col-sm-6">
-        <div class="col-sm-6">
-            @Html.LabelFor(model => model.EstimatedDuration, new { @class = "col-sm-6 control-label" })
-            <div class="col-sm-6" style="padding-right:0">
-                @Html.TextBoxFor(model => model.EstimatedDuration, new { @class = "form-control input-sm", style = "padding-right:0", tabindex = 10 })                
-            </div>
-            @Html.ValidationMessageFor(model => model.EstimatedDuration, "", new { @class = "text-danger", style = "float:right" })
-        </div>
-        <div class="col-sm-6" style="padding-right:0">
-            @Html.LabelFor(model => model.ActualDuration, new { @class = "col-sm-6 control-label" })
-            <div class="col-sm-6" style="padding-right:0">
-                @Html.TextBoxFor(model => model.ActualDuration, new { @class = "form-control input-sm", style = "padding-right:0", tabindex = 11 })                
-            </div>
-            @Html.ValidationMessageFor(model => model.ActualDuration, "", new { @class = "text-danger", style = "float:right" })
-        </div>
-    </div>
-</div>
-
-<div class="form-group">
-    <label class="col-sm-2 control-label text-right" for="wmd-input-ticketDetails">@Strings.Details_Label</label>
-
-    @if (Model.IsHtml)
-    {
-        <div class="col-sm-8">
-            <textarea id="wmd-input-ticketDetails" name="Details" data-val-required="" data-val="true">@Model.Details</textarea>
-            @Html.ValidationMessageFor(model => model.Details, "", new { @class = "text-danger" })
-        </div>
-    }
-    else
-    {
-        <div class="col-sm-8 wmd-panel">
-            <div class="tabbable tabs-below">
-                <div class="tab-content">
-                    <div class="tab-pane fade in active" id="tab1">
-                        <div id="wmd-button-bar-ticketDetails" class="" style="display: inline-block"></div>
-                        @Html.TextAreaFor(model => model.Details, new { id = "wmd-input-ticketDetails", @class = "wmd-input form-control", data_val_required = "", data_val = "true", cols = "92", rows = "15", style = "height:200px", tabindex = 12 })
-
-                    </div>
-                    <div class="tab-pane fade" id="tab2">
-                        <div class="row" style="min-height: 35px;"></div>
-
-                        <div id="wmd-preview-ticketDetails" class="wmd-panel wmd-preview form-control">
-
-                        </div>
-                    </div>
+        @if (ViewBag.IsMultiProject ?? false)
+        {
+            <div class="row form-group">
+                @Html.LabelFor(model => model.ProjectId, new { @class = "col-sm-2 control-label" })
+                <div class="col-sm-8">
+                    @Html.DropDownListFor(model => model.ProjectId, Model.GetProjectList((int)Model.ProjectId), new { @class = "form-control input-sm", tabindex = 0 })
+                    @Html.ValidationMessageFor(model => model.ProjectId, "", new { @class = "text-danger" })
                 </div>
-                <ul class="nav nav-tabs navbar-right">
-                    <li class="active"><a href="#tab1" data-toggle="tab"><i class="fa fa-edit"></i>&nbsp;@Strings.Details_EditOption</a></li>
-                    <li><a href="#tab2" data-toggle="tab"><i class="fa fa-eye"></i>&nbsp;@Strings.Details_PreviewOption</a></li>
-                </ul>
+            </div>
+        }
+        else
+        {
+            @Html.HiddenFor(model => model.ProjectId)
+        }
+
+        <div class="row form-group">
+            @Html.LabelFor(model => model.Title, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-8">
+                @Html.TextBoxFor(model => model.Title, new { @class = "form-control input-sm", placeholder = Strings.Form_TicketTitle_Placeholder, tabindex = 1 })
+                @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="row form-group">
+            @Html.LabelFor(model => model.TicketType, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-2">
+                @Html.DropDownListFor(model => model.TicketType, Model.GetTicketTypeList(), new { @class = "form-control input-sm", tabindex = 2 })
+                @Html.ValidationMessageFor(model => model.TicketType, "", new { @class = "text-danger" })
             </div>
 
-            @Html.ValidationMessageFor(model => model.Details, "", new { @class = "text-danger" })
+            @Html.LabelFor(model => model.Category, new { @class = "col-sm-1 control-label" })
+            <div class="col-sm-2">
+                @Html.DropDownListFor(model => model.Category, Model.GetCategoryList(), new { @class = "form-control input-sm", tabindex = 3 })
+                @Html.ValidationMessageFor(model => model.Category, "", new { @class = "text-danger" })
+            </div>
+            @if (Model.AllowEditPriorityList())
+            {
+                @Html.LabelFor(model => model.Priority, new { @class = "col-sm-1 control-label" })
+                <div class="col-sm-2">
+                    @Html.DropDownListFor(model => model.Priority, Model.GetPriorityList(), new { @class = "form-control input-sm", tabindex = 4 })
+                    @Html.ValidationMessageFor(model => model.Priority, "", new { @class = "text-danger" })
+                </div>
+            }
         </div>
-    }
-</div>
-@if (Model.AllowSetOwner())
-{
-    <div class="form-group">
-        @Html.LabelFor(model => model.Owner, new { @class = "col-sm-2 control-label" })
-        <div class="col-sm-3">
-            @Html.DropDownListFor(model => model.Owner, Model.GetOwnersList(), new { @class = "form-control input-sm", tabindex = 13 })
-            @Html.ValidationMessageFor(model => model.Owner, "", new { @class = "text-danger" })
+
+        <div class="row form-group">
+            <div class="col-2 col-offset-2">
+                <label class="checkbox-inline" for="affectsCustomer">
+                    <input class="" type="checkbox" name="affectsCustomer" id="affectsCustomer" value="true" tabindex="5" />
+                    @Strings.AffectsCustomer_Label
+                </label>
+            </div>
+            @if (Model.AllowEditTags())
+            {
+                @Html.LabelFor(model => model.TagList, new { @class = "col-sm-1 control-label" })
+                <div class="col-sm-5">
+                    @Html.TextBoxFor(m => m.TagList, new { id = "ticketTags", @class = "form-control input-sm", tabindex = 6 })
+                </div>
+            }
         </div>
+
+        <div class="row form-group">
+            @Html.LabelFor(model => model.DueDate, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-2">
+                @Html.TextBoxFor(model => model.DueDateAsString, new { @class = "form-control input-sm", tabindex = 7 })
+            </div>
+            @Html.LabelFor(model => model.TargetDate, new { @class = "col-sm-1 control-label" })
+            <div class="col-sm-2">
+                @Html.TextBoxFor(model => model.TargetDateAsString, new { @class = "form-control input-sm", tabindex = 8 })
+            </div>
+            @Html.LabelFor(model => model.ResolutionDate, new { @class = "col-sm-2 col-sm-pull-1 control-label" })
+            <div class="col-sm-2 col-sm-pull-1">
+                @Html.TextBoxFor(m => m.ResolutionDateAsString, new { @class = "form-control input-sm", tabindex = 9 })
+            </div>
+        </div>
+
+        <div class="row">
+            @*<div class="col-sm-4">&nbsp;</div>*@
+            <div class="col-sm-4">
+                <div class="row form-group">
+                    @Html.LabelFor(model => model.EstimatedDuration, new { @class = "col-sm-6 control-label" })
+                    <div class="col-sm-6" style="padding-right:0">
+                        @Html.TextBoxFor(model => model.EstimatedDuration, new { @class = "form-control input-sm", style = "padding-right:0", tabindex = 10 })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.EstimatedDuration, "", new { @class = "text-danger", style = "float:right" })
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="row form-group">
+
+                    @Html.LabelFor(model => model.ActualDuration, new { @class = "col-sm-6 control-label" })
+                    <div class="col-sm-6" style="padding-right:0">
+                        @Html.TextBoxFor(model => model.ActualDuration, new { @class = "form-control input-sm", style = "padding-right:0", tabindex = 11 })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.ActualDuration, "", new { @class = "text-danger", style = "float:right" })
+
+                </div>
+
+            </div>
+        </div>
+
+        <div class="row form-group">
+            <label class="col-sm-2 control-label text-right" for="wmd-input-ticketDetails">@Strings.Details_Label</label>
+
+            @if (Model.IsHtml)
+            {
+                <div class="col-sm-8">
+                    <textarea id="wmd-input-ticketDetails" name="Details" data-val-required="" data-val="true">@Model.Details</textarea>
+                    @Html.ValidationMessageFor(model => model.Details, "", new { @class = "text-danger" })
+                </div>
+            }
+            else
+            {
+                <div class="col-sm-8 wmd-panel">
+                    <div class="tabbable tabs-below">
+                        <div class="tab-content">
+                            <div class="tab-pane fade in active" id="tab1">
+                                <div id="wmd-button-bar-ticketDetails" class="" style="display: inline-block"></div>
+                                @Html.TextAreaFor(model => model.Details, new { id = "wmd-input-ticketDetails", @class = "wmd-input form-control", data_val_required = "", data_val = "true", cols = "92", rows = "15", style = "height:200px", tabindex = 12 })
+
+                            </div>
+                            <div class="tab-pane fade" id="tab2">
+                                <div class="row" style="min-height: 35px;"></div>
+
+                                <div id="wmd-preview-ticketDetails" class="wmd-panel wmd-preview form-control">
+
+                                </div>
+                            </div>
+                        </div>
+                        <ul class="nav nav-tabs navbar-right">
+                            <li class="active"><a href="#tab1" data-toggle="tab"><i class="fa fa-edit"></i>&nbsp;@Strings.Details_EditOption</a></li>
+                            <li><a href="#tab2" data-toggle="tab"><i class="fa fa-eye"></i>&nbsp;@Strings.Details_PreviewOption</a></li>
+                        </ul>
+                    </div>
+
+                    @Html.ValidationMessageFor(model => model.Details, "", new { @class = "text-danger" })
+                </div>
+            }
+        </div>
+        @if (Model.AllowSetOwner())
+        {
+            <div class="row form-group">
+                @Html.LabelFor(model => model.Owner, new { @class = "col-sm-2 control-label" })
+                <div class="col-sm-3">
+                    @Html.DropDownListFor(model => model.Owner, Model.GetOwnersList(), new { @class = "form-control input-sm", tabindex = 13 })
+                    @Html.ValidationMessageFor(model => model.Owner, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        }
+
+
     </div>
-}
+</div>

@@ -1,12 +1,12 @@
 ﻿@using TicketDesk.Localization.Views.Account
 @model TicketDesk.Web.Client.Models.AccountProfileViewModel
 @{
-    Layout = "~/Views/Shared/_LayoutPrev.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@section title
+@*@section title
 {
     @EditProfile.Title
-}
+}*@
 @section Scripts {
 }
 <main>
@@ -16,11 +16,11 @@
             <div class="col-lg-7 col-lg-offset-3 col-md-8 col-md-offset-2 col-sm-12">
                 @using (Html.BeginForm("EditProfile", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
                 {
-                    <div class="panel panel-info">
-                        <div class="panel-heading">
-                            <h2 class="panel-title">@EditProfile.Header</h2>
+                    <div class="card card-info">
+                        <div class="card-header">
+                            <h2 class="card-title">@EditProfile.Header</h2>
                         </div>
-                        <div class="panel-body">
+                        <div class="card-body">
 
                             @Html.AntiForgeryToken()
                             @Html.ValidationSummary("", new { @class = "text-danger" })
@@ -41,7 +41,7 @@
                             </div>
 
                         </div>
-                        <div class="panel-footer">
+                        <div class="card-footer">
                             <button type="submit" class="btn btn-success" tabindex="10">@EditProfile.SaveOption</button>&nbsp;&nbsp;
                             @Html.ActionLink(EditProfile.BackOption, "Manage")
                         </div>

@@ -6,12 +6,21 @@
 }
 
 @*@{
-    Layout = "~/Views/Shared/_LayoutPrev.cshtml";
-}*@
+        Layout = "~/Views/Shared/_LayoutPrev.cshtml";
+    }*@
+
+<style>
+    .pagination li {
+        width: 25px;
+    }
+    .clickable {
+        cursor: pointer
+    }
+</style>
 
 <div id="userListBody">
-    <div class="panel panel-default">
-        <div class="panel-body" style="padding: 0;">
+    <div class="card card-default">
+        <div class="card-body" style="padding: 0;">
             <div class="table-responsive">
                 <table class="table table-striped table-condensed table-hover ">
                     <tr>
@@ -49,7 +58,7 @@
                 </table>
             </div>
         </div>
-        <div class="panel-footer">
+        <div class="card-footer">
             @Html.PagedListPager(Model, page => Url.Action("PageList", new { page }), PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(ajaxPagerOptions))
         </div>
     </div>

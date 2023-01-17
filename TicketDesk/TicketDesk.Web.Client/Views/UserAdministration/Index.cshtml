@@ -1,17 +1,19 @@
 ﻿@using TicketDesk.Localization.Views.UserAdministration
 @model PagedList.IPagedList<TicketDesk.Web.Client.Models.UserAccountInfoViewModel>
 @{
-    Layout = "~/Views/Shared/_LayoutPrev.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@section title{
+@*@section title{
     @Index.Title
-}
+}*@
 @section scripts
 {
     @Scripts.Render("~/bundles/admin-users")
     <script type="text/javascript">
         $(document).ready(function () {
+            $('.controller-name').html('Settings');
+            $('.controller-action').html('Manage User');
             window.adminUsers.activate();
         });
     </script>

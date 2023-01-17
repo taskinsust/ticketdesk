@@ -1,12 +1,18 @@
 ﻿@using TicketDesk.Localization.Views.ProjectSettings
 @model TicketDesk.Domain.Model.Project
 @{
-    Layout = "~/Views/Shared/_LayoutPrev.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@section title
+@section scripts
 {
-    @New.Title
+    @Scripts.Render("~/bundles/project-settings")
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.controller-name').html('Project Settings');
+            $('.controller-action').html('Create');
+        });
+    </script>
 }
 <main>
     <div class="container">
@@ -17,11 +23,11 @@
                 {
                     @Html.AntiForgeryToken()
 
-                    <div class="panel panel-info">
-                        <div class="panel-heading">
-                            <h2 class="panel-title">@New.Header</h2>
+                    <div class="card card-info">
+                        <div class="card-header">
+                            <h2 class="card-title">@New.Header</h2>
                         </div>
-                        <div class="panel-body">
+                        <div class="card-body">
                             @Html.ValidationSummary("", new { @class = "text-danger" })
                             <div class="form-group">
                                 @Html.LabelFor(m => m.ProjectName, new { @class = "col-sm-3 control-label" })
@@ -39,12 +45,12 @@
 
                         </div>
 
-                        <div class="panel-footer">
+                        <div class="card-footer">
                             <div class="">
                                 <button type="submit" class="btn btn-success" tabindex="10">
                                     <i class="fa fa-plus"></i>&nbsp;&nbsp;@New.SaveOption
                                 </button>&nbsp;&nbsp;
-                                @Html.ActionLink(New.BackOption, "Index")
+                                @Html.ActionLink(New.BackOption, "Index", routeValues: null, htmlAttributes: new { @class = "btn btn-dark", @role = "button" })
 
                             </div>
                         </div>

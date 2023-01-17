@@ -25,12 +25,12 @@
 {
     @Html.AntiForgeryToken()
     <input type="hidden" id="tempId" value="@ViewBag.TempId" />
-    <div id="activityBody">
+    <div id="activityBody" style="padding: 20px">
         
         @Html.Partial(string.Format("_{0}", activity), Model)
         @Html.Partial("_ActivityComment", new TicketEvent() { IsHtml = ViewBag.IsEditorDefaultHtml })
     </div>
-    <div class="panel-footer">
+    <div class="card-footer">
         <div>
             <button type="submit" class="btn btn-success" tabindex="25">@activity.GetDisplayName()</button>&nbsp;&nbsp;<a href="#" onclick="return editTicket.cancelActivity(event);">@Strings.Form_CancelOption</a>
         </div>

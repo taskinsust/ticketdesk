@@ -21,12 +21,12 @@
 {
     var userId = User.Identity.GetUserId();
     
-    var pnlType = (evt.EventBy == userId)? "panel-success": "panel-default";
-    <div class="panel panel-default">
-        <div class="panel-heading"  style="padding: 5px;">
+    var pnlType = (evt.EventBy == userId)? "card-success": "card-default";
+    <div class="card card-default">
+        <div class="card-header"  style="padding: 5px;">
             <div><strong>@evt.GetEventByInfo().DisplayName</strong> @evt.EventDescription</div>
 
-            <div class="text-muted small" style="text-indent: 1em;">
+            <div class="small" style="text-indent: 1em; color: wheat">
                 @evt.EventDate.ToString("D")
                 @evt.EventDate.ToString("t")
             </div>
@@ -35,7 +35,7 @@
             var cmt = evt.HtmlComment();
             if (!string.IsNullOrEmpty(cmt.ToString()))
             {
-                <div class="panel-body" style="padding: 5px;">@cmt</div>
+                <div class="card-body" style="padding: 5px; color: black">@cmt</div>
             }
         }
     </div>

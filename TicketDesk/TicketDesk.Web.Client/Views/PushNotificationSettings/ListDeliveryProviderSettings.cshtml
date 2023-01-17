@@ -8,17 +8,22 @@
 {
     var settings = Model[type];
 
-    <div class="form-group">
+    <div class="row form-group">
         @Html.DescriptionFor(type, "col-md-4 col-sm-4 control-label", "label")
         <div class="col-md-8 col-sm-8">
-            <label class="checkbox-inline" style="vertical-align: top;">
-                @Html.CheckBox(type.Name + "_IsEnabled", settings.IsEnabled, new { disabled = "disabled" })
-                @Html.PromptFor(model => settings.IsEnabled)
-            </label>
+            <div class="row">
+                <div style="display: flex; justify-content: space-between; align-items: center">
+                    <label>
+                        @Html.CheckBox(type.Name + "_IsEnabled", settings.IsEnabled, new { disabled = "disabled" })
+                        @Html.PromptFor(model => settings.IsEnabled)
+                    </label>
 
-            <a class="btn btn-link" href="@Url.Action("ConfigureDeliveryProvider", "PushNotificationSettings", new {providerAssemblyQualifiedName = type.AssemblyQualifiedName})">
-                <i class="fa fa-gear"></i> @ListDeliveryProviderSettings.Configure
-            </a>
+                    <a class="btn btn-link btn-sm" href="@Url.Action("ConfigureDeliveryProvider", "PushNotificationSettings", new {providerAssemblyQualifiedName = type.AssemblyQualifiedName})">
+                        <i class="fa fa-gear"></i> @ListDeliveryProviderSettings.Configure
+                    </a>
+                </div>
+            </div>
+            
         </div>
     </div>
     if (settings.IsEnabled)

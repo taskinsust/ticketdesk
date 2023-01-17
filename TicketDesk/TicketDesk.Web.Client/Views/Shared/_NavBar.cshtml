@@ -74,72 +74,71 @@
         width: 225px;
         height: 50px;
         background-repeat: no-repeat;
-        /*background-image: url(Images/TicketDesk-2.5-mobile.png);*/
-        background-image: url('../../Content/Images/TicketDesk-2.5-mobile.png');
+    background-image: url(Images/TicketDesk-2.5-mobile.png);
+    background-image: url('../../Content/Images/TicketDesk-2.5-mobile.png');
+    }
+    .navbar-nav .dropdown-menu{
+        padding-left: 10px;
     }
 </style>
 @*navbar navbar-expand-md navbar-dark bg-dark mb-4*@
-<nav class="main-header navbar navbar-expand navbar-white navbar-light mb-4">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="#"></a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="true" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="navbar-collapse collapse show" id="navbarCollapse" style="">
-            <ul class="navbar-nav me-auto mb-2 mb-md-0">
-                @*<li class="nav-item">
-                    <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
-                </li>*@
-                <li class="nav-item d-none d-sm-inline-block">
-                    <a href="@Url.Action("Index", "Home", new { area = "" })" class="nav-link"> <i class="nav-icon fas fa-th"> Dashboard</i></a>
+<nav class="main-header navbar navbar-expand-lg navbar-light bg-light">
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <a class="navbar-brand" href="#"></a>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a href="@Url.Action("Index", "Home", new { area = "" })" class="nav-link"> <i class="nav-icon fas fa-th"> Dashboard</i></a>
+            </li>
+            @if (User.Identity.IsAuthenticated)
+            {
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="nav-icon fas fa-newspaper"> </i> Ticket
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a href="@Url.Action("Index", "TicketCenter", new {area = ""})" class="nav-link"> <i class="nav-icon fas fa-chart-line"> </i> Ticket Center</a>
+                        <a href="@Url.Action("New", "Ticket", new {area = ""})" class="nav-link"> <i class="nav-icon fas fa-newspaper"> </i> New Ticket</a>
+                    </div>
                 </li>
-                @if (User.Identity.IsAuthenticated)
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="nav-icon fas fa-chart-area"> </i> Report
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="@Url.Action("TopDelayedTask", "TicketCenter", new {area = ""})">Delayed Report</a>
+
+                    </div>
+                </li>
+
+                if (User.Identity.IsAuthenticated && User.IsInRole("TdAdministrators"))
                 {
-
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="nav-icon fas fa-newspaper"> </i> Ticket
+                            <i class="nav-icon fas fa-cogs"> </i> Settings
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a href="@Url.Action("Index", "TicketCenter", new {area = ""})" class="nav-link"><i class="nav-icon fas fa-chart-line"> </i> Ticket Center</a>
-                            <a href="@Url.Action("New", "Ticket", new {area = ""})" class="nav-link"><i class="nav-icon fas fa-newspaper"> </i> New Ticket</a>
+                            <a class="dropdown-item" href="@Url.Action("Index", "UserAdministration")">Manage Users</a>
+                            <a class="dropdown-item" href="@Url.Action("Telegram User", "Telegramusers", "UserAdministration")">Pending User</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="@Url.Action("Index", "ProjectSettings")">Project Settings</a>
+                            <a class="dropdown-item" href="@Url.Action("Index", "ApplicationSettings")">Application Settings</a>
+                            <a class="dropdown-item" href="@Url.Action("Index", "PushNotificationSettings")">Push Notification Settings</a>
                         </div>
                     </li>
-
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="nav-icon fas fa-chart-area"> </i> Report
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="@Url.Action("TopDelayedTask", "TicketCenter", new {area = ""})">Delayed Report</a>
-
-                        </div>
-                    </li>
-
-                    if (User.Identity.IsAuthenticated && User.IsInRole("TdAdministrators"))
-                    {
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="nav-icon fas fa-fan"> </i> Settings
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="@Url.Action("Index", "UserAdministration")">Manage Users</a>
-                                <a class="dropdown-item" href="@Url.Action("Telegram User", "Telegramusers", "UserAdministration")">Pending User</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="@Url.Action("Index", "ProjectSettings")">Project Settings</a>
-                                <a class="dropdown-item" href="@Url.Action("Index", "ApplicationSettings")">Application Settings</a>
-                                <a class="dropdown-item" href="@Url.Action("Index", "PushNotificationSettings")">Push Notification Settings</a>
-                            </div>
-                        </li>
-                    }
                 }
-            </ul>
-
-            <form class="d-flex" role="search">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success" type="submit">Search</button>
-            </form>
-        </div>
+            }
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
 
         <div class="navbar-collapse collapse show">
             <ul class="navbar-nav ml-auto">
@@ -175,32 +174,33 @@
 
 
                 @*<li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fa fa-user"></i>
-                            <span class="">
-                                @(User.Identity.IsAuthenticated ? @User.Identity.Name : "Account")
-                            </span>
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            @if (User.Identity.IsAuthenticated)
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-user"></i>
+                        <span class="">
+                            @(User.Identity.IsAuthenticated ? @User.Identity.Name : "Account")
+                        </span>
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <a class="dropdown-item" href="#">@Html.ActionLink("My Account", "Manage", "Account")</a>
+                            <a class="dropdown-item" href="#">@Html.ActionLink("LogOff", "SignOut", "User")</a>
+                        }
+                        else
+                        {
+                            if (ApplicationConfig.RegisterEnabled)
                             {
-                                <a class="dropdown-item" href="#">@Html.ActionLink("My Account", "Manage", "Account")</a>
-                                <a class="dropdown-item" href="#">@Html.ActionLink("LogOff", "SignOut", "User")</a>
+                                <a class="dropdown-item" href="#">@Html.ActionLink("Register", "Register", "User", null, new { id = "registerLink" })</a>
                             }
                             else
                             {
-                                if (ApplicationConfig.RegisterEnabled)
-                                {
-                                    <a class="dropdown-item" href="#">@Html.ActionLink("Register", "Register", "User", null, new { id = "registerLink" })</a>
-                                }
-                                else
-                                {
-                                    <a class="dropdown-item" href="#">@Html.ActionLink("Sign In", "SignIn", "User", null, new { id = "loginLink" })</a>
-                                }
+                                <a class="dropdown-item" href="#">@Html.ActionLink("Sign In", "SignIn", "User", null, new { id = "loginLink" })</a>
                             }
-                        </div>
-                    </li>*@
+                        }
+                    </div>
+                </li>*@
             </ul>
         </div>
+
     </div>
 </nav>
