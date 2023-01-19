@@ -12,62 +12,72 @@
         line-height: 150% !important;
         margin-top: 10px !important;
     }
+
+    .select2-container--default .select2-selection--single .select2-selection__arrow {
+        height: 26px;
+        position: absolute;
+        top: 8px !important;
+        right: 1px;
+        width: 20px;
+    }
 </style>
 
-<div class="navbar" style="min-height: 0; margin: 0; margin-left: 0px; margin-right: 0px;">
-    <div class="row">
-        <div class="col-md-12">
-            <div style="display:flex; justify-content: space-between; align-items: stretch">
 
-                <div class="pull-left">
-                    <button type="button" class="btn btn-primary navbar-toggle" data-toggle="collapse" data-target="#filterbar-collapse" aria-expanded="true">
-                        @*<div class="btn btn-default btn-sm">*@
-                        <span class="sr-only">@Index.ToggleNav</span>
-                        <span class=""><i class="fa fa-filter"></i></span>
-                        @*</div>*@
-                    </button>
-                </div>
+<div class="row">
+    <!--<div class="col-1">-->
+        @*<label class="control-label center-block">
+            <i class="fas fa-filter" style="color: #428bff"></i>
+        </label>*@
+    <!--</div>-->
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="row">
+            @using (Ajax.BeginForm("FilterList", "TicketCenter", new { Model.CurrentListSetting.ListName }, ajaxFilterOptions, new { id = "filterForm", role = "form" }))
+            {
+                <div class="row" style="width: 95vw; padding-right: 30px">
+                    <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12 my-1">
+                        <div class="row">
+                            <label class="control-label col-4 center-block">
+                                @Index.Status
+                            </label>
+                            <div class="col-8">
+                                @Html.DropDownList("TicketStatus", Model.FilterBar.TicketStatusSelectList, Model.FilterBar.StatusFilterHtmlAttributes)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 my-1">
+                        <div class="row">
+                            <label class="control-label col-4 center-block">
+                                @Index.Owner
+                            </label>
+                            <div class="col-8">
+                                @Html.DropDownList("Owner", Model.FilterBar.SubmittersSelectList, Model.FilterBar.AssignedFilterHtmlAttributes)
+                            </div>
 
-                <div class="pull-right">
-                    <div class="navbar" id="filterbar">
-                        @using (Ajax.BeginForm("FilterList", "TicketCenter", new { Model.CurrentListSetting.ListName }, ajaxFilterOptions, new { id = "filterForm", @class = "form-horizontal navbar-form", role = "form" }))
-                        {
-                            <div class="row">
-                                <div class="row form-group form-group-xs small" style="width: 100%; margin: 0;">
-                                    <label class="control-label col-sm-1 text-right center-block">
-                                        @Index.Status
-                                    </label>
-                                    <div class="col-sm-2">
-                                        @Html.DropDownList("TicketStatus", Model.FilterBar.TicketStatusSelectList, Model.FilterBar.StatusFilterHtmlAttributes)
-                                    </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 my-1">
+                        <div class="row">
+                            <label class="control-label col-4 center-block"> @Index.Assigned</label>
+                            <div class="col-8">
+                                @Html.DropDownList("AssignedTo", Model.FilterBar.AssignedToSelectList, Model.FilterBar.AssignedFilterHtmlAttributes)
+                                <input type="submit" value="filter" id="filterSubmitButton" style="display:none" />
+                            </div>
 
-                                    <label class="control-label col-sm-1 text-right form-control-static">
-                                        @Index.Owner
-                                    </label>
-                                    <div class="col-sm-2">
-                                        @Html.DropDownList("Owner", Model.FilterBar.SubmittersSelectList, Model.FilterBar.OwnerFilterHtmlAttributes)
-                                    </div>
-
-
-                                    <label class="control-label col-sm-1 text-right form-control-static"> @Index.Assigned</label>
-                                    <div class="col-sm-2">
-                                        @Html.DropDownList("AssignedTo", Model.FilterBar.AssignedToSelectList, Model.FilterBar.AssignedFilterHtmlAttributes)
-                                        <input type="submit" value="filter" id="filterSubmitButton" />
-                                    </div>
-
-                                    <label class="control-label col-sm-1 text-right form-control-static">@Index.Show</label>
-                                    <div class="col-sm-2" style="white-space: nowrap">
-                                        @Html.DropDownList("PageSize", Model.FilterBar.ItemsPerPageSelectList, new { @class = "postback form-control number-select" })
-                                        <label class="control-label form-control-static"> @string.Format(Index.TotalItemCount, Model.Tickets.TotalItemCount)</label>
-                                    </div>
-                                    
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 my-1">
+                        <div class="row">
+                            <label class="control-label col-4 center-block">@Index.Show</label>
+                            <div class="col-8">
+                                <div class="row">
+                                    <div class="col-8">@Html.DropDownList("PageSize", Model.FilterBar.ItemsPerPageSelectList, new { @class = "postback form-control number-select" })</div>
+                                    <div class="col-4"><label class="control-label center-block"> @string.Format(Index.TotalItemCount, Model.Tickets.TotalItemCount)</label></div>
                                 </div>
                             </div>
-                        }
+                        </div>
                     </div>
                 </div>
-            </div>
+            }
         </div>
     </div>
 </div>
-

@@ -8,6 +8,13 @@
 
 @using TicketDesk.Web.Client.Models
 
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+<style>
+    .select2-container .select2-selection--single{
+        height: auto;
+    }
+</style>
+
 @*@section title{ @Index.Title }s*@
 
 <main style="display: none;">
@@ -27,12 +34,19 @@
 @section scripts{
 
     @Scripts.Render("~/bundles/ticketcenter")
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
     <script type="text/javascript">
 
         $(document).ready(function () {
             $('.controller-name').html('Ticket');
             $('.controller-action').html('Ticket Center');
             $('main').show();
+
+            $("#TicketStatus").select2();
+            $("#AssignedTo").select2();
+            $("#Owner").select2();
+            $("#PageSize").select2();
+
             $.ajaxSetup({ cache: false });
             ticketCenter.filters.setupFilterForm();
             ticketCenter.makeClicky();

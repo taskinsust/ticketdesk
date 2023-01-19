@@ -138,7 +138,7 @@
         </table>
     </div>
     @*</div>*@
-    <div class="card-footer">
+    <div class="h-25" style="padding: 20px">
         @Html.PagedListPager(Model.Tickets, page => Url.Action("PageList", new { listName = Model.CurrentListSetting.ListName, page }), PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(ajaxPagerOptions))
     </div>
 </div>
