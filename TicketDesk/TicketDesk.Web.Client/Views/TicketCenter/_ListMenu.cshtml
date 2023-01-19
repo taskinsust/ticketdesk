@@ -80,7 +80,10 @@
     <div class="slider"><div class="indicator"></div></div>
 
     <div class="content">
-        <section>
+        @*<section>*@
+            @Html.Partial("_TicketList", Model)
+        @*</section>*@
+        @*<section>
             @Html.Partial("_TicketList", Model)
         </section>
         <section>
@@ -91,9 +94,6 @@
         </section>
         <section>
             @Html.Partial("_TicketList", Model)
-        </section>
-        <section>
-            @Html.Partial("_TicketList", Model)
-        </section>
+        </section>*@
 
     </div>

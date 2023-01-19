@@ -79,9 +79,7 @@ namespace TicketDesk.Web.Client.Controllers
             int pageSize,
             string ticketStatus,
             string owner,
-            string assignedTo,
-            string fromDate,
-            string toDate)
+            string assignedTo)
         {
             var uId = Context.SecurityProvider.CurrentUserId;
             var userSetting = await Context.UserSettingsManager.GetSettingsForUserAsync(uId);

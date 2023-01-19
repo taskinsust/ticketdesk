@@ -130,14 +130,6 @@ namespace TicketDesk.Web.Client.Models
             }
         }
 
-        public DateTime FromDate
-        {
-            get
-            {
-                return new DateTime();
-            }
-        }
-
 
         public SelectList AssignedToSelectList
         {
