@@ -3,22 +3,11 @@
 @using TicketDesk.Domain.Model
 
 @model TicketDesk.Web.Client.Models.TicketCenterListViewModel
-@*@model IEnumerable<UserTicketListSetting>*@
 @{
     var currentListSettings = (UserTicketListSetting)ViewBag.CurrentListSettings;
 }
-<link href="~/Content/my-tab.css" rel="stylesheet" />
-
-@*UserListSettings*@
 
 <style>
-   /* .tab .nav-tabs {
-        margin-bottom: 15px;
-    }
-
-        .tab .nav-tabs li a {
-            padding: 20px;
-        }*/
     a.nostyle:link {
         text-decoration: inherit !important;
         color: inherit !important;
@@ -69,20 +58,5 @@
     <div class="slider"><div class="indicator"></div></div>
 
     <div class="content">
-        @*<section>*@
-            @Html.Partial("_TicketList", Model)
-        @*</section>*@
-        @*<section>
-            @Html.Partial("_TicketList", Model)
-        </section>
-        <section>
-            @Html.Partial("_TicketList", Model)
-        </section>
-        <section>
-            @Html.Partial("_TicketList", Model)
-        </section>
-        <section>
-            @Html.Partial("_TicketList", Model)
-        </section>*@
-
+        @Html.Partial("_TicketList", Model)
     </div>

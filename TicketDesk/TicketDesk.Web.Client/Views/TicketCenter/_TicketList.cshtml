@@ -19,13 +19,18 @@
     .ticketItems tr {
         cursor: pointer
     }
-    /*.pagination li {
-        width: 25px;
-    }*/
+    .loader {
+        border: 16px solid #E7E7E7;
+        border-radius: 50%;
+        border-top: 16px solid #3498db;
+        width: 100px;
+        height: 100px;
+        -webkit-animation: spin 2s linear infinite; /* Safari */
+        animation: spin 2s linear infinite;
+    }
+
 </style>
 <div id="ticketList" class="card card-default" onload="console.log('calling ajax'); JavaScript:timedRefresh(60000);">
-
-    @*<div class="card-body" style="padding: 0;">*@
     <div class="table-responsive ">
         <table class="table table-hover table-condensed  table-striped">
             <thead>
@@ -135,9 +140,10 @@
                 }
 
             </tbody>
+
         </table>
+        @*<div class="loader"> </div>*@
     </div>
-    @*</div>*@
     <div class="h-25" style="padding: 20px">
         @Html.PagedListPager(Model.Tickets, page => Url.Action("PageList", new { listName = Model.CurrentListSetting.ListName, page }), PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(ajaxPagerOptions))
     </div>

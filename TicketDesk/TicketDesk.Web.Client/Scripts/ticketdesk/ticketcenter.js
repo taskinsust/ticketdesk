@@ -19,22 +19,22 @@
 
         var completeChangeList = function() {
             $('#ticketList').fadeIn(100);
+           
             makeClicky();
             filters.setupFilterForm();
         };
 
-        var paging = function() {
+        var paging = function () {
             var beginChangePage = function(args) {
-
                 $('#ticketList').fadeOut(100);
+               
             };
 
             return { beginChangePage: beginChangePage }
         }();
 
-        var filters = function() {
+        var filters = function () {
             var beginChangeFilter = function(args) {
-
                 $('#ticketList').fadeOut(100);
             };
 
@@ -63,11 +63,11 @@
             };
 
             var beginChangeSort = function(event, args) {
-
                 if (shiftstatus) {
                     args.url = args.url + "&isMultiSort=true";
                 }
                 $('#ticketList').fadeOut(100);
+                
             };
 
             return {
