@@ -61,7 +61,7 @@ namespace TicketDesk.Web.Client.Controllers
         }
 
         [Route("{id:int}")]
-        public async Task<ActionResult> Index(int id)
+        public async Task<ActionResult> Index(int id, bool? viewOnly)
         {
 
             var model = await Context.Tickets.Include(t => t.TicketSubscribers).FirstOrDefaultAsync(t => t.TicketId == id);
@@ -71,6 +71,7 @@ namespace TicketDesk.Web.Client.Controllers
                 return RedirectToAction("Index", "TicketCenter");
             }
             ViewBag.IsEditorDefaultHtml = Context.TicketDeskSettings.ClientSettings.GetDefaultTextEditorType() == "summernote";
+            ViewBag.ViewOnly = viewOnly ?? false;
 
             return View(model);
         }

@@ -1,93 +1,99 @@
 ﻿@using TicketDesk.Localization.Views.TicketCenter
 
 @using TicketDesk.Domain.Model
-@model IEnumerable<UserTicketListSetting>
+
+@model TicketDesk.Web.Client.Models.TicketCenterListViewModel
+@*@model IEnumerable<UserTicketListSetting>*@
 @{
     var currentListSettings = (UserTicketListSetting)ViewBag.CurrentListSettings;
 }
-<link href="~/Content/tab.css" rel="stylesheet" />
+<link href="~/Content/my-tab.css" rel="stylesheet" />
+
+@*UserListSettings*@
 
 <style>
-    .tab .nav-tabs {
-        margin-bottom: 5px;
+   /* .tab .nav-tabs {
+        margin-bottom: 15px;
     }
-    .tab .nav-tabs li a {
-        padding: 20px;
+
+        .tab .nav-tabs li a {
+            padding: 20px;
+        }*/
+    a.nostyle:link {
+        text-decoration: inherit !important;
+        color: inherit !important;
+        cursor: auto !important;
     }
-    /*.tab .nav-tabs li.active a {
-        padding: 40px 20px;
-    }*/
-   /* .tab .nav-tabs li.active a {
-        padding: 40px 50px;
-    }*/
+
+    a.nostyle:visited {
+        text-decoration: inherit !important;
+        color: inherit !important;
+        cursor: auto !important;
+    }
 </style>
 
-<div class="tab" role="tabpanel">
-    <!-- Nav tabs -->
-    <ul class="nav nav-tabs" role="tablist">
-        @foreach (var list in Model)
+<!--<div class="tab" role="tabpanel">-->
+@*Nav tabs*@
+<!--<ul class="nav nav-tabs" role="tablist">
+        foreach (var list in Model)
         {
             var className = ((currentListSettings.ListName == list.ListName)) ? "active" : string.Empty;
-            <li class="@className small">
-                @Html.ActionLink(list.ListDisplayName, "Index", new { ListName = list.ListName })
+            <li class="className small">
+                Html.ActionLink(list.ListDisplayName, "Index", new { ListName = list.ListName })
             </li>
         }
-        @*<li role="presentation" class="active"><a href="#Section1" aria-controls="home" role="tab" data-toggle="tab">Section 1</a></li>
-        <li role="presentation"><a href="#Section2" aria-controls="profile" role="tab" data-toggle="tab">Section 2</a></li>
-        <li role="presentation"><a href="#Section3" aria-controls="messages" role="tab" data-toggle="tab">Section 3</a></li>*@
     </ul>
-    <!-- Tab panes -->
-    @*<div class="tab-content">
-        <div role="tabpanel" class="tab-pane fade in active" id="Section1">
-            <h3>Section-1</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras a blandit enim. Aliquam gravida orci id fringilla feugiat. Integer convallis ut ex quis semper. Suspendisse ut lobortis urna. Proin viverra, eros iaculis iaculis posuere, risus justo tincidunt ex, eget tempor lectus erat vel massa. Cum sociis natoque penatibus et magnis.</p>
-        </div>
-        <div role="tabpanel" class="tab-pane fade" id="Section2">
-            <h3>Section-2</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras a blandit enim. Aliquam gravida orci id fringilla feugiat. Integer convallis ut ex quis semper. Suspendisse ut lobortis urna. Proin viverra, eros iaculis iaculis posuere, risus justo tincidunt ex, eget tempor lectus erat vel massa. Cum sociis natoque penatibus et magnis.</p>
-        </div>
-        <div role="tabpanel" class="tab-pane fade" id="Section3">
-            <h3>Section-3</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras a blandit enim. Aliquam gravida orci id fringilla feugiat. Integer convallis ut ex quis semper. Suspendisse ut lobortis urna. Proin viverra, eros iaculis iaculis posuere, risus justo tincidunt ex, eget tempor lectus erat vel massa. Cum sociis natoque penatibus et magnis. </p>
-        </div>
-    </div>*@
-</div>
+</div>-->
 
-@*<div class="row menulist">
-    <ul class="nav nav-tabs pull-right" role="tablist">
-        @foreach (var list in Model)
-        {
-            var className = ((currentListSettings.ListName == list.ListName)) ? "active" : string.Empty;
-            <li class="@className small">
-                @Html.ActionLink(list.ListDisplayName, "Index", new { ListName = list.ListName })
-            </li>
-        }
-        <li data-toggle="tooltip"
-                data-placement="bottom"
-                title="@Index.ResetAllSettings">
-                <a href="#" class="" data-toggle="modal" data-target="#reset-confirm">
-                    <i class="fa fa-repeat"></i> <span class="hidden-xs hidden-sm">@Index.ResetLists</span>
-                </a>
-            </li>
-    </ul>
-</div>
+<div class="tabs">
 
-<div class="modal fade" id="reset-confirm" tabindex="-1" role="dialog" aria-labelledby="reset-confirm-label" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="@Index.CloseOption"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="reset-confirm-label">@Index.Reset_Confirmation</h4>
-            </div>
-            <div class="modal-body">
-                <p class="alert alert-danger">
-                    @Index.Reser_Alert
-                </p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">@Index.CancelOption</button>
-                <a href="@Url.Action("ResetUserLists")" class="btn btn-primary">@Index.SaveOption</a>
-            </div>
-        </div>
+    @{
+        var listA = Model.UserListSettings;
+
+        <input type="radio" id="tab1" name="tab-control" checked="@(currentListSettings.ListName == listA.ElementAt(0).ListName)">
+        <input type="radio" id="tab2" name="tab-control" checked="@(currentListSettings.ListName == listA.ElementAt(1).ListName)">
+        <input type="radio" id="tab3" name="tab-control" checked="@(currentListSettings.ListName == listA.ElementAt(2).ListName)">
+        <input type="radio" id="tab4" name="tab-control" checked="@(currentListSettings.ListName == listA.ElementAt(3).ListName)">
+        <input type="radio" id="tab5" name="tab-control" checked="@(currentListSettings.ListName == listA.ElementAt(4).ListName)">
+        <ul>
+            @{
+                var io = 0;
+                foreach (var list in Model.UserListSettings)
+                {
+                    io += 1;
+                    var name = list.ListDisplayName;
+                    var tabName = "tab" + io;
+
+                    <li title="@name">
+                        <label for="@tabName" role="button">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M14,2A8,8 0 0,0 6,10A8,8 0 0,0 14,18A8,8 0 0,0 22,10H20C20,13.32 17.32,16 14,16A6,6 0 0,1 8,10A6,6 0 0,1 14,4C14.43,4 14.86,4.05 15.27,4.14L16.88,2.54C15.96,2.18 15,2 14,2M20.59,3.58L14,10.17L11.62,7.79L10.21,9.21L14,13L22,5M4.93,5.82C3.08,7.34 2,9.61 2,12A8,8 0 0,0 10,20C10.64,20 11.27,19.92 11.88,19.77C10.12,19.38 8.5,18.5 7.17,17.29C5.22,16.25 4,14.21 4,12C4,11.7 4.03,11.41 4.07,11.11C4.03,10.74 4,10.37 4,10C4,8.56 4.32,7.13 4.93,5.82Z" />
+                            </svg><br><span>@Html.ActionLink(list.ListDisplayName, "Index", new { ListName = list.ListName }, htmlAttributes: new { Style = "color: none" })</span>
+                        </label>
+                    </li>
+
+                }
+            }
+        </ul>
+    }
+
+    <div class="slider"><div class="indicator"></div></div>
+
+    <div class="content">
+        <section>
+            @Html.Partial("_TicketList", Model)
+        </section>
+        <section>
+            @Html.Partial("_TicketList", Model)
+        </section>
+        <section>
+            @Html.Partial("_TicketList", Model)
+        </section>
+        <section>
+            @Html.Partial("_TicketList", Model)
+        </section>
+        <section>
+            @Html.Partial("_TicketList", Model)
+        </section>
+
     </div>
-</div>*@

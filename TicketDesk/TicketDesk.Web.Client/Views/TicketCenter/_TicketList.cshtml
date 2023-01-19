@@ -9,126 +9,135 @@
     var ajaxPagerOptions = new AjaxOptions() { HttpMethod = "GET", UpdateTargetId = "ticketList", OnBegin = "ticketCenter.paging.beginChangePage", OnSuccess = "ticketCenter.completeChangeList", OnFailure = "ticketCenter.completeChangeList" };
 }
 <style>
-    #ticketList table th a{
+    .table{
+        margin-bottom: 0px !important;
+    }
+    #ticketList table th a {
         color: rgba(0, 0, 0, 1);
     }
+
     .ticketItems tr {
         cursor: pointer
     }
-    .pagination li {
+    /*.pagination li {
         width: 25px;
-    }
+    }*/
 </style>
 <div id="ticketList" class="card card-default" onload="JavaScript:timedRefresh(60000);">
-    <div class="card-header">
-        @Html.Partial("_FilterBar")
-    </div>
-    <div class="card-body" style="padding: 0;">
-        <div class="table-responsive ">
-            <table class="table table-hover table-condensed  table-striped">
-                <thead>
-                    <tr>
-                        <th>
-                            @Ajax.SortableColumnHeader(Html, Model.CurrentListSetting, Model.CurrentPage, "SortList", Model.CurrentListSetting.ListName, "TicketId", Index.TicketList_ID, ajaxSortOptions)
-                        </th>
-                        <th>
-                            @Ajax.SortableColumnHeader(Html, Model.CurrentListSetting, Model.CurrentPage, "SortList", Model.CurrentListSetting.ListName, "Title", Index.TicketList_Title, ajaxSortOptions)
-                        </th>
-                        <th>
-                            @Ajax.SortableColumnHeader(Html, Model.CurrentListSetting, Model.CurrentPage, "SortList", Model.CurrentListSetting.ListName, "TicketStatus", Index.TicketList_Status, ajaxSortOptions)
-                        </th>
-                        <th class="hidden-xs">
-                            @Ajax.SortableColumnHeader(Html, Model.CurrentListSetting, Model.CurrentPage, "SortList", Model.CurrentListSetting.ListName, "Owner", Index.TicketList_Owner, ajaxSortOptions)
-                        </th>
-                        <th>
-                            @Ajax.SortableColumnHeader(Html, Model.CurrentListSetting, Model.CurrentPage, "SortList", Model.CurrentListSetting.ListName, "AssignedTo", Index.TicketList_Assigned, ajaxSortOptions)
-                        </th>
-                        <th class="hidden-sm hidden-xs">
-                            @Ajax.SortableColumnHeader(Html, Model.CurrentListSetting, Model.CurrentPage, "SortList", Model.CurrentListSetting.ListName, "TicketType", Index.TicketList_Type, ajaxSortOptions)
-                        </th>
-                        <th class="hidden-sm hidden-xs">
-                            @Ajax.SortableColumnHeader(Html, Model.CurrentListSetting, Model.CurrentPage, "SortList", Model.CurrentListSetting.ListName, "Category", Index.TicketList_Category, ajaxSortOptions)
-                        </th>
-                        <th class="hidden-sm hidden-xs">
-                            @Ajax.SortableColumnHeader(Html, Model.CurrentListSetting, Model.CurrentPage, "SortList", Model.CurrentListSetting.ListName, "Priority", Index.TicketList_Priority, ajaxSortOptions)
-                        </th>
-                        <th>
-                            @Ajax.SortableColumnHeader(Html, Model.CurrentListSetting, Model.CurrentPage, "SortList", Model.CurrentListSetting.ListName, "TargetDate", Index.TicketList_Target, ajaxSortOptions)
-                        </th>
-                        <th>
-                            @Ajax.SortableColumnHeader(Html, Model.CurrentListSetting, Model.CurrentPage, "SortList", Model.CurrentListSetting.ListName, "DueDate", Index.TicketList_Due, ajaxSortOptions)
-                        </th>
-                        <th class="hidden-sm hidden-xs">
-                            @Ajax.SortableColumnHeader(Html, Model.CurrentListSetting, Model.CurrentPage, "SortList", Model.CurrentListSetting.ListName, "CreatedDate", Index.TicketList_Created, ajaxSortOptions)
-                        </th>
-                        <th>
-                            @Ajax.SortableColumnHeader(Html, Model.CurrentListSetting, Model.CurrentPage, "SortList", Model.CurrentListSetting.ListName, "LastUpdateDate", Index.TicketList_Updated, ajaxSortOptions)
-                        </th>
-                    </tr>
-                </thead>
-                <tbody class="ticketItems">
 
-                    @foreach (var item in tickets)
+    @*<div class="card-body" style="padding: 0;">*@
+    <div class="table-responsive ">
+        <table class="table table-hover table-condensed  table-striped">
+            <thead>
+                <tr>
+                    <th>
+                        @Ajax.SortableColumnHeader(Html, Model.CurrentListSetting, Model.CurrentPage, "SortList", Model.CurrentListSetting.ListName, "TicketId", Index.TicketList_ID, ajaxSortOptions)
+                    </th>
+                    <th>
+                        @Ajax.SortableColumnHeader(Html, Model.CurrentListSetting, Model.CurrentPage, "SortList", Model.CurrentListSetting.ListName, "Title", Index.TicketList_Title, ajaxSortOptions)
+                    </th>
+                    <th>
+                        @Ajax.SortableColumnHeader(Html, Model.CurrentListSetting, Model.CurrentPage, "SortList", Model.CurrentListSetting.ListName, "TicketStatus", Index.TicketList_Status, ajaxSortOptions)
+                    </th>
+                    <th class="hidden-xs">
+                        @Ajax.SortableColumnHeader(Html, Model.CurrentListSetting, Model.CurrentPage, "SortList", Model.CurrentListSetting.ListName, "Owner", Index.TicketList_Owner, ajaxSortOptions)
+                    </th>
+                    <th>
+                        @Ajax.SortableColumnHeader(Html, Model.CurrentListSetting, Model.CurrentPage, "SortList", Model.CurrentListSetting.ListName, "AssignedTo", Index.TicketList_Assigned, ajaxSortOptions)
+                    </th>
+                    <th class="hidden-sm hidden-xs">
+                        @Ajax.SortableColumnHeader(Html, Model.CurrentListSetting, Model.CurrentPage, "SortList", Model.CurrentListSetting.ListName, "TicketType", Index.TicketList_Type, ajaxSortOptions)
+                    </th>
+                    <th class="hidden-sm hidden-xs">
+                        @Ajax.SortableColumnHeader(Html, Model.CurrentListSetting, Model.CurrentPage, "SortList", Model.CurrentListSetting.ListName, "Category", Index.TicketList_Category, ajaxSortOptions)
+                    </th>
+                    <th class="hidden-sm hidden-xs">
+                        @Ajax.SortableColumnHeader(Html, Model.CurrentListSetting, Model.CurrentPage, "SortList", Model.CurrentListSetting.ListName, "Priority", Index.TicketList_Priority, ajaxSortOptions)
+                    </th>
+                    <th>
+                        @Ajax.SortableColumnHeader(Html, Model.CurrentListSetting, Model.CurrentPage, "SortList", Model.CurrentListSetting.ListName, "TargetDate", Index.TicketList_Target, ajaxSortOptions)
+                    </th>
+                    <th>
+                        @Ajax.SortableColumnHeader(Html, Model.CurrentListSetting, Model.CurrentPage, "SortList", Model.CurrentListSetting.ListName, "DueDate", Index.TicketList_Due, ajaxSortOptions)
+                    </th>
+                    <th class="hidden-sm hidden-xs">
+                        @Ajax.SortableColumnHeader(Html, Model.CurrentListSetting, Model.CurrentPage, "SortList", Model.CurrentListSetting.ListName, "CreatedDate", Index.TicketList_Created, ajaxSortOptions)
+                    </th>
+                    <th>
+                        @Ajax.SortableColumnHeader(Html, Model.CurrentListSetting, Model.CurrentPage, "SortList", Model.CurrentListSetting.ListName, "LastUpdateDate", Index.TicketList_Updated, ajaxSortOptions)
+                    </th>
+                </tr>
+            </thead>
+            <tbody class="ticketItems">
+                @{
+                    if (tickets.Count > 0)
                     {
-                        <tr class="clickable @(item.IsDue ? "due" : (item.IsOverDue ? "overdue" : string.Empty))">
-                            <td colspan="2" style="white-space: normal;">
-                                <a href="@Url.Action("Index", "Ticket", new {area = "", id = item.TicketId})" , style="margin-right: 1ex;">
-                                    #@item.TicketId
-                                </a>
-                                @Html.DisplayFor(modelItem => item.Title)
-                                @if (Model.DisplayProjects)
-                                {
-                                    <div>
-                                        <span class="small text-muted">
-                                            <i class="fa fa-book"></i>
-                                            @item.Project.ProjectName
-                                        </span>
-                                    </div>
-                                }
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.TicketStatus)
-                            </td>
-                            <td class="hidden-xs">
-                                @Html.DisplayFor(modelItem => item.GetOwnerInfo().DisplayName)
-                                [@Html.DisplayFor(modelItem => item.GetOwnerInfo().ContactNumber)]
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.GetAssignedToInfo().DisplayName)
+                        foreach (var item in tickets)
+                        {
+                            <tr class="clickable @(item.IsDue ? "due" : (item.IsOverDue ? "overdue" : string.Empty))">
+                                <td colspan="2" style="white-space: normal;">
+                                    <a href="@Url.Action("Index", "Ticket", new {area = "", id = item.TicketId})" , style="margin-right: 1ex;">
+                                        #@item.TicketId
+                                    </a>
+                                    @Html.DisplayFor(modelItem => item.Title)
+                                    @if (Model.DisplayProjects)
+                                    {
+                                        <div>
+                                            <span class="small text-muted">
+                                                <i class="fa fa-book"></i>
+                                                @item.Project.ProjectName
+                                            </span>
+                                        </div>
+                                    }
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TicketStatus)
+                                </td>
+                                <td class="hidden-xs">
+                                    @Html.DisplayFor(modelItem => item.GetOwnerInfo().DisplayName)
+                                    [@Html.DisplayFor(modelItem => item.GetOwnerInfo().ContactNumber)]
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.GetAssignedToInfo().DisplayName)
 
-                            </td>
-                            <td class="hidden-sm hidden-xs">
-                                @Html.DisplayFor(modelItem => item.TicketType)
-                            </td>
-                            <td class="hidden-sm hidden-xs">
-                                @Html.DisplayFor(modelItem => item.Category)
-                            </td>
-                            <td class="hidden-sm hidden-xs">
-                                @Html.DisplayFor(modelItem => item.Priority)
-                            </td>
-                            <td class="hidden-sm hidden-xs">
-                                @Html.DisplayFor(modelItem => item.TargetDateAsString)
-                            </td>
-                            <td class="hidden-sm hidden-xs">
-                                @Html.DisplayFor(modelItem => item.DueDateAsString)
-                            </td>
-                            <td class="hidden-sm hidden-xs">
-                                @item.CreatedDate.ToString("d")<br />
-                                @item.CreatedDate.ToString("t")
-                            </td>
-                            <td>
-                                @item.LastUpdateDate.ToString("d")<br />
-                                @item.LastUpdateDate.ToString("t")
-                            </td>
+                                </td>
+                                <td class="hidden-sm hidden-xs">
+                                    @Html.DisplayFor(modelItem => item.TicketType)
+                                </td>
+                                <td class="hidden-sm hidden-xs">
+                                    @Html.DisplayFor(modelItem => item.Category)
+                                </td>
+                                <td class="hidden-sm hidden-xs">
+                                    @Html.DisplayFor(modelItem => item.Priority)
+                                </td>
+                                <td class="hidden-sm hidden-xs">
+                                    @Html.DisplayFor(modelItem => item.TargetDateAsString)
+                                </td>
+                                <td class="hidden-sm hidden-xs">
+                                    @Html.DisplayFor(modelItem => item.DueDateAsString)
+                                </td>
+                                <td class="hidden-sm hidden-xs">
+                                    @item.CreatedDate.ToString("d")<br />
+                                    @item.CreatedDate.ToString("t")
+                                </td>
+                                <td>
+                                    @item.LastUpdateDate.ToString("d")<br />
+                                    @item.LastUpdateDate.ToString("t")
+                                </td>
+                            </tr>
 
-                        </tr>
-
+                        }
                     }
-                </tbody>
+                    else
+                    {
+                        <tr> <td colspan="12" style="text-align: center">Sorry! no item found</td>   </tr>
+                    }
+                }
 
-            </table>
-        </div>
+            </tbody>
+        </table>
     </div>
+    @*</div>*@
     <div class="card-footer">
         @Html.PagedListPager(Model.Tickets, page => Url.Action("PageList", new { listName = Model.CurrentListSetting.ListName, page }), PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(ajaxPagerOptions))
     </div>

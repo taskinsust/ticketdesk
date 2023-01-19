@@ -2237,6 +2237,7 @@
     <Content Include="Content\Images\user2-160x160.jpg" />
     <Content Include="Content\Images\user3-128x128.jpg" />
     <Content Include="Content\Images\user8-128x128.jpg" />
+    <Content Include="Content\my-tab.css" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\site.css" />
     <Content Include="Content\tab.css" />

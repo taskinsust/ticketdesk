@@ -359,6 +359,28 @@ namespace TicketDesk.Web.Client.Controllers
                 ModelState.AddModelError("", error);
             }
         }
+
+        [HttpGet]
+        [Route("global-user-search")]
+        public JsonResult SearchUser(string search)
+        {
+            var users = UserManager.Users.AsQueryable();
+            if (search != "")
+            {
+                search = search.ToLower();
+                users = users.Where(xx => xx.DisplayName.ToLower().Contains(search) || xx.Email.ToLower().Contains(search));
+                var res = users.OrderBy(u => u.DisplayName)
+                .Select(u => new
+                {
+                    id = u.Id,
+                    name = u.DisplayName
+                })
+                .Take(20).ToList();
+                return Json(res, JsonRequestBehavior.AllowGet);
+            }
+            return Json(new List<int>(), JsonRequestBehavior.AllowGet);
+
+        }
     }
 
 

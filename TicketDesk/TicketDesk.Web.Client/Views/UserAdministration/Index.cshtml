@@ -4,9 +4,22 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@*@section title{
-    @Index.Title
-}*@
+
+<main>
+    <div class="container">
+        <fieldset>
+            <legend class="col-sm-12">@Index.Legend</legend>
+            <div class="col-sm-12 dropdown my-3">
+                <input class="form-control mr-sm-2" data-toggle="dropdown" id="userSearchBox" type="text" placeholder="Search by name/email address" aria-label="Search">
+                <div class="dropdown-menu col-sm-12 mr-sm-2" id="userSearchItem" aria-labelledby="navbarDropdown"></div>
+            </div>
+            <div class="col-sm-12">
+                @Html.Partial("_UserList", Model)
+            </div>
+        </fieldset>
+    </div>
+</main>
+
 @section scripts
 {
     @Scripts.Render("~/bundles/admin-users")
@@ -17,21 +30,43 @@
             window.adminUsers.activate();
         });
     </script>
+    <script>
+        $(document).ready(function () {
+            $("#userSearchItem").prepend(`<level class="dropdown-item" >Sorry! no item found</level>`);
+
+            $("#userSearchBox").on('input', debounce(function (e) {
+                console.log("Log", $(this).val())
+                $.get('@Url.Action("SearchUser", "UserAdministration")?search=' + $(this).val()).then(oo => {
+                    console.log(oo)
+                    var memu = $("#userSearchItem")
+                    $("#userSearchItem").html('');
+                   if (oo.length > 0) {
+                        oo.forEach(p => {
+                            memu.prepend(`<a class="dropdown-item" href="@Url.Action("Edit", "UserAdministration")/${p.id}">${p.name}</a>`);
+                        })
+                    } else {
+                       $("#userSearchItem").prepend(`<level class="dropdown-item" >Sorry! no item found</level>`);
+                    }
+                })
+            }, 800));
+        });
+
+
+
+        function debounce(func, wait, immediate) {
+            var timeout;
+            return function () {
+                var context = this, args = arguments;
+                var later = function () {
+                    timeout = null;
+                    if (!immediate) func.apply(context, args);
+                };
+                var callNow = immediate && !timeout;
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+                if (callNow) func.apply(context, args);
+            };
+        };
+
+    </script>
 }
-<main>
-    <div class="container">
-        <fieldset>
-            <legend class="col-sm-12">@Index.Legend</legend>
-            <div class="col-sm-12">
-                @Html.Partial("_UserList", Model)
-            </div>
-            @*<div class="panel-footer">
-                    <div class="">
-                        <a href="@Url.Action("New", "UserAdministration")" class="btn btn-primary">
-                            <i class="fa fa-plus"></i>&nbsp;&nbsp;@Index.NewUser
-                        </a>
-                    </div>
-                </div>*@
-        </fieldset>
-    </div>
-</main>

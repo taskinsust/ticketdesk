@@ -55,7 +55,7 @@ namespace TicketDesk.Web.Client.Controllers
         {
             if (ApplicationConfig.HomeEnabled)
             {
-                //string options = "", options1 = "";
+                string options = "", options1 = "";
                 //var lineChart = new Ticket().DrawLineChart(ref options);
                 //var barChart = new Ticket().DrawBarChart();
                 //var pieChart = new Ticket().DrawPieChart();
@@ -118,6 +118,28 @@ namespace TicketDesk.Web.Client.Controllers
         {
             return View();
         }
+
+
+        [HttpGet]
+        [Route("global-search")]
+        public JsonResult SearchQuery(String search, int? page, int? limit)
+        {
+            var queryEntity = Context.Tickets.AsQueryable();
+            if(search != "")
+            {
+                search = search.ToLower();
+                queryEntity = queryEntity.Where(x => x.Title.ToLower().Contains(search) || x.Details.ToLower().Contains(search) || x.TicketType.ToLower().Contains(search) || x.Category.ToLower().Contains(search));
+                var searchList = queryEntity.AsEnumerable().OrderByDescending(x => x.TicketId).Skip((limit ?? 10) * (page ?? 0)).Take(limit ?? 10).Select(obj =>
+                 new {
+                     id = obj.TicketId,
+                     title = obj.Title
+                 }).ToList();
+                return Json(searchList, JsonRequestBehavior.AllowGet);
+            }
+            return Json(new List<int>(), JsonRequestBehavior.AllowGet);
+
+        }
+
 
         [Route("access-denied", Name = "AccessDenied")]
         public ActionResult AccessDenied()

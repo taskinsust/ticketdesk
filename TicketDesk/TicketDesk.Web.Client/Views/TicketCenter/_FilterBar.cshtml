@@ -5,13 +5,22 @@
     var ajaxFilterOptions = new AjaxOptions { UpdateTargetId = "ticketList", OnBegin = "ticketCenter.filters.beginChangeFilter", OnSuccess = "ticketCenter.completeChangeList", OnFailure = "ticketCenter.completeChangeList" };
 }
 
+<style>
+    label {
+        display: block !important;
+        text-align: center !important;
+        line-height: 150% !important;
+        margin-top: 10px !important;
+    }
+</style>
+
 <div class="navbar" style="min-height: 0; margin: 0; margin-left: 0px; margin-right: 0px;">
     <div class="row">
         <div class="col-md-12">
             <div style="display:flex; justify-content: space-between; align-items: stretch">
 
                 <div class="pull-left">
-                    <button type="button" class="btn btn-primary navbar-toggle collapsed" data-toggle="collapse" data-target="#filterbar-collapse">
+                    <button type="button" class="btn btn-primary navbar-toggle" data-toggle="collapse" data-target="#filterbar-collapse" aria-expanded="true">
                         @*<div class="btn btn-default btn-sm">*@
                         <span class="sr-only">@Index.ToggleNav</span>
                         <span class=""><i class="fa fa-filter"></i></span>
@@ -25,7 +34,7 @@
                         {
                             <div class="row">
                                 <div class="row form-group form-group-xs small" style="width: 100%; margin: 0;">
-                                    <label class="control-label col-sm-1 text-right">
+                                    <label class="control-label col-sm-1 text-right center-block">
                                         @Index.Status
                                     </label>
                                     <div class="col-sm-2">
@@ -38,19 +47,20 @@
                                     <div class="col-sm-2">
                                         @Html.DropDownList("Owner", Model.FilterBar.SubmittersSelectList, Model.FilterBar.OwnerFilterHtmlAttributes)
                                     </div>
-
-                                    <label class="control-label col-sm-1 text-right form-control-static">
-                                        @Index.Assigned
-                                    </label>
+                                    @*<div class="col-sm-2">
+                                        @Html.TextBox("FromDate", Model.FilterBar.FromDate, new { @class = "form-control input-sm", tabindex = 7, @readonly = "readonly" })
+                                    </div>*@
+                                    
+                                    <label class="control-label col-sm-1 text-right form-control-static"> @Index.Assigned</label>
                                     <div class="col-sm-2">
                                         @Html.DropDownList("AssignedTo", Model.FilterBar.AssignedToSelectList, Model.FilterBar.AssignedFilterHtmlAttributes)
                                         <input type="submit" value="filter" id="filterSubmitButton" />
                                     </div>
-                                    <label class="control-label col-sm-1 text-right form-control-static">
-                                        @Index.Show
-                                    </label>
+
+                                    <label class="control-label col-sm-1 text-right form-control-static">@Index.Show</label>
                                     <div class="col-sm-2" style="white-space: nowrap">
-                                        @Html.DropDownList("PageSize", Model.FilterBar.ItemsPerPageSelectList, new { @class = "postback form-control number-select" })<label class="control-label form-control-static"> @string.Format(Index.TotalItemCount, Model.Tickets.TotalItemCount)</label>
+                                        @Html.DropDownList("PageSize", Model.FilterBar.ItemsPerPageSelectList, new { @class = "postback form-control number-select" })
+                                        <label class="control-label form-control-static"> @string.Format(Index.TotalItemCount, Model.Tickets.TotalItemCount)</label>
                                     </div>
                                 </div>
                             </div>

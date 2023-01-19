@@ -65,7 +65,7 @@
             </div>
             <!-- Default to the left -->
             <div class="center-block"> Design and Developed By SComm IT </div> <br />
-           
+
         </footer>
     </div>
 
@@ -87,7 +87,7 @@
     @*<script src="~/Scripts/cookies.js"></script>*@
     @*<script src="~/Scripts/mobileversion/mobileV2inputfieldvalidation.js"></script>*@
 
-    <script type="text/javascript">
+<script type="text/javascript">
         window.currentCulture = '@CultureHelper.GetCurrentCulture()';
 
     @* @Scripts.Render("~/bundles/common_locale_" + CultureHelper.GetCurrentCulture())*@
@@ -106,7 +106,7 @@
             };
         </script>*@
 
-    @*<script type="text/javascript">
+        @*<script type="text/javascript">
             $(document).ready(function () {
                 $('[data-toggle="tooltip"]').tooltip();
             });
@@ -130,7 +130,40 @@
                     $(this).val(val);
                 }
             });
+
+            $("#searchItem").prepend(`<level class="dropdown-item" >Sorry! no item found</level>`);
+
+            $('#searchBox').on('input', debounce(function (e) {
+                $.get('@Url.Action("SearchQuery", "Home")?search=' + $(this).val() + "&page=0limit=10").then(oo => {
+                    console.log(oo)
+                    var memu = $("#searchItem")
+                    $("#searchItem").html('');
+                    if (oo.length > 0) {
+                        oo.forEach(p => {
+                            memu.prepend(`<a class="dropdown-item" href="@Url.Action("Index", "Ticket")/${p.id}?viewOnly=${true}">${p.title}</a>`);
+                        })
+                    } else {
+                        $("#searchItem").prepend(`<level class="dropdown-item" >Sorry! no item found</level>`);
+                    }
+                })
+            }, 800));
+
         });
+
+        function debounce(func, wait, immediate) {
+            var timeout;
+            return function () {
+                var context = this, args = arguments;
+                var later = function () {
+                    timeout = null;
+                    if (!immediate) func.apply(context, args);
+                };
+                var callNow = immediate && !timeout;
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+                if (callNow) func.apply(context, args);
+            };
+        };
 
 
         const deviceType = () => {
@@ -148,8 +181,9 @@
         console.log(deviceType());
         console.log($('.deviceType').val());
 
-    </script>
-    @RenderSection("scripts", required: false)
+</script>
+@RenderSection("scripts", required: false)
 </body>
 </html>
+
 
