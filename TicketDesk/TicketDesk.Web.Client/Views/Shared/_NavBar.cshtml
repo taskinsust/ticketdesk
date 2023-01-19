@@ -88,8 +88,8 @@
         <div class="navbar-collapse collapse show" id="navbarCollapse" style="">
             <ul class="navbar-nav me-auto mb-2 mb-md-0">
                 @*<li class="nav-item">
-                    <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
-                </li>*@
+                        <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
+                    </li>*@
                 <li class="nav-item d-none d-sm-inline-block">
                     <a href="@Url.Action("Index", "Home", new { area = "" })" class="nav-link"> <i class="nav-icon fas fa-th"> Dashboard</i></a>
                 </li>
@@ -163,11 +163,10 @@
                                 <a class="dropdown-item" href="@Url.Action("Register", "User",new { id = "registerLink" })">Register</a>
                                 @*<a class="dropdown-item" href="#">@Html.ActionLink("Register", "Register", "User", null, new { id = "registerLink" })</a>*@
                             }
-                            else
-                            {
-                                <a class="dropdown-item" href="@Url.Action("SignIn", "User", new { id = "loginLink" }))">Sign In</a>
-                                @*<a class="dropdown-item" href="#">@Html.ActionLink("Sign In", "SignIn", "User", null, new { id = "loginLink" })</a>*@
-                            }
+
+                            <a class="dropdown-item" href="@Url.Action("SignIn", "User", new { id = "loginLink" }))">Sign In</a>
+                            @*<a class="dropdown-item" href="#">@Html.ActionLink("Sign In", "SignIn", "User", null, new { id = "loginLink" })</a>*@
+
                         }
 
                     </div>
