@@ -1,12 +1,12 @@
 ﻿@using TicketDesk.Localization.Views.UserAdministration
 @model PagedList.IPagedList<TicketDesk.Domain.Model.UserProfile>
 @{
-    Layout = "~/Views/Shared/_LayoutPrev.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@section title{
+@*@section title{
     @Index.Title
-}
+}*@
 @section scripts
 {
     @Scripts.Render("~/bundles/admin-users")

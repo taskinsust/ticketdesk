@@ -48,6 +48,7 @@ namespace TicketDesk.Web.Client.Controllers
             return View(users);
         }
 
+        [HttpGet]
         [Route("telegramusers/{page:int?}")]
         public async Task<ActionResult> Telegramusers(int? page)
         {
