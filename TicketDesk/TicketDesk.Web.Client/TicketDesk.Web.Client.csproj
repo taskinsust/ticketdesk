@@ -542,7 +542,6 @@
     <Content Include="Content\AdminLTE\plugins\codemirror\mode\soy\soy.js" />
     <Content Include="Content\AdminLTE\plugins\codemirror\mode\sparql\sparql.js" />
     <Content Include="Content\AdminLTE\plugins\codemirror\mode\spreadsheet\spreadsheet.js" />
-    <Content Include="Content\AdminLTE\plugins\codemirror\mode\sql\sql.js" />
     <Content Include="Content\AdminLTE\plugins\codemirror\mode\stex\stex.js" />
     <Content Include="Content\AdminLTE\plugins\codemirror\mode\stylus\stylus.js" />
     <Content Include="Content\AdminLTE\plugins\codemirror\mode\swift\swift.js" />

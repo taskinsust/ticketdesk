@@ -153,7 +153,7 @@ namespace TicketDesk.Web.Client
             //#else
             //            BundleTable.EnableOptimizations = false;
             //#endif
-
+            BundleTable.EnableOptimizations = false;
         }
     }
 }
