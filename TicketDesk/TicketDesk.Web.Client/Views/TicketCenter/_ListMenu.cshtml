@@ -25,12 +25,19 @@
 
     @{
         var listA = Model.UserListSettings;
+        var io1 = 0;
+        foreach (var list in Model.UserListSettings)
+        {
+            io1 += 1;
+            var tabName = "tab" + io1;
+            <input type="radio" id="@tabName" name="tab-control" checked="@(currentListSettings.ListName == list.ListName)">
+        }
 
-        <input type="radio" id="tab1" name="tab-control" checked="@(currentListSettings.ListName == listA.ElementAt(0).ListName)">
+        @*<input type="radio" id="tab1" name="tab-control" checked="@(currentListSettings.ListName == listA.ElementAt(0).ListName)">
         <input type="radio" id="tab2" name="tab-control" checked="@(currentListSettings.ListName == listA.ElementAt(1).ListName)">
         <input type="radio" id="tab3" name="tab-control" checked="@(currentListSettings.ListName == listA.ElementAt(2).ListName)">
         <input type="radio" id="tab4" name="tab-control" checked="@(currentListSettings.ListName == listA.ElementAt(3).ListName)">
-        <input type="radio" id="tab5" name="tab-control" checked="@(currentListSettings.ListName == listA.ElementAt(4).ListName)">
+        <input type="radio" id="tab5" name="tab-control" checked="@(currentListSettings.ListName == listA.ElementAt(4).ListName)">*@
         <ul>
             @{
                 var io = 0;
@@ -55,7 +62,7 @@
         </ul>
     }
 
-    <div class="slider"><div class="indicator"></div></div>
+    @*<div class="slider"><div class="indicator"></div></div>*@
 
     <div class="content">
         @Html.Partial("_TicketList", Model)
